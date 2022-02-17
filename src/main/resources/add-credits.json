@@ -1,0 +1,22 @@
+{
+  "jsonrpc": "2.0",
+  "method": "add-credits",
+  "params": {
+    "origin": "acc://1d54c6a50f8342f55d6dbf78e22d3d088d032c63d99c03ed/ACME",
+    "sponsor": "acc://1d54c6a50f8342f55d6dbf78e22d3d088d032c63d99c03ed/ACME",
+    "signer": {
+      "publicKey": "2ff423441af75632c885223ed774da3e2714d0e31d63b1ea76f718ad62cadddd",
+      "nonce": 1645076747459545
+    },
+    "signature": "9682f0797343c073db37a1a5357117833aecc478e48bc66ebfc73080232c0ccc43daa46bf586c6d21597d6f8fe8bcc5f04c3322be067188c3a0aefd952d6cd05",
+    "keyPage": {
+      "height": 1,
+      "index": 0
+    },
+    "payload": {
+      "type": "addCredits",
+      "recipient": "acc://1d54c6a50f8342f55d6dbf78e22d3d088d032c63d99c03ed/ACME",
+      "amount": 100
+    }
+  }
+}
