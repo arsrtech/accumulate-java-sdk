@@ -7,11 +7,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import com.sdk.accumulate.controller.Accumulate;
+import com.sdk.accumulate.service.Accumulate;
 
 public class AccumulateTest {
 		
-	private String baseUrl;
+	private final String baseUrl;
 	private static int passed = 0;
 	private static int failed = 0;
 	
@@ -93,20 +93,6 @@ public class AccumulateTest {
 			failed++;
 		}
 	}
-	
-//	void testFaucet() throws ParseException, IOException {
-//		Accumulate accumulate = new Accumulate(this.baseUrl);
-//		String accUrl = "acc://5fd54e898c2c60e9757d2cd36f3a14b6df895b237690afb1/ACME";
-//		String response = accumulate.getFaucet(accUrl);
-//		JSONParser parser = new JSONParser();
-//		JSONObject jobj = (JSONObject)parser.parse(response);
-//		JSONObject dataObj = (JSONObject)jobj.get("result");
-//		if(dataObj.get("hash") != null) {
-//			passed++;
-//		}else {
-//			failed++;
-//		}
-//	}
 	
 	void testQueryKeyIndex() throws ParseException, IOException {
 		Accumulate accumulate = new Accumulate(this.baseUrl);

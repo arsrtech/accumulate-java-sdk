@@ -1,4 +1,6 @@
-package com.sdk.accumulate.controller;
+package com.sdk.accumulate.service;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
@@ -9,19 +11,28 @@ public class Crypto {
 
     public static byte[] sha256(byte[] data) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
-        return  md.digest();
+        return  md.digest(data);
     }
 
     public static byte[] append(final byte[]... arrays) {
-        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+//        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+//        if (arrays != null) {
+//            for (final byte[] array : arrays) {
+//                if (array != null) {
+//                    out.write(array, 0, array.length);
+//                }
+//            }
+//        }
+//        return out.toByteArray();
+        byte[] copy = new byte[0];
         if (arrays != null) {
             for (final byte[] array : arrays) {
                 if (array != null) {
-                    out.write(array, 0, array.length);
+                    copy = ArrayUtils.addAll(copy,array);
                 }
             }
         }
-        return out.toByteArray();
+        return copy;
     }
 
     public static String toHexString(byte[] hash) {

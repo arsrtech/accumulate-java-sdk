@@ -1,10 +1,15 @@
-package com.sdk.accumulate.controller;
+package com.sdk.accumulate.service;
 
 import com.sdk.accumulate.model.HeaderOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 
 public class Header {
+
+    private static final Logger logger = LoggerFactory.getLogger(Header.class);
 
     private AccURL origin;
     private long nonce;
@@ -51,12 +56,15 @@ public class Header {
     }
 
     public byte[] marshalBinary() {
-        byte[] originBytes = this.origin.string().getBytes();
+        byte[] originBytes = this.origin.string().getBytes(StandardCharsets.UTF_8);
+        logger.info("Header Origin: {}",Crypto.toHexString(originBytes));
         byte[] keyPageHeightBytes = BigInteger.valueOf(this.keyPageHeight).toByteArray();
+        logger.info("keyPageHeight: {}",Crypto.toHexString(keyPageHeightBytes));
         byte[] keyPageIndexBytes = BigInteger.valueOf(this.keyPageIndex).toByteArray();
+        logger.info("keyPageIndex: {}",Crypto.toHexString(keyPageIndexBytes));
         byte[] nonceBytes = BigInteger.valueOf(this.nonce).toByteArray();
+        logger.info("Nonce: {}",this.nonce);
         return Crypto.append(originBytes,keyPageHeightBytes,keyPageIndexBytes,nonceBytes);
-
     }
 }
 

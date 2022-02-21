@@ -12,7 +12,7 @@ public class TxnRequest {
 
     private KeyPage keyPage;
 
-    private Object payload;
+    private Object  payload;
 
     public boolean isCheckOnly() {
         return checkOnly;

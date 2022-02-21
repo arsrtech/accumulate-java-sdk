@@ -5,7 +5,7 @@ public class AddCreditsArg {
 
     private String recipient;
 
-    private long amount;
+    private int amount;
 
     public String getRecipient() {
         return recipient;
@@ -15,11 +15,11 @@ public class AddCreditsArg {
         this.recipient = recipient;
     }
 
-    public long getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 }

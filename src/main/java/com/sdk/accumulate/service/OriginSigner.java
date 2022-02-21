@@ -1,4 +1,4 @@
-package com.sdk.accumulate.controller;
+package com.sdk.accumulate.service;
 
 
 import com.sdk.accumulate.model.AccSignature;

@@ -1,22 +1,14 @@
 {
-  "jsonrpc": "2.0",
-  "method": "add-credits",
-  "params": {
-    "origin": "acc://1d54c6a50f8342f55d6dbf78e22d3d088d032c63d99c03ed/ACME",
-    "sponsor": "acc://1d54c6a50f8342f55d6dbf78e22d3d088d032c63d99c03ed/ACME",
-    "signer": {
-      "publicKey": "2ff423441af75632c885223ed774da3e2714d0e31d63b1ea76f718ad62cadddd",
-      "nonce": 1645076747459545
-    },
-    "signature": "9682f0797343c073db37a1a5357117833aecc478e48bc66ebfc73080232c0ccc43daa46bf586c6d21597d6f8fe8bcc5f04c3322be067188c3a0aefd952d6cd05",
-    "keyPage": {
-      "height": 1,
-      "index": 0
-    },
-    "payload": {
-      "type": "addCredits",
-      "recipient": "acc://1d54c6a50f8342f55d6dbf78e22d3d088d032c63d99c03ed/ACME",
-      "amount": 100
-    }
-  }
+   "checkOnly":"undefined",
+   "origin":"acc://271cb40b47913c9b53605ca34117d7b6dbd02a4077cbcd07/ACME",
+   "signer":{
+      "publicKey":"4f0478aedceab8c7fa4bda2ceffd5038be530c3170cd00828570e0a73e736a82",
+      "nonce":1645126220335
+   },
+   "signature":"431967f9a8330a6f426c1867db528f66a93c2b5e762d31f0b6cad7df03433dd1ec6bac1d43c12d4210defaff08ecf06caf4d6f5a69fe5b92bc874dc3af0e1602",
+   "keyPage":{
+      "height":1,
+      "index":0
+   },
+   "payload":"0e3b6163633a2f2f3237316362343062343739313363396235333630356361333431313764376236646264303261343037376362636430372f41434d450a"
 }

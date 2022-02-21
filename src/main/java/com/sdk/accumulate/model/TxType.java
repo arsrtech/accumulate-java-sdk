@@ -59,14 +59,14 @@ public enum TxType {
     // *does not* produce a synthetic transaction.
     UpdateKeyPage (0x0f);
 
-    private final long value;
+    private final int value;
 
 
-    public long getValue() {
+    public int getValue() {
         return value;
     }
 
-    TxType(long value) {
+    TxType(int value) {
 
         this.value = value;
     }

@@ -1,16 +1,14 @@
-package com.sdk.accumulate.controller;
+package com.sdk.accumulate.service;
 
+import com.iwebpp.crypto.TweetNaclFast;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-import static com.sdk.accumulate.controller.AccURL.ACME_TOKEN_URL;
+import static com.sdk.accumulate.service.AccURL.ACME_TOKEN_URL;
 
 public class LiteAccount extends KeypairSigner {
 
@@ -18,40 +16,31 @@ public class LiteAccount extends KeypairSigner {
 
     private AccURL tokenUrl;
 
-    static KeyPairGenerator kpg;
 
-    static {
-        try {
-            kpg = KeyPairGenerator.getInstance("RSA");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public LiteAccount(String acmeTokenUrl, KeyPair keypair) throws Exception {
-        super(computeUrl(keypair.getPublic().getEncoded(),AccURL.toAccURL(acmeTokenUrl)), keypair);
+    public LiteAccount(String acmeTokenUrl, TweetNaclFast.Signature.KeyPair keypair) throws Exception {
+        super(computeUrl(keypair.getPublicKey(),AccURL.toAccURL(acmeTokenUrl)), keypair);
         this.tokenUrl = AccURL.toAccURL(tokenUrl.string());
     }
 
-    public LiteAccount(AccURL acmeTokenUrl, KeyPair keypair) throws Exception {
-        super(computeUrl(keypair.getPublic().getEncoded(),acmeTokenUrl), keypair);
+    public LiteAccount(AccURL acmeTokenUrl, TweetNaclFast.Signature.KeyPair keypair) throws Exception {
+        super(computeUrl(keypair.getPublicKey(),acmeTokenUrl), keypair);
         this.tokenUrl = AccURL.toAccURL(acmeTokenUrl.string());
     }
 
     /**
      * Generate a new random LiteAccount for the ACME token
      */
-    static LiteAccount generate() throws Exception {
-        KeyPair keyPair = kpg.generateKeyPair();
-        logger.info("KeyPair: {}",keyPair);
+    public static LiteAccount generate() throws Exception {
+        TweetNaclFast.Signature.KeyPair kp = TweetNaclFast.Signature.keyPair();
+        logger.info("Tweet Nacl pub Key {}",kp.getPublicKey());
         logger.info("ACME TOKEN URL: {}",AccURL.parse("acc://ACME").string());
-        return new LiteAccount(AccURL.parse("acc://ACME"), keyPair);
+        return new LiteAccount(AccURL.parse("acc://ACME"), kp);
     }
 
     /**
      * Generate a new LiteAccount for the ACME token with the given keypair
      */
-    static LiteAccount generateWithKeypair(KeyPair keypair) throws Exception {
+    static LiteAccount generateWithKeypair(TweetNaclFast.Signature.KeyPair keypair) throws Exception {
         return new LiteAccount(ACME_TOKEN_URL, keypair);
     }
 
@@ -59,14 +48,16 @@ public class LiteAccount extends KeypairSigner {
      * Generate a new random LiteAccount for the given token URL
      */
     static LiteAccount generateWithTokenUrl(AccURL tokenUrl) throws Exception {
-        return new LiteAccount(tokenUrl, kpg.generateKeyPair());
+        TweetNaclFast.Signature.KeyPair kp = TweetNaclFast.Signature.keyPair();
+        return new LiteAccount(tokenUrl, kp);
     }
 
     static LiteAccount generateWithTokenUrl(String  tokenUrl) throws Exception {
-        return new LiteAccount(AccURL.toAccURL(tokenUrl), kpg.generateKeyPair());
+        TweetNaclFast.Signature.KeyPair kp = TweetNaclFast.Signature.keyPair();
+        return new LiteAccount(AccURL.toAccURL(tokenUrl), kp);
     }
 
-    AccURL url() {
+    public AccURL url() {
         return this.origin;
     }
 
@@ -90,19 +81,18 @@ public class LiteAccount extends KeypairSigner {
         return AccURL.parse("acc://"+pkHash+checkSumStr+"/"+tokenUrl.authority());
     }
 
-    public static String toHexString(byte[] hash) {
+    public static String toHexString(byte[] value) {
         // Convert byte array into signum representation
-        BigInteger number = new BigInteger(1, hash);
+        BigInteger number = new BigInteger(1, value);
 
         // Convert message digest into hex value
-        StringBuilder hexString = new StringBuilder(number.toString(16));
 
         // Pad with leading zeros
 //        while (hexString.length() < 32) {
 //            hexString.insert(0, '0');
 //        }
 
-        return hexString.toString();
+        return number.toString(16);
     }
 
 }

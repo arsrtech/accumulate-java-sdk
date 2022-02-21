@@ -1,18 +1,24 @@
-package com.sdk.accumulate.controller;
+package com.sdk.accumulate.service;
 
+import com.iwebpp.crypto.TweetNaclFast;
 import com.sdk.accumulate.model.AccSignature;
 import com.sdk.accumulate.model.KeyPageOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.security.*;
 
+
 public class KeypairSigner implements OriginSigner {
 
+	private static final Logger logger = LoggerFactory.getLogger(KeypairSigner.class);
+
 	protected AccURL origin;
-	protected KeyPair keypair;
+	protected TweetNaclFast.Signature.KeyPair keypair;
 	protected int keyPageHeight;
 	protected int keyPageIndex;
 	
-	KeypairSigner(AccURL origin, KeyPair keypair, KeyPageOptions keyPageOptions) {
+	KeypairSigner(AccURL origin, TweetNaclFast.Signature.KeyPair keypair, KeyPageOptions keyPageOptions) {
 		this.origin = origin;
 		this.keypair = keypair;
 		if (keyPageOptions.getKeyPageHeight() == 0)
@@ -23,17 +29,17 @@ public class KeypairSigner implements OriginSigner {
 		this.keyPageIndex = keyPageOptions.getKeyPageIndex();
 	}
 
-	public KeypairSigner(AccURL acmeTokenUrl, KeyPair keypair) {
+	public KeypairSigner(AccURL acmeTokenUrl, TweetNaclFast.Signature.KeyPair keypair) {
 		this.origin = acmeTokenUrl;
 		this.keypair = keypair;
 	}
 
-	KeyPair keypair() {
+	TweetNaclFast.Signature.KeyPair keypair() {
 		return this.keypair;
 	}
 
-	PublicKey publicKey() {
-		return this.keypair.getPublic();
+	byte[] publicKey() {
+		return this.keypair.getPublicKey();
 	}
 
 	@Override
@@ -62,13 +68,12 @@ public class KeypairSigner implements OriginSigner {
 	/**
 	 * Sign arbitrary data.
 	 */
-	AccSignature signRaw(byte[] data) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
+	AccSignature signRaw(byte[] data) {
+		logger.info("Data to sign {}",data);
 		AccSignature accSignature = new AccSignature();
-		accSignature.setPublicKey(keypair.getPublic().getEncoded());
-		Signature sig = Signature.getInstance("SHA256withRSA");
-		sig.initSign(keypair.getPrivate());
-		sig.update(data);
-		byte[] signatureBytes = sig.sign();
+		accSignature.setPublicKey(keypair.getPublicKey());
+		TweetNaclFast.Signature signature = new TweetNaclFast.Signature(keypair.getPublicKey(),keypair.getSecretKey());
+		byte[] signatureBytes = signature.detached(data);
 		accSignature.setSignature(signatureBytes);
 		return accSignature;
 	}
