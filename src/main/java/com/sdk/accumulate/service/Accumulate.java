@@ -9,7 +9,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 
+import com.sdk.accumulate.enums.RequestMethods;
+import com.sdk.accumulate.enums.TxnType;
 import com.sdk.accumulate.model.*;
+import com.sdk.accumulate.payload.AddCreditsPayload;
+import com.sdk.accumulate.payload.BurnTokensPayload;
+import com.sdk.accumulate.payload.CreateDataAccountPayload;
+import com.sdk.accumulate.payload.CreateIdentityPayload;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
@@ -124,9 +130,40 @@ public class Accumulate {
 		AddCreditsPayload addCreditsPayload = new AddCreditsPayload();
 		addCreditsPayload.setAmount(addCredits.getAmount());
 		addCreditsPayload.setRecipient(addCredits.getRecipient());
-		addCreditsPayload.setType("addCredits");
-		return this._execute(new AddCredits(addCredits),originSigner,"add-credits",addCreditsPayload);
+		addCreditsPayload.setType(TxnType.AddCredits.getValue());
+		return this._execute(new AddCredits(addCredits),originSigner, RequestMethods.AddCredits.getValue(), addCreditsPayload);
 
+	}
+
+	@SuppressWarnings("unchecked")
+	public String burnTokens(BurnTokensArg burnTokensArg, OriginSigner originSigner) throws Exception {
+		BurnTokensPayload burnTokensPayload = new BurnTokensPayload();
+		burnTokensPayload.setAmount(burnTokensArg.getAmount());
+		burnTokensPayload.setType(TxnType.BurnTokens.getValue());
+		return this._execute(new BurnTokens(burnTokensArg),originSigner,RequestMethods.BurnTokens.getValue(), burnTokensPayload);
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public String createDataAccount(CreateDataAccountArg createDataAccountArg, OriginSigner originSigner) throws Exception {
+		CreateDataAccountPayload createDataAccountPayload = new CreateDataAccountPayload();
+		createDataAccountPayload.setType(TxnType.CreateDataAccount.getValue());
+		createDataAccountPayload.setUrl(createDataAccountArg.getUrl());
+		createDataAccountPayload.setKeyBookUrl(createDataAccountArg.getKeyBookUrl());
+		createDataAccountPayload.setManagerKeyBookUrl(createDataAccountArg.getManagerKeyBookUrl());
+		createDataAccountPayload.setScratch(createDataAccountArg.isScratch());
+		return this._execute(new CreateDataAccount(createDataAccountArg),originSigner,RequestMethods.CreateDataAccount.getValue(), createDataAccountPayload);
+	}
+
+	@SuppressWarnings("unchecked")
+	public String createIdentity(CreateIdentityArg createIdentityArg, OriginSigner originSigner) throws Exception {
+		CreateIdentityPayload createIdentityPayload = new CreateIdentityPayload();
+		createIdentityPayload.setType(TxnType.CreateIdentity.getValue());
+		createIdentityPayload.setUrl(createIdentityArg.getUrl());
+		createIdentityPayload.setKeyBookName(createIdentityArg.getKeyBookName());
+		createIdentityPayload.setPublicKey(createIdentityArg.getPublicKey());
+		createIdentityPayload.setKeyPageName(createIdentityArg.getKeyPageName());
+		return this._execute(new CreateIdentity(createIdentityArg),originSigner,RequestMethods.CreateIdentity.getValue(), createIdentityPayload);
 	}
 
 
@@ -167,5 +204,4 @@ public class Accumulate {
         }
 		
 	}
-
 }

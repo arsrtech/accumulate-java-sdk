@@ -1,4 +1,4 @@
-package com.sdk.accumulate.model;
+package com.sdk.accumulate.enums;
 
 public enum TxType {
 

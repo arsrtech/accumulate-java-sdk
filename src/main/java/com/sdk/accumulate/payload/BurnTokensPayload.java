@@ -1,10 +1,8 @@
-package com.sdk.accumulate.model;
+package com.sdk.accumulate.payload;
 
-public class AddCreditsPayload {
+public class BurnTokensPayload {
 
     private String type;
-
-    private String recipient;
 
     private int amount;
 
@@ -14,14 +12,6 @@ public class AddCreditsPayload {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getRecipient() {
-        return recipient;
-    }
-
-    public void setRecipient(String recipient) {
-        this.recipient = recipient;
     }
 
     public int getAmount() {

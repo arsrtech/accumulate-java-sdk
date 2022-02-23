@@ -1,11 +1,10 @@
 package com.sdk.accumulate.service;
 
 import com.sdk.accumulate.model.AddCreditsArg;
+import com.sdk.accumulate.enums.TxnType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 
 public class AddCredits extends BasePayload{
 
@@ -32,12 +31,12 @@ public class AddCredits extends BasePayload{
     @Override
     public byte[] _marshalBinary() {
 
-        byte[] type = "addCredits".getBytes(StandardCharsets.UTF_8);
-        byte[] recipient = this._recipient.string().getBytes(StandardCharsets.UTF_8);
-        logger.info("recipient: "+Crypto.toHexString(recipient));
-        byte[] amount = BigInteger.valueOf(this._amount).toByteArray();
-        logger.info("amount: "+Crypto.toHexString(amount));
-        return Crypto.append(type,recipient,amount);
+        byte[] typeBytes = Marshaller.stringMarshaller(TxnType.AddCredits.getValue());
+        byte[] recipientBytes = Marshaller.stringMarshaller(this._recipient.string());
+        logger.info("recipient: "+Crypto.toHexString(recipientBytes));
+        byte[] amountBytes = Marshaller.integerMarshaller(this._amount);
+        logger.info("amount: "+Crypto.toHexString(amountBytes));
+        return Crypto.append(typeBytes,recipientBytes,amountBytes);
     }
 }
 

@@ -1,0 +1,22 @@
+{
+  "jsonrpc": "2.0",
+  "method": "burn-tokens",
+  "params": {
+    "origin": "acc://6e299ae24bbf0d56208f5dcb5a7fac130aeb2dd7a44912d2/ACME",
+    "sponsor": "acc://6e299ae24bbf0d56208f5dcb5a7fac130aeb2dd7a44912d2/ACME",
+    "signer": {
+      "publicKey": "57b69a333d88ba0ab9011fc959b3aa5f4ec0c028fa25f65b05516b9d938e2ba9",
+      "nonce": 1645512380699454
+    },
+    "signature": "978333074b3a724c0905a86420973a9ad7456cfe25d91ecbe685f9d6940e0483d45a74cfa3531ffc7d8c796ae93fe948ba4398765b3ddfd1ff6c47a2a8416409",
+    "keyPage": {
+      "height": 1,
+      "index": 0
+    },
+    "payload": {
+      "type": "burnTokens",
+      "amount": "100000000"
+    }
+  },
+  "id": 3975
+}

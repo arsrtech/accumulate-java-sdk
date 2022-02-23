@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 
 public class Marshaller {
 
@@ -19,5 +20,17 @@ public class Marshaller {
         }
         bytesArray = Crypto.append(bytesArray,Crypto.append(bytesArray,number.clearBit(8).toByteArray()));
         return bytesArray;
+    }
+
+    public static byte[] stringMarshaller(String data) {
+        return data.getBytes(StandardCharsets.UTF_8);
+    }
+
+    public static byte[] booleanMarshaller(boolean data) {
+        return new byte[]{(byte) (data?1:0)};
+    }
+
+    public static byte[] integerMarshaller(int data) {
+        return BigInteger.valueOf(data).toByteArray();
     }
 }
