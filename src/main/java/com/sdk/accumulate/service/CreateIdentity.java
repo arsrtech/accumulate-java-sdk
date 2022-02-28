@@ -3,7 +3,7 @@ package com.sdk.accumulate.service;
 import com.sdk.accumulate.enums.TxnType;
 import com.sdk.accumulate.model.CreateIdentityArg;
 
-public class CreateIdentity extends BasePayload{
+public class CreateIdentity extends BasePayload {
 
     private String url;
 

@@ -1,14 +1,23 @@
 {
-   "checkOnly":"undefined",
-   "origin":"acc://271cb40b47913c9b53605ca34117d7b6dbd02a4077cbcd07/ACME",
-   "signer":{
-      "publicKey":"4f0478aedceab8c7fa4bda2ceffd5038be530c3170cd00828570e0a73e736a82",
-      "nonce":1645126220335
+   "jsonrpc": "2.0",
+   "method": "add-credits",
+   "params": {
+      "origin": "acc://ecdfec3a68a4df95a8a88a103d47fcc571be02098dfc8702/ACME",
+      "sponsor": "acc://ecdfec3a68a4df95a8a88a103d47fcc571be02098dfc8702/ACME",
+      "signer": {
+         "publicKey": "757798a0e15822025b457234543cce9b488377abe7ff3c541c2ebc1b9c14e822",
+         "nonce": 1646006449156682
+      },
+      "signature": "686afbbf4514449bf47653aa00f612b097d9abdc8735e57de93624acf0581c19d3ca62519522da87f0217a302837d8ff12cec31f905b13c24686106dd615e705",
+      "keyPage": {
+         "height": 1,
+         "index": 0
+      },
+      "payload": {
+         "type": "addCredits",
+         "recipient": "acc://ecdfec3a68a4df95a8a88a103d47fcc571be02098dfc8702/ACME",
+         "amount": 100
+      }
    },
-   "signature":"431967f9a8330a6f426c1867db528f66a93c2b5e762d31f0b6cad7df03433dd1ec6bac1d43c12d4210defaff08ecf06caf4d6f5a69fe5b92bc874dc3af0e1602",
-   "keyPage":{
-      "height":1,
-      "index":0
-   },
-   "payload":"0e3b6163633a2f2f3237316362343062343739313363396235333630356361333431313764376236646264303261343037376362636430372f41434d450a"
+   "id": 1751
 }

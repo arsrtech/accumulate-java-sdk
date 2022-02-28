@@ -5,7 +5,11 @@ public enum TxnType {
     BurnTokens("burnTokens"),
     CreateDataAccount("createDataAccount"),
     CreateIdentity("createIdentity"),
-    CreateKeyPage("createKeyPage");
+    CreateKeyBook("createKeyBook"),
+    CreateKeyPage("createKeyPage"),
+    CreateTokenAccount("createTokenAccount"),
+    CreateToken("createToken"),
+    IssueToken("issueToken");
 
     private final String value;
 

@@ -2,7 +2,7 @@ package com.sdk.accumulate.model;
 
 public class TxnRequest {
 
-    private boolean checkOnly;
+    private String sponsor;
 
     private String origin;
 
@@ -14,12 +14,12 @@ public class TxnRequest {
 
     private Object  payload;
 
-    public boolean isCheckOnly() {
-        return checkOnly;
+    public String getSponsor() {
+        return sponsor;
     }
 
-    public void setCheckOnly(boolean checkOnly) {
-        this.checkOnly = checkOnly;
+    public void setSponsor(String sponsor) {
+        this.sponsor = sponsor;
     }
 
     public String getOrigin() {

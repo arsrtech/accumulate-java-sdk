@@ -53,9 +53,9 @@ public class Transaction {
      */
     public byte[] dataForSignature() throws NoSuchAlgorithmException {
         logger.info("Nonce  {}",Crypto.toHexString(Marshaller.uvarintMarshalBinary(BigInteger.valueOf(1645169463))));
-        logger.info("Test test sha 256 {}",Crypto.toHexString(sha256("Hello 123".getBytes(StandardCharsets.UTF_8))));
-        logger.info("Test data: {}",Crypto.toHexString("Hello 123".getBytes(StandardCharsets.UTF_8)));
-        return Crypto.append(BigInteger.valueOf(this.header.getNonce()).toByteArray(),this.hash());
+//        logger.info("Test test sha 256 {}",Crypto.toHexString(sha256("Hello 123".getBytes(StandardCharsets.UTF_8))));
+//        logger.info("Test data: {}",Crypto.toHexString("Hello 123".getBytes(StandardCharsets.UTF_8)));
+        return Crypto.append(Marshaller.longMarshaller(this.header.getNonce()),this.hash());
     }
 
     public Header getHeader() {
@@ -104,6 +104,7 @@ public class Transaction {
         }
 
         TxnRequest txnRequest = new TxnRequest();
+        txnRequest.setSponsor(this.header.getOrigin().string());
         txnRequest.setOrigin(this.header.getOrigin().string());
         Signer signer = new Signer();
         signer.setPublicKey(Crypto.toHexString(this.signature.getPublicKey()));
@@ -114,7 +115,7 @@ public class Transaction {
         keyPage.setHeight(this.header.getKeyPageHeight());
         keyPage.setIndex(this.header.getKeyPageIndex());
         txnRequest.setKeyPage(keyPage);
-//        txnRequest.setPayload(Crypto.toHexString(this.payloadBinary));
+        txnRequest.setPayload(Crypto.toHexString(this.payloadBinary));
         return txnRequest;
     }
 }

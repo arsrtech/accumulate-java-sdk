@@ -4,8 +4,10 @@ public enum RequestMethods {
     AddCredits("add-credits"),
     BurnTokens("burn-tokens"),
     CreateDataAccount("create-data-account"),
-    CreateIdentity("create-adi");
-
+    CreateIdentity("create-adi"),
+    CreateKeyBook("create-key-book"),
+    CreateKeyPage("create-key-page"),
+    CreateTokenAccount("create-token-account");
     private final String value;
 
     public String getValue() {

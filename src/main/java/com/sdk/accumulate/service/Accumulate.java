@@ -7,15 +7,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.sdk.accumulate.enums.RequestMethods;
 import com.sdk.accumulate.enums.TxnType;
 import com.sdk.accumulate.model.*;
-import com.sdk.accumulate.payload.AddCreditsPayload;
-import com.sdk.accumulate.payload.BurnTokensPayload;
-import com.sdk.accumulate.payload.CreateDataAccountPayload;
-import com.sdk.accumulate.payload.CreateIdentityPayload;
+import com.sdk.accumulate.payload.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
@@ -43,7 +42,7 @@ public class Accumulate {
 		tx.sign(originSigner);
 		logger.info("Signature {}",tx.getSignature().getSignature());
 		TxnRequest txnRequest = tx.toTxRequest(true);
-		txnRequest.setPayload(obj);
+//		txnRequest.setPayload(obj);
 		return RPCClient.client(txnRequest,method);
 	}
 	
@@ -131,7 +130,7 @@ public class Accumulate {
 		addCreditsPayload.setAmount(addCredits.getAmount());
 		addCreditsPayload.setRecipient(addCredits.getRecipient());
 		addCreditsPayload.setType(TxnType.AddCredits.getValue());
-		return this._execute(new AddCredits(addCredits),originSigner, RequestMethods.AddCredits.getValue(), addCreditsPayload);
+		return this._execute(new AddCredits(addCredits),originSigner, "execute", addCreditsPayload);
 
 	}
 
@@ -166,6 +165,38 @@ public class Accumulate {
 		return this._execute(new CreateIdentity(createIdentityArg),originSigner,RequestMethods.CreateIdentity.getValue(), createIdentityPayload);
 	}
 
+	@SuppressWarnings("unchecked")
+	public String createKeyBook(CreateKeyBookArg createKeyBookArg, OriginSigner originSigner) throws Exception {
+		CreateKeyBookPayload createKeyBookPayload = new CreateKeyBookPayload();
+		createKeyBookPayload.setType(TxnType.CreateKeyBook.getValue());
+		createKeyBookPayload.setUrl(createKeyBookArg.getUrl());
+		createKeyBookPayload.setPages(createKeyBookArg.getPages());
+		return this._execute(new CreateKeyBook(createKeyBookArg),originSigner,RequestMethods.CreateKeyBook.getValue(), createKeyBookPayload);
+	}
+
+	@SuppressWarnings("unchecked")
+	public String createKeyPage(CreateKeyPageArg createKeyPageArg, OriginSigner originSigner) throws Exception {
+		CreateKeyPagePayload createKeyPagePayload = new CreateKeyPagePayload();
+		createKeyPagePayload.setType(TxnType.CreateKeyPage.getValue());
+		createKeyPagePayload.setUrl(createKeyPageArg.getUrl());
+		List<String> keys = new ArrayList<>();
+		for (byte[] key: createKeyPageArg.getKeys()) {
+			keys.add(Crypto.toHexString(key));
+		}
+		createKeyPagePayload.setKeys(keys);
+		return this._execute(new CreateKeyPage(createKeyPageArg),originSigner,RequestMethods.CreateKeyPage.getValue(), createKeyPagePayload);
+	}
+
+	@SuppressWarnings("unchecked")
+	public String createTokenAccount(CreateTokenAccountArg createTokenAccountArg, OriginSigner originSigner) throws Exception {
+		CreateTokenAccountPayload createTokenAccountPayload = new CreateTokenAccountPayload();
+		createTokenAccountPayload.setType(TxnType.CreateTokenAccount.getValue());
+		createTokenAccountPayload.setUrl(createTokenAccountArg.getTokenUrl());
+		createTokenAccountPayload.setTokenUrl(createTokenAccountArg.getTokenUrl());
+		createTokenAccountPayload.setKeyBookUrl(createTokenAccountArg.getKeyBookUrl());
+		createTokenAccountPayload.setScratch(createTokenAccountArg.isScratch());
+		return this._execute(new CreateTokenAccount(createTokenAccountArg),originSigner,RequestMethods.CreateTokenAccount.getValue(), createTokenAccountPayload);
+	}
 
 
 	@SuppressWarnings("unchecked")

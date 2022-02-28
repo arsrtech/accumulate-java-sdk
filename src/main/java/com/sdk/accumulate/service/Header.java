@@ -56,14 +56,14 @@ public class Header {
     }
 
     public byte[] marshalBinary() {
-        byte[] originBytes = this.origin.string().getBytes(StandardCharsets.UTF_8);
+        byte[] originBytes = Marshaller.stringMarshaller(this.origin.string());
         logger.info("Header Origin: {}",Crypto.toHexString(originBytes));
-        byte[] keyPageHeightBytes = BigInteger.valueOf(this.keyPageHeight).toByteArray();
+        byte[] keyPageHeightBytes = Marshaller.longMarshaller(this.keyPageHeight);
         logger.info("keyPageHeight: {}",Crypto.toHexString(keyPageHeightBytes));
-        byte[] keyPageIndexBytes = BigInteger.valueOf(this.keyPageIndex).toByteArray();
+        byte[] keyPageIndexBytes = Marshaller.longMarshaller(this.keyPageIndex);
         logger.info("keyPageIndex: {}",Crypto.toHexString(keyPageIndexBytes));
-        byte[] nonceBytes = BigInteger.valueOf(this.nonce).toByteArray();
-        logger.info("Nonce: {}",this.nonce);
+        byte[] nonceBytes = Marshaller.longMarshaller(this.nonce);
+        logger.info("Nonce: {}",Crypto.toHexString(nonceBytes));
         return Crypto.append(originBytes,keyPageHeightBytes,keyPageIndexBytes,nonceBytes);
     }
 }

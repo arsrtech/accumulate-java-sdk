@@ -5,7 +5,6 @@ import com.sdk.accumulate.enums.TxnType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class AddCredits extends BasePayload{
 
     private static final Logger logger = LoggerFactory.getLogger(AddCredits.class);
@@ -31,10 +30,14 @@ public class AddCredits extends BasePayload{
     @Override
     public byte[] _marshalBinary() {
 
+//        byte[] test = Marshaller.stringMarshaller("Hello 123");
+//        logger.info("String test {} ",Crypto.toHexString(test));
         byte[] typeBytes = Marshaller.stringMarshaller(TxnType.AddCredits.getValue());
+        logger.info("Type : "+Crypto.toHexString(typeBytes));
         byte[] recipientBytes = Marshaller.stringMarshaller(this._recipient.string());
         logger.info("recipient: "+Crypto.toHexString(recipientBytes));
         byte[] amountBytes = Marshaller.integerMarshaller(this._amount);
+        logger.info("Amount Bytes {}",amountBytes);
         logger.info("amount: "+Crypto.toHexString(amountBytes));
         return Crypto.append(typeBytes,recipientBytes,amountBytes);
     }
