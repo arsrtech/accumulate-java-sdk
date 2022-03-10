@@ -1,12 +1,18 @@
 package com.sdk.accumulate.service;
 
+import com.sdk.accumulate.enums.TxnType;
 import com.sdk.accumulate.model.SendTokensArg;
 import com.sdk.accumulate.model.TokenRecipientArg;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SendTokens extends BasePayload {
+
+    private static final Logger logger = LoggerFactory.getLogger(SendTokens.class);
 
     private List<TokenRecipient> to;
 
@@ -53,7 +59,41 @@ public class SendTokens extends BasePayload {
 
     @Override
     public byte[] _marshalBinary() {
-        return new byte[0];
+        byte[] typeBytes = Marshaller.integerMarshaller(3);
+        byte[] a = {1};
+        byte[] typeNew = Crypto.append(a,typeBytes);
+        logger.info("Type Bytes: {}",Crypto.toHexString(typeNew));
+//        validateHash(this.hash);
+//        byte[] marshalBytes = Crypto.append(typeBytes,this.hash,this.meta);
+        byte[] marshalBytes = Crypto.append(typeNew);
+        validateRecipient(this.to);
+        for (TokenRecipient tokenRecipient: this.to) {
+            byte[] d = {4};
+            byte[] recBytes = Crypto.append(d,Marshaller.bytesMarshaller(marshalTokenRecipient(tokenRecipient)));
+            logger.info("Recipient Bytes: {}",Crypto.toHexString(recBytes));
+            marshalBytes = Crypto.append(marshalBytes,recBytes);
+        }
+        return marshalBytes;
+    }
+
+    private byte[] marshalTokenRecipient(TokenRecipient tokenRecipient) {
+        byte[] recipientBytes = Marshaller.stringMarshaller(tokenRecipient.getUrl().string());
+        byte[] a = {1};
+        recipientBytes = Crypto.append(a,recipientBytes);
+        byte[] amountBytes = Marshaller.bigNumberMarshalBinary(BigInteger.valueOf(tokenRecipient.getAmount()));
+        byte[] b = {2};
+        amountBytes = Crypto.append(b,amountBytes);
+        return Crypto.append(recipientBytes,amountBytes);
+    }
+
+    public void validateHash(byte[] hash) {
+        if (hash.length != 32)
+            throw new Error("Invalid hash");
+    }
+
+    public void validateRecipient(List<TokenRecipient> tokenRecipients) {
+        if (tokenRecipients.size() < 1)
+            throw new Error("Missing at least one recipient");
     }
 }
 

@@ -7,7 +7,12 @@ public enum RequestMethods {
     CreateIdentity("create-adi"),
     CreateKeyBook("create-key-book"),
     CreateKeyPage("create-key-page"),
-    CreateTokenAccount("create-token-account");
+    CreateTokenAccount("create-token-account"),
+    CreateToken("create-token"),
+    IssueToken("issue-token"),
+    SendToken("send-token"),
+    UpdateKeyPage("update-key-page"),
+    WriteData("write-data");
     private final String value;
 
     public String getValue() {

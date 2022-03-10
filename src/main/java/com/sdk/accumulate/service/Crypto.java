@@ -16,8 +16,7 @@ public class Crypto {
 
     public static byte[] sha256(byte[] data) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
-        md.update(data);
-        return  md.digest();
+        return  md.digest(data);
     }
 
     public static byte[] append(final byte[]... arrays) {
@@ -46,7 +45,7 @@ public class Crypto {
 //        return number.toString(16);
         StringBuilder result = new StringBuilder();
         for (byte temp : bytes) {
-            result.append(String.format("%02x", temp));
+            result.append(String.format("%02X", temp));
         }
         return result.toString();
     }

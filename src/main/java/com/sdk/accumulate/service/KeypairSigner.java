@@ -1,6 +1,5 @@
 package com.sdk.accumulate.service;
 
-//import com.iwebpp.crypto.TweetNaclFast;
 import com.iwebpp.crypto.TweetNaclFast;
 import com.sdk.accumulate.model.AccSignature;
 import com.sdk.accumulate.model.KeyPageOptions;
@@ -16,12 +15,12 @@ public class KeypairSigner implements OriginSigner {
 	private static final Logger logger = LoggerFactory.getLogger(KeypairSigner.class);
 
 	protected AccURL origin;
-	protected KeyPair keypair;
-//	protected TweetNaclFast.Signature.KeyPair keypair;
+//	protected KeyPair keypair;
+	protected TweetNaclFast.Signature.KeyPair keypair;
 	protected int keyPageHeight;
 	protected int keyPageIndex;
-	
-	KeypairSigner(AccURL origin, KeyPair keypair, KeyPageOptions keyPageOptions) {
+
+	KeypairSigner(AccURL origin, TweetNaclFast.Signature.KeyPair keypair, KeyPageOptions keyPageOptions) {
 		this.origin = origin;
 		this.keypair = keypair;
 		if (keyPageOptions.getKeyPageHeight() == 0)
@@ -32,17 +31,17 @@ public class KeypairSigner implements OriginSigner {
 		this.keyPageIndex = keyPageOptions.getKeyPageIndex();
 	}
 
-	public KeypairSigner(AccURL acmeTokenUrl, KeyPair keypair) {
+	public KeypairSigner(AccURL acmeTokenUrl, TweetNaclFast.Signature.KeyPair keypair) {
 		this.origin = acmeTokenUrl;
 		this.keypair = keypair;
 	}
 
-	KeyPair keypair() {
+	TweetNaclFast.Signature.KeyPair keypair() {
 		return this.keypair;
 	}
 
 	byte[] publicKey() {
-		return this.keypair.getPublic().getEncoded();
+		return this.keypair.getPublicKey();
 	}
 
 	@Override
@@ -65,42 +64,51 @@ public class KeypairSigner implements OriginSigner {
 	}
 
 	public AccSignature sign(Transaction tx) throws NoSuchAlgorithmException, SignatureException, InvalidKeyException {
+		logger.info("Binary: {}",Crypto.toHexString(tx.dataForSignature()));
 		return this.signRaw(tx.dataForSignature());
 	}
 
 	/**
 	 * Sign arbitrary data.
 	 */
-//	AccSignature signRaw(byte[] data) {
-//		logger.info("Data to sign {}",data);
-////		TweetNaclFast.Signature.KeyPair kp = TweetNaclFast.Signature.keyPair();
-//		AccSignature accSignature = new AccSignature();
-//		byte[] pub = Arrays.copyOfRange(keypair.getSecretKey(),32,64);
-//		logger.info("Private Key Len: {}",keypair.getSecretKey().length);
-//		accSignature.setPublicKey(pub);
-//		TweetNaclFast.Signature signature = new TweetNaclFast.Signature(keypair.getPublicKey(),keypair.getSecretKey());
-//		byte[] signatureBytes = signature.detached(data);
-//		accSignature.setSignature(signatureBytes);
-//		return accSignature;
-//	}
-//
 	AccSignature signRaw(byte[] data) {
-
-		try {
-
-			Signature sig = Signature.getInstance("Ed25519");
-			sig.initSign(keypair.getPrivate());
-			sig.update(data);
-			byte[] s = sig.sign();
-
-			byte[] pub = Arrays.copyOfRange(keypair.getPrivate().getEncoded(),16,48);
-			AccSignature accSignature = new AccSignature();
-			accSignature.setPublicKey(pub);
-			accSignature.setSignature(s);
-			return accSignature;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		logger.info("Data to sign {}",data);
+		AccSignature accSignature = new AccSignature();
+		byte[] pub = Arrays.copyOfRange(keypair.getSecretKey(),32,64);
+		logger.info("Private Key Len: {}",keypair.getSecretKey().length);
+		accSignature.setPublicKey(pub);
+		TweetNaclFast.Signature signature = new TweetNaclFast.Signature(keypair.getPublicKey(),keypair.getSecretKey());
+		byte[] signatureBytes = signature.detached(data);
+		accSignature.setSignature(signatureBytes);
+		return accSignature;
 	}
+
+//	AccSignature signRaw(byte[] data) {
+//
+//		try {
+//
+//			Signature sig = Signature.getInstance("Ed25519");
+//			sig.initSign(keypair.getPrivate());
+//			sig.update(data);
+//			byte[] s = sig.sign();
+//
+//			byte[] pub = Arrays.copyOfRange(keypair.getPrivate().getEncoded(),16,48);
+//			AccSignature accSignature = new AccSignature();
+//			accSignature.setPublicKey(pub);
+//			accSignature.setSignature(s);
+////			logger.info("Verify Signature {}",verifySig(s,pub));
+//			return accSignature;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
+
+//	private boolean verifySig(byte[] data,byte[] pubKey) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException, InvalidKeySpecException {
+//		Signature sig = Signature.getInstance("Ed25519");
+//		PublicKey publicKey =
+//				KeyFactory.getInstance("Ed25519").generatePublic(new X509EncodedKeySpec(pubKey));
+//		sig.initVerify(publicKey);
+//		return sig.verify(data);
+//	}
 }

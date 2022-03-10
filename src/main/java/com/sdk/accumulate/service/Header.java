@@ -4,9 +4,6 @@ import com.sdk.accumulate.model.HeaderOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-
 public class Header {
 
     private static final Logger logger = LoggerFactory.getLogger(Header.class);
@@ -57,14 +54,23 @@ public class Header {
 
     public byte[] marshalBinary() {
         byte[] originBytes = Marshaller.stringMarshaller(this.origin.string());
-        logger.info("Header Origin: {}",Crypto.toHexString(originBytes));
+//        byte[] originBytes = Marshaller.stringMarshaller("acc://adi/foo");
+        byte[] a = {1};
+        byte[] originByteNew = Crypto.append(a,originBytes);
+        logger.info("Header Origin: {}",Crypto.toHexString(originByteNew));
         byte[] keyPageHeightBytes = Marshaller.longMarshaller(this.keyPageHeight);
-        logger.info("keyPageHeight: {}",Crypto.toHexString(keyPageHeightBytes));
+        byte[] b = {2};
+        byte[] keyPageHeightNew = Crypto.append(b,keyPageHeightBytes);
+        logger.info("keyPageHeight: {}",Crypto.toHexString(keyPageHeightNew));
         byte[] keyPageIndexBytes = Marshaller.longMarshaller(this.keyPageIndex);
-        logger.info("keyPageIndex: {}",Crypto.toHexString(keyPageIndexBytes));
+        byte[] c = {3};
+        byte[] keyPageIndexNew = Crypto.append(c,keyPageIndexBytes);
+        logger.info("keyPageIndex: {}",Crypto.toHexString(keyPageIndexNew));
         byte[] nonceBytes = Marshaller.longMarshaller(this.nonce);
-        logger.info("Nonce: {}",Crypto.toHexString(nonceBytes));
-        return Crypto.append(originBytes,keyPageHeightBytes,keyPageIndexBytes,nonceBytes);
+        byte[] d = {4};
+        byte[] nonceNew = Crypto.append(d,nonceBytes);
+        logger.info("Nonce: {}",Crypto.toHexString(nonceNew));
+        return Crypto.append(originByteNew,keyPageHeightNew,nonceNew);
     }
 }
 

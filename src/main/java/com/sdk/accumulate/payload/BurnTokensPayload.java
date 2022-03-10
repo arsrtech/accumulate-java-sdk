@@ -1,10 +1,12 @@
 package com.sdk.accumulate.payload;
 
+import java.math.BigInteger;
+
 public class BurnTokensPayload {
 
     private String type;
 
-    private int amount;
+    private String  amount;
 
     public String getType() {
         return type;
@@ -14,11 +16,11 @@ public class BurnTokensPayload {
         this.type = type;
     }
 
-    public int getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 }

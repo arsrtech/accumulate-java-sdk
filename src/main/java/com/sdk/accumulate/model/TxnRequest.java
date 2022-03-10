@@ -2,7 +2,7 @@ package com.sdk.accumulate.model;
 
 public class TxnRequest {
 
-    private String sponsor;
+//    private String sponsor;
 
     private String origin;
 
@@ -14,13 +14,13 @@ public class TxnRequest {
 
     private Object  payload;
 
-    public String getSponsor() {
-        return sponsor;
-    }
-
-    public void setSponsor(String sponsor) {
-        this.sponsor = sponsor;
-    }
+//    public String getSponsor() {
+//        return sponsor;
+//    }
+//
+//    public void setSponsor(String sponsor) {
+//        this.sponsor = sponsor;
+//    }
 
     public String getOrigin() {
         return origin;

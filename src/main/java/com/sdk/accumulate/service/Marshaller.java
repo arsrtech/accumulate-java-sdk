@@ -74,6 +74,10 @@ public class Marshaller {
         return bytes;
     }
 
+    public static byte[] bigNumberMarshalBinary(BigInteger amount) {
+        return bytesMarshaller(uvarintMarshalBinary(amount));
+    }
+
 //    public byte[] toByteArray(BigInteger bg) {
 //        int byteLen = bg.bitLength()/8 + 1;
 //        byte[] byteArray = new byte[byteLen];

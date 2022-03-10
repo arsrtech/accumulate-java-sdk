@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.sdk.accumulate.enums.RequestMethods;
@@ -20,30 +19,30 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Accumulate {
+public class Client {
 
-	private static final Logger logger = LoggerFactory.getLogger(Accumulate.class);
+	private static final Logger logger = LoggerFactory.getLogger(Client.class);
 	
 	private final String baseUrl;
 	
-	public Accumulate(String baseUrl) {
+	public Client(String baseUrl) {
 		this.baseUrl = baseUrl;
 	}
 
 	private String _execute(Payload payload, OriginSigner originSigner, String method, Object obj) throws Exception {
 		HeaderOptions headerOptions = new HeaderOptions();
 		headerOptions.setKeyPageHeight(1);
-		headerOptions.setKeyPageIndex(originSigner.getKeyPageIndex());
-		headerOptions.setNonce(new Date().getTime());
+//		headerOptions.setKeyPageIndex(0);
+		headerOptions.setNonce(2949658590L);
 		logger.info("OrigSigner: {}",originSigner.getOrigin());
 		logger.info("Header Options {}",headerOptions);
 		Header header = new Header(originSigner.getOrigin().string(), headerOptions);
     	Transaction tx = new Transaction(payload, header);
 		tx.sign(originSigner);
-		logger.info("Signature {}",tx.getSignature().getSignature());
+		logger.info("Signature {}",tx.getSignature());
 		TxnRequest txnRequest = tx.toTxRequest(true);
 //		txnRequest.setPayload(obj);
-		return RPCClient.client(txnRequest,method);
+		return RPCClient.client(txnRequest,"execute");
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -130,14 +129,14 @@ public class Accumulate {
 		addCreditsPayload.setAmount(addCredits.getAmount());
 		addCreditsPayload.setRecipient(addCredits.getRecipient());
 		addCreditsPayload.setType(TxnType.AddCredits.getValue());
-		return this._execute(new AddCredits(addCredits),originSigner, "execute", addCreditsPayload);
+		return this._execute(new AddCredits(addCredits),originSigner, RequestMethods.AddCredits.getValue(), addCreditsPayload);
 
 	}
 
 	@SuppressWarnings("unchecked")
 	public String burnTokens(BurnTokensArg burnTokensArg, OriginSigner originSigner) throws Exception {
 		BurnTokensPayload burnTokensPayload = new BurnTokensPayload();
-		burnTokensPayload.setAmount(burnTokensArg.getAmount());
+		burnTokensPayload.setAmount(String.valueOf(burnTokensArg.getAmount()));
 		burnTokensPayload.setType(TxnType.BurnTokens.getValue());
 		return this._execute(new BurnTokens(burnTokensArg),originSigner,RequestMethods.BurnTokens.getValue(), burnTokensPayload);
 
@@ -198,6 +197,31 @@ public class Accumulate {
 		return this._execute(new CreateTokenAccount(createTokenAccountArg),originSigner,RequestMethods.CreateTokenAccount.getValue(), createTokenAccountPayload);
 	}
 
+
+	public String createToken(CreateTokenArg createTokenArg, OriginSigner originSigner) throws Exception {
+		return this._execute(new CreateToken(createTokenArg),originSigner,RequestMethods.CreateToken.getValue(), null);
+	}
+
+
+	public String issueTokens(IssueTokensArg issueTokensArg, OriginSigner originSigner) throws Exception {
+		return this._execute(new IssueTokens(issueTokensArg),originSigner,RequestMethods.IssueToken.getValue(), null);
+	}
+
+
+	public String sendToken(SendTokensArg sendTokensArg, OriginSigner originSigner) throws Exception {
+		return this._execute(new SendTokens(sendTokensArg),originSigner,"execute", null);
+
+	}
+
+
+	public String updateKeyPage(UpdateKeyPageArg updateKeyPageArg, OriginSigner originSigner) throws Exception {
+		return this._execute(new UpdateKeyPage(updateKeyPageArg),originSigner,RequestMethods.UpdateKeyPage.getValue(), null);
+	}
+
+
+	public String writeData(WriteDataArg writeDataArg, OriginSigner originSigner) throws Exception {
+		return this._execute(new WriteData(writeDataArg),originSigner,RequestMethods.WriteData.getValue(), null);
+	}
 
 	@SuppressWarnings("unchecked")
 	public String httpConnection(JSONObject obj, String endPointUrl) throws ParseException, IOException {

@@ -2,6 +2,8 @@ package com.sdk.accumulate.model;
 
 public class Signer {
 
+//    private String type;
+
     private String publicKey;
 
     private long nonce;
@@ -13,6 +15,14 @@ public class Signer {
         this.publicKey = publicKey;
         this.nonce = nonce;
     }
+
+//    public String getType() {
+//        return type;
+//    }
+//
+//    public void setType(String type) {
+//        this.type = type;
+//    }
 
     public String getPublicKey() {
         return publicKey;

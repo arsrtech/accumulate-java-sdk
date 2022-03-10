@@ -9,7 +9,10 @@ public enum TxnType {
     CreateKeyPage("createKeyPage"),
     CreateTokenAccount("createTokenAccount"),
     CreateToken("createToken"),
-    IssueToken("issueToken");
+    IssueToken("issueToken"),
+    SendToken("sendToken"),
+    UpdateKeyPage("updateKeyPage"),
+    WriteData("writeData");
 
     private final String value;
 

@@ -14,6 +14,7 @@ public class CreateTokenAccount extends BasePayload {
     private boolean scratch;
 
     public CreateTokenAccount(CreateTokenAccountArg createTokenAccountArg) throws Exception {
+        super();
         this.url = AccURL.toAccURL(createTokenAccountArg.getUrl());
         this.tokenUrl = AccURL.toAccURL(createTokenAccountArg.getTokenUrl());
         this.keyBookUrl = AccURL.toAccURL(createTokenAccountArg.getKeyBookUrl());

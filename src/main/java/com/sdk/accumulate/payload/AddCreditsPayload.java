@@ -1,12 +1,14 @@
 package com.sdk.accumulate.payload;
 
+import java.math.BigInteger;
+
 public class AddCreditsPayload {
 
     private String type;
 
     private String recipient;
 
-    private int amount;
+    private BigInteger amount;
 
     public String getType() {
         return type;
@@ -24,11 +26,11 @@ public class AddCreditsPayload {
         this.recipient = recipient;
     }
 
-    public int getAmount() {
+    public BigInteger getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(BigInteger amount) {
         this.amount = amount;
     }
 }
