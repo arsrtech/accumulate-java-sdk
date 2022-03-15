@@ -4,9 +4,6 @@ import com.iwebpp.crypto.TweetNaclFast;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.MessageDigest;
 import java.util.Arrays;
 
 import static com.sdk.accumulate.service.AccURL.ACME_TOKEN_URL;
@@ -74,16 +71,12 @@ public class LiteAccount extends KeypairSigner {
     }
 
     static AccURL computeUrl(byte[] publicKey, AccURL tokenUrl) throws Exception {
-        logger.info("Computing URL");
         byte[] hash = sha256(publicKey);
-        logger.info("Hash: {}",Crypto.toHexString(hash));
         byte[] copy = Arrays.copyOfRange(hash,0,20);
         String pkHash = Crypto.toHexString(copy);
-        logger.info("PK Hash: {} ",pkHash);
         byte[] checkSum = sha256(pkHash.getBytes());
         byte[] checksumCopy = Arrays.copyOfRange(checkSum,28,32);
         String checkSumStr = Crypto.toHexString(checksumCopy);
-        logger.info("CheckSum Str: {}",checkSumStr);
         return AccURL.parse("acc://"+pkHash+checkSumStr+"/"+tokenUrl.authority());
     }
 

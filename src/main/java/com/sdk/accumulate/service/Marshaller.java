@@ -5,25 +5,22 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Marshaller {
 
     private static final Logger logger = LoggerFactory.getLogger(Marshaller.class);
 
     public static byte[] uvarintMarshalBinary(BigInteger number) {
-        int i = 0;
         byte[] bytesArray = new byte[0];
         while (number.compareTo(BigInteger.valueOf(0x80)) >= 0) {
             BigInteger clearBit = clearBit(number,8).or(BigInteger.valueOf(0x80));
-//            logger.info("Before {}",Crypto.toHexString(bytesArray));
+//            logger.info("Clear Bit {}",clearBit(number,8));
+//            logger.info("Number {} :",number);
+//            logger.info("Byte Array Before {}",Crypto.toHexString(bytesArray));
 //            logger.info("Clear Bit {}",Crypto.toHexString(toByteArray(clearBit.toByteArray())));
-//            logger.info("Clear Bit {}",toByteArray(clearBit.toByteArray()));
             bytesArray = Crypto.append(bytesArray,toByteArray(clearBit.toByteArray()));
-//            logger.info("After {}",Crypto.toHexString(bytesArray));
+//            logger.info("Byte Array After {}",Crypto.toHexString(bytesArray));
             number = number.shiftRight(7);
-            i++;
         }
         bytesArray = Crypto.append(bytesArray,toByteArray(clearBit(number,8).toByteArray()));
 //        logger.info("Byte Array: {}",bytesArray);
@@ -77,21 +74,4 @@ public class Marshaller {
     public static byte[] bigNumberMarshalBinary(BigInteger amount) {
         return bytesMarshaller(uvarintMarshalBinary(amount));
     }
-
-//    public byte[] toByteArray(BigInteger bg) {
-//        int byteLen = bg.bitLength()/8 + 1;
-//        byte[] byteArray = new byte[byteLen];
-//
-//        for (int i=byteLen-1, bytesCopied=4, nextInt=0, intIndex=0; i >= 0; i--) {
-//            if (bytesCopied == 4) {
-//                nextInt = getInt(intIndex++);
-//                bytesCopied = 1;
-//            } else {
-//                nextInt >>>= 8;
-//                bytesCopied++;
-//            }
-//            byteArray[i] = (byte)nextInt;
-//        }
-//        return byteArray;
-//    }
 }

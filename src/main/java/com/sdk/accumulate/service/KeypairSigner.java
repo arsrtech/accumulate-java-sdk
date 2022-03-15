@@ -15,7 +15,6 @@ public class KeypairSigner implements OriginSigner {
 	private static final Logger logger = LoggerFactory.getLogger(KeypairSigner.class);
 
 	protected AccURL origin;
-//	protected KeyPair keypair;
 	protected TweetNaclFast.Signature.KeyPair keypair;
 	protected int keyPageHeight;
 	protected int keyPageIndex;
@@ -40,7 +39,7 @@ public class KeypairSigner implements OriginSigner {
 		return this.keypair;
 	}
 
-	byte[] publicKey() {
+	public byte[] getPublicKey() {
 		return this.keypair.getPublicKey();
 	}
 
@@ -72,10 +71,8 @@ public class KeypairSigner implements OriginSigner {
 	 * Sign arbitrary data.
 	 */
 	AccSignature signRaw(byte[] data) {
-		logger.info("Data to sign {}",data);
 		AccSignature accSignature = new AccSignature();
 		byte[] pub = Arrays.copyOfRange(keypair.getSecretKey(),32,64);
-		logger.info("Private Key Len: {}",keypair.getSecretKey().length);
 		accSignature.setPublicKey(pub);
 		TweetNaclFast.Signature signature = new TweetNaclFast.Signature(keypair.getPublicKey(),keypair.getSecretKey());
 		byte[] signatureBytes = signature.detached(data);

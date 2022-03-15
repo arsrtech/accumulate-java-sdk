@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AccumulateApplication {
 
 	public static void main(String[] args) {
-//		URL.setURLStreamHandlerFactory(new CustomURLStreamHandlerFactory());
 		SpringApplication.run(AccumulateApplication.class, args);
 	}
 

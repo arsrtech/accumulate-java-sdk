@@ -1,40 +1,27 @@
 package com.sdk.accumulate.service;
 
-import com.sdk.accumulate.enums.TxnType;
+import com.sdk.accumulate.enums.Sequence;
+import com.sdk.accumulate.enums.TxType;
 import com.sdk.accumulate.model.IssueTokensArg;
+
+import java.math.BigInteger;
 
 public class IssueTokens extends BasePayload {
 
-    private AccURL recipient;
+    private final AccURL recipient;
 
-    private int amount;
+    private final int amount;
 
     public IssueTokens(IssueTokensArg issueTokensArg) throws Exception {
         this.recipient = AccURL.toAccURL(issueTokensArg.getRecipient());
         this.amount = issueTokensArg.getAmount();
     }
 
-    public AccURL getRecipient() {
-        return recipient;
-    }
-
-    public void setRecipient(AccURL recipient) {
-        this.recipient = recipient;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
     @Override
     public byte[] _marshalBinary() {
-        byte[] typeBytes = Marshaller.stringMarshaller(TxnType.IssueToken.getValue());
-        byte[] recipientBytes = Marshaller.stringMarshaller(this.recipient.string());
-        byte[] amountBytes = Marshaller.integerMarshaller(this.amount);
+        byte[] typeBytes = Crypto.append(Sequence.ONE,Marshaller.uvarintMarshalBinary(BigInteger.valueOf(TxType.IssueTokens.getValue())));
+        byte[] recipientBytes = Crypto.append(Sequence.TWO,Marshaller.stringMarshaller(this.recipient.string()));
+        byte[] amountBytes = Crypto.append(Sequence.THREE,Marshaller.bigNumberMarshalBinary(BigInteger.valueOf(this.amount)));
         return Crypto.append(typeBytes,recipientBytes,amountBytes);
     }
 }

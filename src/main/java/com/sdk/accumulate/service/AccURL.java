@@ -44,7 +44,7 @@ public class AccURL {
         this.url = url;
     }
 
-    static AccURL toAccURL(String arg ) throws Exception {
+    public static AccURL toAccURL(String arg ) throws Exception {
         return  AccURL.parse(arg);
     }
 
@@ -53,7 +53,6 @@ public class AccURL {
      */
     static AccURL parse(String str) throws Exception {
         URI uri = new URI(str);
-        logger.info(uri.toString());
         return new AccURL(uri);
     }
 

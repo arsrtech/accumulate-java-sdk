@@ -42,13 +42,8 @@ public class Transaction {
             return this.hash;
         }
         byte[] sHash = sha256(this.header.marshalBinary());
-        logger.info("Header Hash: {}",Crypto.toHexString(sHash));
-        logger.info("header Hex {}",Crypto.toHexString(this.header.marshalBinary()));
-        logger.info("PayLoad Hex: {}",Crypto.toHexString(this.payloadBinary));
         byte[] tHash = sha256(this.payloadBinary);
-        logger.info("Payload Hash: {}",Crypto.toHexString(tHash));
         this.hash = sha256(Crypto.append(sHash,tHash));
-        logger.info("Hash: {}",Crypto.toHexString(this.hash));
         return this.hash;
     }
 
@@ -56,10 +51,7 @@ public class Transaction {
      * Data that needs to be signed in order to submit the transaction.
      */
     public byte[] dataForSignature() throws NoSuchAlgorithmException {
-//        logger.info("Test test sha 256 {}",Crypto.toHexString(sha256("Hello 123".getBytes(StandardCharsets.UTF_8))));
-//        logger.info("Test data: {}",Crypto.toHexString("Hello 123".getBytes(StandardCharsets.UTF_8)));
         return Crypto.append(Marshaller.longMarshaller(this.header.getNonce()),this.hash());
-//        return this.hash();
     }
 
     public Header getHeader() {

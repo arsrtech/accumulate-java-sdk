@@ -28,13 +28,7 @@ public class RPCClient {
 
     private static final ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
-    private static final String url = "http://127.0.25.1:26660/v2";
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    private long idCounter;
-
-    public static String client(TxnRequest object, String method) throws JsonProcessingException {
+    public static String client(String url,TxnRequest object, String method) throws JsonProcessingException {
 
         RPCRequest rpcRequest = new RPCRequest("2.0",new Date().getTime(), method,object);
 
@@ -53,11 +47,6 @@ public class RPCClient {
                     .setSSLContext(sslContext)
                     .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
                     .build();
-            /*
-             * Sending Post request
-             * Content: BillFetchRequestModel
-             * Application Type: json
-             * */
             HttpPost post = new HttpPost(url);
             HttpEntity httpEntityNew = new StringEntity(requestJson, ContentType.APPLICATION_JSON);
             post.setEntity(httpEntityNew);
@@ -71,24 +60,5 @@ public class RPCClient {
             logger.error("HttpClient Error: ",e);
         }
         return null;
-    }
-
-    /**
-     * Loading HttpClient
-     * */
-    public HttpClient loadHttpClient() throws Exception {
-        logger.info("Loading Http Client");
-        SSLContext sslContext;
-        logger.info("Loading HttpClient without two way SSL");
-        sslContext = new SSLContextBuilder().loadTrustMaterial(
-                null, TrustAllStrategy.INSTANCE).build();
-
-        HttpClient httpClient = HttpClients
-                .custom()
-                .setSSLContext(sslContext)
-                .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                .build();
-        logger.info("Two way SSL loaded");
-        return httpClient;
     }
 }

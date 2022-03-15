@@ -1,29 +1,31 @@
 package com.sdk.accumulate.service;
 
-import com.sdk.accumulate.enums.TxnType;
+import com.sdk.accumulate.enums.Sequence;
+import com.sdk.accumulate.enums.TxType;
 import com.sdk.accumulate.model.CreateTokenArg;
+
+import java.math.BigInteger;
 
 public class CreateToken extends BasePayload{
 
+    private final AccURL url;
 
+    private final AccURL keyBookUrl;
 
-    private AccURL url;
+    private final String symbol;
 
-    private AccURL keyBookUrl;
+    private final int precision;
 
-    private String symbol;
+    private final AccURL properties;
 
-    private int precision;
+    private final BigInteger initialSupply;
 
-    private AccURL properties;
+    private final boolean hasSupplyLimit;
 
-    private int initialSupply;
-
-    private boolean hasSupplyLimit;
-
-    private AccURL manager;
+    private final AccURL manager;
 
     public CreateToken(CreateTokenArg createTokenArg) throws Exception {
+        super();
         this.url = AccURL.toAccURL(createTokenArg.getUrl());
         this.keyBookUrl = AccURL.toAccURL(createTokenArg.getKeyBookUrl());
         this.symbol = createTokenArg.getSymbol();
@@ -34,81 +36,17 @@ public class CreateToken extends BasePayload{
         this.manager = AccURL.toAccURL(createTokenArg.getManager());
     }
 
-    public AccURL getUrl() {
-        return url;
-    }
-
-    public void setUrl(AccURL url) {
-        this.url = url;
-    }
-
-    public AccURL getKeyBookUrl() {
-        return keyBookUrl;
-    }
-
-    public void setKeyBookUrl(AccURL keyBookUrl) {
-        this.keyBookUrl = keyBookUrl;
-    }
-
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
-
-    public int getPrecision() {
-        return precision;
-    }
-
-    public void setPrecision(int precision) {
-        this.precision = precision;
-    }
-
-    public AccURL getProperties() {
-        return properties;
-    }
-
-    public void setProperties(AccURL properties) {
-        this.properties = properties;
-    }
-
-    public int getInitialSupply() {
-        return initialSupply;
-    }
-
-    public void setInitialSupply(int initialSupply) {
-        this.initialSupply = initialSupply;
-    }
-
-    public boolean isHasSupplyLimit() {
-        return hasSupplyLimit;
-    }
-
-    public void setHasSupplyLimit(boolean hasSupplyLimit) {
-        this.hasSupplyLimit = hasSupplyLimit;
-    }
-
-    public AccURL getManager() {
-        return manager;
-    }
-
-    public void setManager(AccURL manager) {
-        this.manager = manager;
-    }
-
     @Override
     public byte[] _marshalBinary() {
-        byte[] typeBytes = Marshaller.stringMarshaller(TxnType.CreateToken.getValue());
-        byte[] urlBytes = Marshaller.stringMarshaller(this.url.string());
-        byte[] keyBookUrlBytes = Marshaller.stringMarshaller(this.keyBookUrl.string());
-        byte[] symbolBytes = Marshaller.stringMarshaller(this.symbol);
-        byte[] precisionBytes = Marshaller.integerMarshaller(this.precision);
-        byte[] propertyBytes = Marshaller.stringMarshaller(this.properties.string());
-        byte[] supplyBytes = Marshaller.integerMarshaller(this.initialSupply);
-        byte[] hasSupplyBytes = Marshaller.booleanMarshaller(this.hasSupplyLimit);
-        byte[] managerBytes = Marshaller.stringMarshaller(this.manager.string());
+        byte[] typeBytes = Crypto.append(Sequence.ONE,Marshaller.uvarintMarshalBinary(BigInteger.valueOf(TxType.CreateToken.getValue())));
+        byte[] urlBytes = Crypto.append(Sequence.TWO,Marshaller.stringMarshaller(this.url.string()));
+        byte[] keyBookUrlBytes = Crypto.append(Sequence.THREE,Marshaller.stringMarshaller(this.keyBookUrl.string()));
+        byte[] symbolBytes = Crypto.append(Sequence.FOUR,Marshaller.stringMarshaller(this.symbol));
+        byte[] precisionBytes = Crypto.append(Sequence.FIVE,Marshaller.integerMarshaller(this.precision));
+        byte[] propertyBytes = Crypto.append(Sequence.SIX,Marshaller.stringMarshaller(this.properties.string()));
+        byte[] supplyBytes = Crypto.append(Sequence.SEVEN,Marshaller.longMarshaller(this.initialSupply.longValue()));
+        byte[] hasSupplyBytes = Crypto.append(Sequence.EIGHT,Marshaller.booleanMarshaller(this.hasSupplyLimit));
+        byte[] managerBytes = Crypto.append(Sequence.NINE,Marshaller.stringMarshaller(this.manager.string()));
         return Crypto.append(typeBytes,urlBytes,keyBookUrlBytes,symbolBytes,precisionBytes,propertyBytes,symbolBytes,supplyBytes,hasSupplyBytes,managerBytes);
     }
 

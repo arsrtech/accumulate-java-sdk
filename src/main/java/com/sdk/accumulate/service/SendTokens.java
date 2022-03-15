@@ -1,6 +1,7 @@
 package com.sdk.accumulate.service;
 
-import com.sdk.accumulate.enums.TxnType;
+import com.sdk.accumulate.enums.Sequence;
+import com.sdk.accumulate.enums.TxType;
 import com.sdk.accumulate.model.SendTokensArg;
 import com.sdk.accumulate.model.TokenRecipientArg;
 import org.slf4j.Logger;
@@ -14,13 +15,14 @@ public class SendTokens extends BasePayload {
 
     private static final Logger logger = LoggerFactory.getLogger(SendTokens.class);
 
-    private List<TokenRecipient> to;
+    private final List<TokenRecipient> to;
 
     private byte[] hash;
 
     private byte[] meta;
 
     public SendTokens(SendTokensArg sendTokensArg) throws Exception {
+        super();
         List<TokenRecipient> tokenRecipients = new ArrayList<>();
         for (TokenRecipientArg tokenRecipientArg: sendTokensArg.getTo()) {
             TokenRecipient tokenRecipient = new TokenRecipient();
@@ -33,56 +35,20 @@ public class SendTokens extends BasePayload {
         this.meta = sendTokensArg.getMeta();
     }
 
-    public List<TokenRecipient> getTo() {
-        return to;
-    }
-
-    public void setTo(List<TokenRecipient> to) {
-        this.to = to;
-    }
-
-    public byte[] getHash() {
-        return hash;
-    }
-
-    public void setHash(byte[] hash) {
-        this.hash = hash;
-    }
-
-    public byte[] getMeta() {
-        return meta;
-    }
-
-    public void setMeta(byte[] meta) {
-        this.meta = meta;
-    }
-
     @Override
     public byte[] _marshalBinary() {
-        byte[] typeBytes = Marshaller.integerMarshaller(3);
-        byte[] a = {1};
-        byte[] typeNew = Crypto.append(a,typeBytes);
-        logger.info("Type Bytes: {}",Crypto.toHexString(typeNew));
-//        validateHash(this.hash);
-//        byte[] marshalBytes = Crypto.append(typeBytes,this.hash,this.meta);
-        byte[] marshalBytes = Crypto.append(typeNew);
+        byte[] typeBytes = Crypto.append(Sequence.ONE,Marshaller.uvarintMarshalBinary(BigInteger.valueOf(TxType.SendTokens.getValue())));
         validateRecipient(this.to);
+        byte[] recipientBytes = new byte[0];
         for (TokenRecipient tokenRecipient: this.to) {
-            byte[] d = {4};
-            byte[] recBytes = Crypto.append(d,Marshaller.bytesMarshaller(marshalTokenRecipient(tokenRecipient)));
-            logger.info("Recipient Bytes: {}",Crypto.toHexString(recBytes));
-            marshalBytes = Crypto.append(marshalBytes,recBytes);
+            recipientBytes = Crypto.append(recipientBytes,Sequence.FOUR,Marshaller.bytesMarshaller(marshalTokenRecipient(tokenRecipient)));
         }
-        return marshalBytes;
+        return Crypto.append(typeBytes,recipientBytes);
     }
 
     private byte[] marshalTokenRecipient(TokenRecipient tokenRecipient) {
-        byte[] recipientBytes = Marshaller.stringMarshaller(tokenRecipient.getUrl().string());
-        byte[] a = {1};
-        recipientBytes = Crypto.append(a,recipientBytes);
-        byte[] amountBytes = Marshaller.bigNumberMarshalBinary(BigInteger.valueOf(tokenRecipient.getAmount()));
-        byte[] b = {2};
-        amountBytes = Crypto.append(b,amountBytes);
+        byte[] recipientBytes = Crypto.append(Sequence.ONE,Marshaller.stringMarshaller(tokenRecipient.getUrl().string()));
+        byte[] amountBytes = Crypto.append(Sequence.TWO,Marshaller.bigNumberMarshalBinary(BigInteger.valueOf(tokenRecipient.getAmount())));
         return Crypto.append(recipientBytes,amountBytes);
     }
 

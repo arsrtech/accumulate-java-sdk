@@ -1,18 +1,21 @@
 package com.sdk.accumulate.service;
 
-import com.sdk.accumulate.enums.TxnType;
+import com.sdk.accumulate.enums.Sequence;
+import com.sdk.accumulate.enums.TxType;
 import com.sdk.accumulate.model.CreateKeyBookArg;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CreateKeyBook extends BasePayload {
 
-    private AccURL url;
+    private final AccURL url;
 
-    private List<AccURL> pages;
+    private final List<AccURL> pages;
 
     public CreateKeyBook(CreateKeyBookArg createKeyBookArg) throws Exception {
+        super();
         this.url = AccURL.toAccURL(createKeyBookArg.getUrl());
         List<AccURL> pageList = new ArrayList<>();
         for (String accUrl: createKeyBookArg.getPages()) {
@@ -21,32 +24,17 @@ public class CreateKeyBook extends BasePayload {
         this.pages = pageList;
     }
 
-    public AccURL getUrl() {
-        return url;
-    }
-
-    public void setUrl(AccURL url) {
-        this.url = url;
-    }
-
-    public List<AccURL> getPages() {
-        return pages;
-    }
-
-    public void setPages(List<AccURL> pages) {
-        this.pages = pages;
-    }
-
     @Override
     public byte[] _marshalBinary() {
-        byte[] typeBytes = Marshaller.stringMarshaller(TxnType.CreateKeyBook.getValue());
-        byte[] urlBytes = Marshaller.stringMarshaller(this.url.string());
-        byte[] pageLenBytes = Marshaller.integerMarshaller(this.pages.toArray().length);
+        byte[] typeBytes = Crypto.append(Sequence.ONE,Marshaller.uvarintMarshalBinary(BigInteger.valueOf(TxType.CreateKeyBook.getValue())));
+        byte[] urlBytes = Crypto.append(Sequence.TWO,Marshaller.stringMarshaller(this.url.string()));
         byte[] pageBytes = new byte[0];
         for (AccURL accURL: this.pages) {
             pageBytes = Crypto.append(pageBytes,Marshaller.stringMarshaller(accURL.string()));
+
         }
-        return Crypto.append(typeBytes,urlBytes,pageLenBytes,pageBytes);
+        pageBytes = Crypto.append(Sequence.THREE,pageBytes);
+        return Crypto.append(typeBytes,urlBytes,pageBytes);
 
     }
 }

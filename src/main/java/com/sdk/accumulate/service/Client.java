@@ -7,13 +7,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
-import com.sdk.accumulate.enums.RequestMethods;
-import com.sdk.accumulate.enums.TxnType;
 import com.sdk.accumulate.model.*;
-import com.sdk.accumulate.payload.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
@@ -23,26 +19,22 @@ public class Client {
 
 	private static final Logger logger = LoggerFactory.getLogger(Client.class);
 	
-	private final String baseUrl;
+	public final String baseUrl;
 	
 	public Client(String baseUrl) {
 		this.baseUrl = baseUrl;
 	}
 
-	private String _execute(Payload payload, OriginSigner originSigner, String method, Object obj) throws Exception {
+	private String _execute(Payload payload, OriginSigner originSigner) throws Exception {
 		HeaderOptions headerOptions = new HeaderOptions();
 		headerOptions.setKeyPageHeight(1);
 //		headerOptions.setKeyPageIndex(0);
-		headerOptions.setNonce(2949658590L);
-		logger.info("OrigSigner: {}",originSigner.getOrigin());
-		logger.info("Header Options {}",headerOptions);
+		headerOptions.setNonce(new Date().getTime());
 		Header header = new Header(originSigner.getOrigin().string(), headerOptions);
     	Transaction tx = new Transaction(payload, header);
 		tx.sign(originSigner);
-		logger.info("Signature {}",tx.getSignature());
 		TxnRequest txnRequest = tx.toTxRequest(true);
-//		txnRequest.setPayload(obj);
-		return RPCClient.client(txnRequest,"execute");
+		return RPCClient.client(this.baseUrl,txnRequest,"execute");
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -123,104 +115,60 @@ public class Client {
 		
 	}
 
-	@SuppressWarnings("unchecked")
 	public String addCredits(AddCreditsArg addCredits, OriginSigner originSigner) throws Exception {
-		AddCreditsPayload addCreditsPayload = new AddCreditsPayload();
-		addCreditsPayload.setAmount(addCredits.getAmount());
-		addCreditsPayload.setRecipient(addCredits.getRecipient());
-		addCreditsPayload.setType(TxnType.AddCredits.getValue());
-		return this._execute(new AddCredits(addCredits),originSigner, RequestMethods.AddCredits.getValue(), addCreditsPayload);
+		return this._execute(new AddCredits(addCredits),originSigner);
 
 	}
 
-	@SuppressWarnings("unchecked")
 	public String burnTokens(BurnTokensArg burnTokensArg, OriginSigner originSigner) throws Exception {
-		BurnTokensPayload burnTokensPayload = new BurnTokensPayload();
-		burnTokensPayload.setAmount(String.valueOf(burnTokensArg.getAmount()));
-		burnTokensPayload.setType(TxnType.BurnTokens.getValue());
-		return this._execute(new BurnTokens(burnTokensArg),originSigner,RequestMethods.BurnTokens.getValue(), burnTokensPayload);
+		return this._execute(new BurnTokens(burnTokensArg),originSigner);
 
 	}
 
-	@SuppressWarnings("unchecked")
 	public String createDataAccount(CreateDataAccountArg createDataAccountArg, OriginSigner originSigner) throws Exception {
-		CreateDataAccountPayload createDataAccountPayload = new CreateDataAccountPayload();
-		createDataAccountPayload.setType(TxnType.CreateDataAccount.getValue());
-		createDataAccountPayload.setUrl(createDataAccountArg.getUrl());
-		createDataAccountPayload.setKeyBookUrl(createDataAccountArg.getKeyBookUrl());
-		createDataAccountPayload.setManagerKeyBookUrl(createDataAccountArg.getManagerKeyBookUrl());
-		createDataAccountPayload.setScratch(createDataAccountArg.isScratch());
-		return this._execute(new CreateDataAccount(createDataAccountArg),originSigner,RequestMethods.CreateDataAccount.getValue(), createDataAccountPayload);
+		return this._execute(new CreateDataAccount(createDataAccountArg),originSigner);
 	}
 
-	@SuppressWarnings("unchecked")
 	public String createIdentity(CreateIdentityArg createIdentityArg, OriginSigner originSigner) throws Exception {
-		CreateIdentityPayload createIdentityPayload = new CreateIdentityPayload();
-		createIdentityPayload.setType(TxnType.CreateIdentity.getValue());
-		createIdentityPayload.setUrl(createIdentityArg.getUrl());
-		createIdentityPayload.setKeyBookName(createIdentityArg.getKeyBookName());
-		createIdentityPayload.setPublicKey(createIdentityArg.getPublicKey());
-		createIdentityPayload.setKeyPageName(createIdentityArg.getKeyPageName());
-		return this._execute(new CreateIdentity(createIdentityArg),originSigner,RequestMethods.CreateIdentity.getValue(), createIdentityPayload);
+		return this._execute(new CreateIdentity(createIdentityArg),originSigner);
 	}
 
-	@SuppressWarnings("unchecked")
 	public String createKeyBook(CreateKeyBookArg createKeyBookArg, OriginSigner originSigner) throws Exception {
-		CreateKeyBookPayload createKeyBookPayload = new CreateKeyBookPayload();
-		createKeyBookPayload.setType(TxnType.CreateKeyBook.getValue());
-		createKeyBookPayload.setUrl(createKeyBookArg.getUrl());
-		createKeyBookPayload.setPages(createKeyBookArg.getPages());
-		return this._execute(new CreateKeyBook(createKeyBookArg),originSigner,RequestMethods.CreateKeyBook.getValue(), createKeyBookPayload);
+		return this._execute(new CreateKeyBook(createKeyBookArg),originSigner);
 	}
 
-	@SuppressWarnings("unchecked")
 	public String createKeyPage(CreateKeyPageArg createKeyPageArg, OriginSigner originSigner) throws Exception {
-		CreateKeyPagePayload createKeyPagePayload = new CreateKeyPagePayload();
-		createKeyPagePayload.setType(TxnType.CreateKeyPage.getValue());
-		createKeyPagePayload.setUrl(createKeyPageArg.getUrl());
-		List<String> keys = new ArrayList<>();
-		for (byte[] key: createKeyPageArg.getKeys()) {
-			keys.add(Crypto.toHexString(key));
-		}
-		createKeyPagePayload.setKeys(keys);
-		return this._execute(new CreateKeyPage(createKeyPageArg),originSigner,RequestMethods.CreateKeyPage.getValue(), createKeyPagePayload);
+		return this._execute(new CreateKeyPage(createKeyPageArg),originSigner);
 	}
 
-	@SuppressWarnings("unchecked")
 	public String createTokenAccount(CreateTokenAccountArg createTokenAccountArg, OriginSigner originSigner) throws Exception {
-		CreateTokenAccountPayload createTokenAccountPayload = new CreateTokenAccountPayload();
-		createTokenAccountPayload.setType(TxnType.CreateTokenAccount.getValue());
-		createTokenAccountPayload.setUrl(createTokenAccountArg.getTokenUrl());
-		createTokenAccountPayload.setTokenUrl(createTokenAccountArg.getTokenUrl());
-		createTokenAccountPayload.setKeyBookUrl(createTokenAccountArg.getKeyBookUrl());
-		createTokenAccountPayload.setScratch(createTokenAccountArg.isScratch());
-		return this._execute(new CreateTokenAccount(createTokenAccountArg),originSigner,RequestMethods.CreateTokenAccount.getValue(), createTokenAccountPayload);
+		return this._execute(new CreateTokenAccount(createTokenAccountArg),originSigner);
 	}
 
 
 	public String createToken(CreateTokenArg createTokenArg, OriginSigner originSigner) throws Exception {
-		return this._execute(new CreateToken(createTokenArg),originSigner,RequestMethods.CreateToken.getValue(), null);
+		return this._execute(new CreateToken(createTokenArg),originSigner);
 	}
 
 
 	public String issueTokens(IssueTokensArg issueTokensArg, OriginSigner originSigner) throws Exception {
-		return this._execute(new IssueTokens(issueTokensArg),originSigner,RequestMethods.IssueToken.getValue(), null);
+		return this._execute(new IssueTokens(issueTokensArg),originSigner);
 	}
 
 
 	public String sendToken(SendTokensArg sendTokensArg, OriginSigner originSigner) throws Exception {
-		return this._execute(new SendTokens(sendTokensArg),originSigner,"execute", null);
+		return this._execute(new SendTokens(sendTokensArg),originSigner);
 
 	}
 
 
 	public String updateKeyPage(UpdateKeyPageArg updateKeyPageArg, OriginSigner originSigner) throws Exception {
-		return this._execute(new UpdateKeyPage(updateKeyPageArg),originSigner,RequestMethods.UpdateKeyPage.getValue(), null);
+		return this._execute(new UpdateKeyPage(updateKeyPageArg),originSigner);
 	}
 
 
 	public String writeData(WriteDataArg writeDataArg, OriginSigner originSigner) throws Exception {
-		return this._execute(new WriteData(writeDataArg),originSigner,RequestMethods.WriteData.getValue(), null);
+		return this._execute(new WriteData(writeDataArg),originSigner);
 	}
 
 	@SuppressWarnings("unchecked")

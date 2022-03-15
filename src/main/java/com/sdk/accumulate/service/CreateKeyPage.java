@@ -1,46 +1,34 @@
 package com.sdk.accumulate.service;
 
-import com.sdk.accumulate.enums.TxnType;
+import com.sdk.accumulate.enums.Sequence;
+import com.sdk.accumulate.enums.TxType;
 import com.sdk.accumulate.model.CreateKeyPageArg;
 
+import java.math.BigInteger;
 import java.util.List;
 
 public class CreateKeyPage extends BasePayload {
 
-    private AccURL url;
+    private final AccURL url;
 
-    private List<byte[]> keys;
+    private final List<byte[]> keys;
 
     public CreateKeyPage(CreateKeyPageArg createKeyPageArg) throws Exception {
+        super();
         this.url = AccURL.toAccURL(createKeyPageArg.getUrl());
         this.keys = createKeyPageArg.getKeys();
     }
 
-    public AccURL getUrl() {
-        return url;
-    }
-
-    public void setUrl(AccURL url) {
-        this.url = url;
-    }
-
-    public List<byte[]> getKeys() {
-        return keys;
-    }
-
-    public void setKeys(List<byte[]> keys) {
-        this.keys = keys;
-    }
-
     @Override
     public byte[] _marshalBinary() {
-        byte[] typeBytes = Marshaller.stringMarshaller(TxnType.CreateKeyPage.getValue());
-        byte[] urlBytes = Marshaller.stringMarshaller(this.url.string());
-        byte[] keyLengthBytes = Marshaller.integerMarshaller(this.keys.toArray().length);
+        byte[] typeBytes = Crypto.append(Sequence.ONE,Marshaller.uvarintMarshalBinary(BigInteger.valueOf(TxType.CreateKeyPage.getValue())));
+        byte[] urlBytes = Crypto.append(Sequence.TWO,Marshaller.stringMarshaller(this.url.string()));
+//        byte[] keyLengthBytes = Marshaller.integerMarshaller(this.keys.toArray().length);
         byte[] keyBytes = new byte[0];
         for (byte[] bytes: this.keys) {
-            keyBytes = Crypto.append(keyBytes,bytes);
+            keyBytes = Crypto.append(keyBytes,Sequence.ONE,Marshaller.bytesMarshaller(bytes));
         }
-        return Crypto.append(typeBytes,urlBytes,keyLengthBytes,keyBytes);
+        keyBytes = Crypto.append(Sequence.THREE,Marshaller.bytesMarshaller(keyBytes));
+        return Crypto.append(typeBytes,urlBytes,keyBytes);
     }
 }

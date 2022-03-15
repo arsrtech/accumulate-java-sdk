@@ -1,13 +1,11 @@
 package com.sdk.accumulate.model;
 
 
-import java.math.BigInteger;
-
 public class AddCreditsArg {
 
     private String recipient;
 
-    private BigInteger amount;
+    private long amount;
 
     public String getRecipient() {
         return recipient;
@@ -17,11 +15,11 @@ public class AddCreditsArg {
         this.recipient = recipient;
     }
 
-    public BigInteger getAmount() {
+    public long getAmount() {
         return amount;
     }
 
-    public void setAmount(BigInteger amount) {
+    public void setAmount(long amount) {
         this.amount = amount;
     }
 }

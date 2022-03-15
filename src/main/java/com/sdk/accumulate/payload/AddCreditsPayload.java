@@ -8,7 +8,7 @@ public class AddCreditsPayload {
 
     private String recipient;
 
-    private BigInteger amount;
+    private long amount;
 
     public String getType() {
         return type;
@@ -26,11 +26,11 @@ public class AddCreditsPayload {
         this.recipient = recipient;
     }
 
-    public BigInteger getAmount() {
+    public long getAmount() {
         return amount;
     }
 
-    public void setAmount(BigInteger amount) {
+    public void setAmount(long amount) {
         this.amount = amount;
     }
 }

@@ -1,5 +1,7 @@
 package com.sdk.accumulate.model;
 
+import java.math.BigInteger;
+
 public class CreateTokenArg {
 
     private String url;
@@ -12,7 +14,7 @@ public class CreateTokenArg {
 
     private String properties;
 
-    private int initialSupply;
+    private BigInteger initialSupply;
 
     private boolean hasSupplyLimit;
 
@@ -58,11 +60,11 @@ public class CreateTokenArg {
         this.properties = properties;
     }
 
-    public int getInitialSupply() {
+    public BigInteger getInitialSupply() {
         return initialSupply;
     }
 
-    public void setInitialSupply(int initialSupply) {
+    public void setInitialSupply(BigInteger initialSupply) {
         this.initialSupply = initialSupply;
     }
 
