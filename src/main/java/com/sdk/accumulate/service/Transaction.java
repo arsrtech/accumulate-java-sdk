@@ -1,12 +1,9 @@
 package com.sdk.accumulate.service;
 
 import com.sdk.accumulate.model.*;
-import com.sdk.accumulate.payload.BurnTokensPayload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;

@@ -1,40 +1,3 @@
-# Accumulate Java SDK
-
-## Summary
-Accumulate SDK helps developers to develop the application with Accumulate network. It provides ready to use codebase with all Accumulate features. So they can create a new application with SDK or refactor the existing application.
-
-## Prerequisite
-- Java 15 or greater version
-
-## How to use?
-- Download the codebase and crate a java file inside src directory.
-- Import and create a client.
-- Then use all the client methods implemented in Java SDK.
-### How to create the client
-- The below client can connect with Accumulate public test net directly
-
-``` 
-TestNetClient client = new TestNetClient();
-```
-- If you need to connect your local DevNet then pass your local URL in your client
-
-```
-LocalDevNetClient localDevNetClient = new LocalDevNetClient("http://127.0.25.1:26660/v2");
-```
-
-### How to use the client
-- Client contains all Accumulate API features. You just need to call the method from client.
-- The below code can generate a lite account and call accumulate network for GET Faucet
-```
-TestNetClient client = new TestNetClient();
-LiteAccount liteAccount = LiteAccount.generate();
-String response = client.getFaucet(liteAccount.url().string());
-```
-Note: In each client call you have to wait for few seconds to get the response from accumulate network
-
-## Quick start tutorial
-Demo of some main APIs of Accumulate:
-```
 package com.sdk.accumulate.test;
 
 import com.iwebpp.crypto.TweetNaclFast;
@@ -76,5 +39,3 @@ public class CreateADITest {
         logger.info("Create ADI Response {} ",createAdiResponse);
     }
 }
-```
-
