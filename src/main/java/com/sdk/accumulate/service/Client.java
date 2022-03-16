@@ -25,6 +25,10 @@ public class Client {
 		this.baseUrl = baseUrl;
 	}
 
+	public Client() {
+		this.baseUrl = "https://testnet.accumulatenetwork.io/v2";
+	}
+
 	private String _execute(Payload payload, OriginSigner originSigner) throws Exception {
 		HeaderOptions headerOptions = new HeaderOptions();
 		headerOptions.setKeyPageHeight(1);

@@ -13,19 +13,19 @@ public class Marshaller {
     public static byte[] uvarintMarshalBinary(BigInteger number) {
         byte[] bytesArray = new byte[0];
         while (number.compareTo(BigInteger.valueOf(0x80)) >= 0) {
-            BigInteger clearBit = clearBit(number,8).or(BigInteger.valueOf(0x80));
-//            logger.info("Clear Bit {}",clearBit(number,8));
+            BigInteger clb =  clearBit(number,8);
+            BigInteger clearBit = clb.or(BigInteger.valueOf(0x80));
+//            logger.info("Bits: {} :  {}",number,Long.toBinaryString(clb.longValue()));
+//            logger.info("Clear Bit num: {}",clearBit(number,8));
+//            logger.info("First 8 Bits Hex : {}",Crypto.toHexString(toByteArray(clearBit(number,8).toByteArray())));
 //            logger.info("Number {} :",number);
 //            logger.info("Byte Array Before {}",Crypto.toHexString(bytesArray));
-//            logger.info("Clear Bit {}",Crypto.toHexString(toByteArray(clearBit.toByteArray())));
+//            logger.info("First 8 Bits with Bitwise OR Operation Hex : {}",Crypto.toHexString(toByteArray(clearBit.toByteArray())));
             bytesArray = Crypto.append(bytesArray,toByteArray(clearBit.toByteArray()));
 //            logger.info("Byte Array After {}",Crypto.toHexString(bytesArray));
             number = number.shiftRight(7);
         }
         bytesArray = Crypto.append(bytesArray,toByteArray(clearBit(number,8).toByteArray()));
-//        logger.info("Byte Array: {}",bytesArray);
-//        byte[] testByte = {-73, -106, -67, -112, 6};
-//        logger.info("Test Byte Hex: {}",Crypto.toHexString(testByte));
         return bytesArray;
     }
 
@@ -56,6 +56,7 @@ public class Marshaller {
     public static BigInteger clearBit(BigInteger n,int len) {
         BigInteger tes = n;
         for (int i=len; i< n.bitLength(); i++) {
+            logger.info(Integer.toBinaryString(tes.intValue()));
             tes = tes.clearBit(i);
         }
         return tes;

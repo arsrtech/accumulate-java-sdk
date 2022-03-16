@@ -3,16 +3,14 @@ package com.sdk.accumulate.controller;
 import com.iwebpp.crypto.TweetNaclFast;
 import com.sdk.accumulate.enums.KeyPageOperation;
 import com.sdk.accumulate.model.*;
-import com.sdk.accumulate.service.ADI;
-import com.sdk.accumulate.service.AccURL;
-import com.sdk.accumulate.service.Client;
-import com.sdk.accumulate.service.LiteAccount;
+import com.sdk.accumulate.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigInteger;
@@ -28,6 +26,18 @@ public class TestController {
 	private static final Logger logger = LoggerFactory.getLogger(TestController.class);
 	
 	private static final String baseUrl = "http://127.0.25.1:26660/v2";
+
+
+
+	@GetMapping(value = "/create-account")
+	public ResponseEntity<?> createAccount() throws Exception {
+		Client client = new Client();
+		LiteAccount liteAccount = LiteAccount.generate();
+		String response = client.getFaucet(liteAccount.url().string());
+		logger.info("Lite Account Response: {}",response);
+		Thread.sleep(5000);
+		return new ResponseEntity<>("Create Account , Get Faucet", HttpStatus.ACCEPTED);
+	}
 
 	@GetMapping(value = "/add-credits")
 	public ResponseEntity<?> addCredits() throws Exception {
@@ -402,5 +412,11 @@ public class TestController {
 		String writeDataResponse = client.writeData(writeDataArg,liteAccount);
 		logger.info("Write data Response  Response {} ",writeDataResponse);
 		return new ResponseEntity<>("Create Account , Write data ", HttpStatus.ACCEPTED);
+	}
+
+	@GetMapping("/hex")
+	public ResponseEntity<?> hexStringTest(@RequestParam long value) {
+//		logger.info("Hex: {}",Crypto.toHexString(Marshaller.longMarshaller(value)));
+		return new ResponseEntity<>(Crypto.toHexString(Marshaller.longMarshaller(value)),HttpStatus.ACCEPTED);
 	}
 }
