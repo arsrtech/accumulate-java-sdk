@@ -3,8 +3,14 @@ package com.sdk.accumulate.model;
 
 public class AddCreditsArg {
 
+    /**
+     * Recipient who is going to receive the credits
+     */
     private String recipient;
 
+    /**
+     * Credit Amount
+     */
     private long amount;
 
     public String getRecipient() {

@@ -31,7 +31,7 @@ public class BurnTokensTest {
         Thread.sleep(5000);
 
         BurnTokensArg burnTokensArg = new BurnTokensArg();
-        burnTokensArg.setAmount(BigInteger.valueOf(1));
+        burnTokensArg.setAmount(BigInteger.valueOf(56879));
         String burnTokensResponse = localDevNetClient.burnTokens(burnTokensArg,liteAccount);
         logger.info("Burn token Response {} ",burnTokensResponse);
     }

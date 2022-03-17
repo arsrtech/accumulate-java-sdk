@@ -35,9 +35,6 @@ public class AccURL {
     }
 
     public AccURL(URI url) throws MalformedURLException {
-//        if (!url.getProtocol().equals("acc")) {
-//            throw new Error("Invalid protocol: "+url.getProtocol());
-//        }
         if (url.getHost().isEmpty()) {
             throw new Error("Missing authority");
         }

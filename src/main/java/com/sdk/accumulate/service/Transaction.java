@@ -38,9 +38,14 @@ public class Transaction {
         if (this.hash != null) {
             return this.hash;
         }
+        logger.info("Header Hex: {}",Crypto.toHexString(this.header.marshalBinary()));
         byte[] sHash = sha256(this.header.marshalBinary());
+        logger.info("Header SHA 256: {}",Crypto.toHexString(sHash));
+        logger.info("Payload Hex: {}",Crypto.toHexString(this.payloadBinary));
         byte[] tHash = sha256(this.payloadBinary);
+        logger.info("Payload SHA 256: {}",Crypto.toHexString(tHash));
         this.hash = sha256(Crypto.append(sHash,tHash));
+        logger.info("Final Hash 256: {}",Crypto.toHexString(this.hash));
         return this.hash;
     }
 

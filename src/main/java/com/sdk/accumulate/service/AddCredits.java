@@ -17,12 +17,19 @@ public class AddCredits extends BasePayload{
 
     private final long amount;
 
+    /**
+     * @param addCreditsArg Add credits payload arguments
+     * @throws Exception Throws Exception in case of Signer mismatch or Parsing Error
+     */
     public AddCredits(AddCreditsArg addCreditsArg) throws Exception {
         super();
         this.recipient = AccURL.toAccURL(addCreditsArg.getRecipient());
         this.amount = addCreditsArg.getAmount();
     }
 
+    /**
+     * @return Payload Encoded Binary with parameter sequence number
+     */
     @Override
     public byte[] _marshalBinary() {
         byte[] typeBytes = Crypto.append(Sequence.ONE,Marshaller.uvarintMarshalBinary(BigInteger.valueOf(TxType.AddCredits.getValue())));

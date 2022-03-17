@@ -21,7 +21,7 @@ public class BurnTokens extends BasePayload{
 
     @Override
     public byte[] _marshalBinary() {
-        byte[] typeBytes = Crypto.append(Sequence.ONE,Marshaller.uvarintMarshalBinary(BigInteger.valueOf(TxType.CreateDataAccount.getValue())));
+        byte[] typeBytes = Crypto.append(Sequence.ONE,Marshaller.uvarintMarshalBinary(BigInteger.valueOf(TxType.BurnTokens.getValue())));
         byte[] amountBytes = Crypto.append(Sequence.TWO,Marshaller.bigNumberMarshalBinary(this.amount));
         return Crypto.append(typeBytes,amountBytes);
     }

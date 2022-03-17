@@ -56,7 +56,7 @@ public class Marshaller {
     public static BigInteger clearBit(BigInteger n,int len) {
         BigInteger tes = n;
         for (int i=len; i< n.bitLength(); i++) {
-            logger.info(Integer.toBinaryString(tes.intValue()));
+//            logger.info(Integer.toBinaryString(tes.intValue()));
             tes = tes.clearBit(i);
         }
         return tes;
