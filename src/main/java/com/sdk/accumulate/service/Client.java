@@ -62,6 +62,29 @@ public class Client {
 	 * Method used to query about a lite account. It will return the details of a specific account
 	 * @param accUrl  Account URL
 	 * @return Returns RPC Call Response as Json String
+	 * {
+	 *     "jsonrpc": "2.0",
+	 *     "result": {
+	 *         "type": "liteTokenAccount",
+	 *         "merkleState": {
+	 *             "count": 1,
+	 *             "roots": [
+	 *                 "c7e59bfea5029963ee07c27a09e5e7467e30cd4ebc1822e16ebbb173a8ff685c"
+	 *             ]
+	 *         },
+	 *         "data": {
+	 *             "type": "liteTokenAccount",
+	 *             "url": "acc://5fd54e898c2c60e9757d2cd36f3a14b6df895b237690afb1/ACME",
+	 *             "keyBook": "0000000000000000000000000000000000000000000000000000000000000000",
+	 *             "managerKeyBook": "",
+	 *             "tokenUrl": "acc://ACME",
+	 *             "balance": 1000000000,
+	 *             "txCount": 1,
+	 *             "creditBalance": 0
+	 *         }
+	 *     },
+	 *     "id": 0
+	 * }
 	 * @throws ParseException Throws Parse exception
 	 * @throws IOException Throws IOException
 	 */
@@ -81,6 +104,72 @@ public class Client {
 	 * @param accUrl Account URL
 	 * @param count Transaction history count
 	 * @return Returns RPC Call Response as Json String
+	 * {
+	 *     "jsonrpc": "2.0",
+	 *     "result": {
+	 *         "type": "txHistory",
+	 *         "items": [
+	 *             {
+	 *                 "type": "syntheticDepositTokens",
+	 *                 "data": {
+	 *                     "cause": "395caba8d27056614abf991ab40a1b53a8b8babc4919d34ababa24f603f8a1a3",
+	 *                     "token": "ACME",
+	 *                     "amount": "1000000000"
+	 *                 },
+	 *                 "origin": "acc://09bca3fcd7e28434f4fb5a3c7317d64e955acbc102e45df5/ACME",
+	 *                 "sponsor": "acc://09bca3fcd7e28434f4fb5a3c7317d64e955acbc102e45df5/ACME",
+	 *                 "keyPage": {
+	 *                     "height": 1,
+	 *                     "index": 0
+	 *                 },
+	 *                 "transactionHash": "2bd403d477d70b87e35e88b0aa316242d89aa41db5b5dea6df5a1c470e424671",
+	 *                 "txid": "2bd403d477d70b87e35e88b0aa316242d89aa41db5b5dea6df5a1c470e424671",
+	 *                 "signatures": [
+	 *                     {
+	 *                         "Nonce": 390,
+	 *                         "PublicKey": "Kdjx5D4pOOIrd/gNV3S+21DF5g93dR6IZ1ZfwfDi94g=",
+	 *                         "Signature": "tyKHXcPWzJBwkNJOTljvYmRQdzi9eJROgfIVJkcIJ6+HnmrYZnTtCKz5jE/Q5mKfvqiquAfEvUWw4nXHjpEMAA=="
+	 *                     }
+	 *                 ],
+	 *                 "status": {
+	 *                     "delivered": true,
+	 *                     "result": {}
+	 *                 }
+	 *             },
+	 *             {
+	 *                 "type": "syntheticDepositTokens",
+	 *                 "data": {
+	 *                     "cause": "4d253e95399ccbd6b7044d1fff85a6a7d6dd83ab209cdd25a416dd2c70c21e9d",
+	 *                     "token": "ACME",
+	 *                     "amount": "1000000000"
+	 *                 },
+	 *                 "origin": "acc://09bca3fcd7e28434f4fb5a3c7317d64e955acbc102e45df5/ACME",
+	 *                 "sponsor": "acc://09bca3fcd7e28434f4fb5a3c7317d64e955acbc102e45df5/ACME",
+	 *                 "keyPage": {
+	 *                     "height": 1,
+	 *                     "index": 0
+	 *                 },
+	 *                 "transactionHash": "bc573897d25828887b393a54ba8378d6af20298738dc909af4fb86c553689c9c",
+	 *                 "txid": "bc573897d25828887b393a54ba8378d6af20298738dc909af4fb86c553689c9c",
+	 *                 "signatures": [
+	 *                     {
+	 *                         "Nonce": 516,
+	 *                         "PublicKey": "Kdjx5D4pOOIrd/gNV3S+21DF5g93dR6IZ1ZfwfDi94g=",
+	 *                         "Signature": "y02cNToZnoqabkIY8V2v3UjQvdh47JNQzjlFHpsdYVsFQUtYIWZDJKzS8nahTcTfdoPH0SR4dEZ373W+AeAiAQ=="
+	 *                     }
+	 *                 ],
+	 *                 "status": {
+	 *                     "delivered": true,
+	 *                     "result": {}
+	 *                 }
+	 *             }
+	 *         ],
+	 *         "start": 0,
+	 *         "count": 2,
+	 *         "total": 40
+	 *     },
+	 *     "id": 0
+	 * }
 	 * @throws ParseException Throws Parse exception
 	 * @throws IOException Throws IOException
 	 */
@@ -100,6 +189,37 @@ public class Client {
 	 * Method used to get the transaction details based on transaction ID
 	 * @param txid Transaction Reference ID
 	 * @return Returns RPC Call Response as Json String
+	 * {
+	 *     "jsonrpc": "2.0",
+	 *     "result": {
+	 *         "type": "syntheticDepositTokens",
+	 *         "data": {
+	 *             "cause": "395caba8d27056614abf991ab40a1b53a8b8babc4919d34ababa24f603f8a1a3",
+	 *             "token": "ACME",
+	 *             "amount": "1000000000"
+	 *         },
+	 *         "origin": "acc://09bca3fcd7e28434f4fb5a3c7317d64e955acbc102e45df5/ACME",
+	 *         "sponsor": "acc://09bca3fcd7e28434f4fb5a3c7317d64e955acbc102e45df5/ACME",
+	 *         "keyPage": {
+	 *             "height": 1,
+	 *             "index": 0
+	 *         },
+	 *         "transactionHash": "2bd403d477d70b87e35e88b0aa316242d89aa41db5b5dea6df5a1c470e424671",
+	 *         "txid": "2bd403d477d70b87e35e88b0aa316242d89aa41db5b5dea6df5a1c470e424671",
+	 *         "signatures": [
+	 *             {
+	 *                 "Nonce": 390,
+	 *                 "PublicKey": "Kdjx5D4pOOIrd/gNV3S+21DF5g93dR6IZ1ZfwfDi94g=",
+	 *                 "Signature": "tyKHXcPWzJBwkNJOTljvYmRQdzi9eJROgfIVJkcIJ6+HnmrYZnTtCKz5jE/Q5mKfvqiquAfEvUWw4nXHjpEMAA=="
+	 *             }
+	 *         ],
+	 *         "status": {
+	 *             "delivered": true,
+	 *             "result": {}
+	 *         }
+	 *     },
+	 *     "id": 0
+	 * }
 	 * @throws ParseException Throws Parse exception
 	 * @throws IOException Throws IOException
 	 */
@@ -119,6 +239,31 @@ public class Client {
 	 * @param chainId Transaction chain ID
 	 * @return Returns RPC Call Response as Json String
 	 * @throws ParseException Throws Parse exception
+	 * {
+	 *     "jsonrpc": "2.0",
+	 *     "result": {
+	 *         "type": "keyPage",
+	 *         "merkleState": {
+	 *             "count": 1,
+	 *             "roots": [
+	 *                 "cb0d7ccf124390693628c86cbb31cba64cee6c56b9086403f22c805b6bdf06d8"
+	 *             ]
+	 *         },
+	 *         "data": {
+	 *             "type": "keyPage",
+	 *             "url": "acc://kg1/prishth",
+	 *             "keyBook": "4b6fdf9d3e4ca631a0d1ca92eef528b7cfcd16a953efbe5e70811cd3841e88da",
+	 *             "managerKeyBook": "",
+	 *             "creditBalance": 0,
+	 *             "keys": [
+	 *                 {
+	 *                     "publicKey": "57ddf8f09ddaaf28656fcca6ef1d4bb028c02ed31584c36df1e0ffcacc14d90c"
+	 *                 }
+	 *             ]
+	 *         }
+	 *     },
+	 *     "id": 0
+	 * }
 	 * @throws IOException Throws IOException
 	 */
 	@SuppressWarnings("unchecked")
@@ -136,6 +281,26 @@ public class Client {
 	 * Method used to query the Data based on Account
 	 * @param accUrl Account URL
 	 * @return Returns RPC Call Response as Json String
+	 * {
+	 *     "jsonrpc": "2.0",
+	 *     "result": {
+	 *         "type": "dataEntry",
+	 *         "merkleState": {
+	 *             "count": 2,
+	 *             "roots": [
+	 *                 null,
+	 *                 "87c5cc4a4f86accac328b5773c3e6fe29e8af23cbaa5a14f154011e2e71af4d2"
+	 *             ]
+	 *         },
+	 *         "data": {
+	 *             "entryHash": "b45fa53718dbc5bf31f2f6134d1ff84fe22b3760face9c2ab012fd66d16d1808",
+	 *             "entry": {
+	 *                 "data": "61646974776f64617461"
+	 *             }
+	 *         }
+	 *     },
+	 *     "id": 0
+	 * }
 	 * @throws ParseException Throws Parse exception
 	 * @throws IOException Throws IOException
 	 */
@@ -154,6 +319,15 @@ public class Client {
 	 * Method used to Get faucet for an account. It also activates an account with the network
 	 * @param accUrl Account URL
 	 * @return Returns RPC Call Response as Json String
+	 * {
+	 *     "jsonrpc": "2.0",
+	 *     "result": {
+	 *         "hash": "be347539c19cb0d5e1b396b4142a637ff94aec795e6e81442d37fe73469bc5dd",
+	 *         "message": "CheckTx",
+	 *         "txid": "7ec47e5a48e7b6e38040748885a9702ef1949b45325ac5eafd0f616457e92cda"
+	 *     },
+	 *     "id": 0
+	 * }
 	 * @throws ParseException Throws Parse exception
 	 * @throws IOException Throws IOException
 	 */
