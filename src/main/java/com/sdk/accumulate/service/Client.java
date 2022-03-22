@@ -43,7 +43,7 @@ public class Client {
 	 * Method used to execute all RPC calls
 	 * @param payload This object contains all the payload parameters. The Parameters can vary for each RPC method
 	 * @param originSigner The Signer of the RPC call (That maybe a lite account or an ADI or a Data account or a Token Account)
-	 * @return Returns RPC Call Response as Json String
+	 * @return Returns RPC Call Response
 	 * @throws Exception Throws Exception In case of RPC call failure or Parser failure
 	 */
 	private String execute(Payload payload, OriginSigner originSigner) throws Exception {
@@ -61,7 +61,7 @@ public class Client {
 	/**
 	 * Method used to query about a lite account. It will return the details of a specific account
 	 * @param accUrl  Account URL
-	 * @return Returns RPC Call Response as Json String
+	 * @return Returns RPC Call Response
 	 * {
 	 *     "jsonrpc": "2.0",
 	 *     "result": {
@@ -103,7 +103,7 @@ public class Client {
 	 * Method used to get the transaction history based on account
 	 * @param accUrl Account URL
 	 * @param count Transaction history count
-	 * @return Returns RPC Call Response as Json String
+	 * @return Returns RPC Call Response
 	 * {
 	 *     "jsonrpc": "2.0",
 	 *     "result": {
@@ -188,7 +188,7 @@ public class Client {
 	/**
 	 * Method used to get the transaction details based on transaction ID
 	 * @param txid Transaction Reference ID
-	 * @return Returns RPC Call Response as Json String
+	 * @return Returns RPC Call Response
 	 * {
 	 *     "jsonrpc": "2.0",
 	 *     "result": {
@@ -237,9 +237,8 @@ public class Client {
 	/**
 	 * Method used to get the transaction based on chain ID
 	 * @param chainId Transaction chain ID
-	 * @return Returns RPC Call Response as Json String
-	 * @throws ParseException Throws Parse exception
-	 * {
+	 * @return Returns RPC Call Response
+	{
 	 *     "jsonrpc": "2.0",
 	 *     "result": {
 	 *         "type": "keyPage",
@@ -264,6 +263,7 @@ public class Client {
 	 *     },
 	 *     "id": 0
 	 * }
+	 * @throws ParseException Throws Parse exception
 	 * @throws IOException Throws IOException
 	 */
 	@SuppressWarnings("unchecked")
@@ -280,7 +280,7 @@ public class Client {
 	/**
 	 * Method used to query the Data based on Account
 	 * @param accUrl Account URL
-	 * @return Returns RPC Call Response as Json String
+	 * @return Returns RPC Call Response
 	 * {
 	 *     "jsonrpc": "2.0",
 	 *     "result": {
@@ -318,7 +318,7 @@ public class Client {
 	/**
 	 * Method used to Get faucet for an account. It also activates an account with the network
 	 * @param accUrl Account URL
-	 * @return Returns RPC Call Response as Json String
+	 * @return Returns RPC Call Response
 	 * {
 	 *     "jsonrpc": "2.0",
 	 *     "result": {
@@ -345,7 +345,19 @@ public class Client {
 	/**
 	 * Method used query the Key index based on Account
 	 * @param accUrl Account URL
-	 * @return Returns RPC Call Response as Json String
+	 * @return Returns RPC Call Response
+	 * {
+	 *     "jsonrpc": "2.0",
+	 *     "result": {
+	 *         "type": "key-page-index",
+	 *         "data": {
+	 *             "keyBook": "acc://adione/book0",
+	 *             "keyPage": "acc://adione/page0",
+	 *             "index": 0
+	 *         }
+	 *     },
+	 *     "id": 0
+	 * }
 	 * @throws ParseException Throws Parse exception
 	 * @throws IOException Throws IOException
 	 */
