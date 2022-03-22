@@ -1,21 +1,25 @@
-package com.sdk.accumulate.test;
+package com.sdk.accumulate.service;
 
 import com.iwebpp.crypto.TweetNaclFast;
+import com.sdk.accumulate.enums.KeyPageOperation;
 import com.sdk.accumulate.model.AddCreditsArg;
 import com.sdk.accumulate.model.CreateIdentityArg;
-import com.sdk.accumulate.model.CreateTokenAccountArg;
-import com.sdk.accumulate.service.*;
+import com.sdk.accumulate.model.UpdateKeyPageArg;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CreateTokenAccountTest {
+@RunWith(MockitoJUnitRunner.class)
+public class UpdateKeyPageTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(CreateTokenAccountTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(UpdateKeyPageTest.class);
 
     private static final String baseUrl = "http://127.0.25.1:26660/v2";
 
-    public static void main(String[] args) throws Exception {
-
+    @Test
+    public void testUpdateKeyPage() throws Exception {
         LocalDevNetClient client = new LocalDevNetClient(baseUrl);
         LiteAccount liteAccount = LiteAccount.generate();
         String response = client.getFaucet(liteAccount.url().string());
@@ -30,9 +34,8 @@ public class CreateTokenAccountTest {
         logger.info("Add Credits Response {} ",addCreditsResponse);
         Thread.sleep(5000);
 
-        String identityUrl = "acc://my-own-identity-2";
         CreateIdentityArg createIdentityArg = new CreateIdentityArg();
-        createIdentityArg.setUrl(identityUrl);
+        createIdentityArg.setUrl("acc://my-own-identity");
         TweetNaclFast.Signature.KeyPair kp = TweetNaclFast.Signature.keyPair();
         createIdentityArg.setPublicKey(kp.getPublicKey());
         createIdentityArg.setKeyBookName("test-key-book");
@@ -40,14 +43,14 @@ public class CreateTokenAccountTest {
         String createAdiResponse = client.createIdentity(createIdentityArg,liteAccount);
         logger.info("Create ADI Response {} ",createAdiResponse);
         Thread.sleep(5000);
-        ADI adi = new ADI(AccURL.toAccURL(identityUrl),kp);
 
-        CreateTokenAccountArg createTokenAccountArg = new CreateTokenAccountArg();
-        createTokenAccountArg.setUrl(identityUrl);
-        createTokenAccountArg.setTokenUrl("acc://TEST");
-        createTokenAccountArg.setKeyBookUrl("acc://my-own-identity-2/test-key-page");
-        createTokenAccountArg.setScratch(true);
-        String createTokenAccountResponse = client.createTokenAccount(createTokenAccountArg,adi);
-        logger.info("Create Token Account Response {} ",createTokenAccountResponse);
+        UpdateKeyPageArg updateKeyPageArg = new UpdateKeyPageArg();
+        updateKeyPageArg.setOwner(liteAccount.url().string());
+        TweetNaclFast.Signature.KeyPair kp1 = TweetNaclFast.Signature.keyPair();
+        updateKeyPageArg.setNewKey(kp1.getPublicKey());
+        updateKeyPageArg.setOperation(KeyPageOperation.AddKey);
+//		updateKeyPageArg.setThreshold(1);
+        String updateKeyPageResponse = client.updateKeyPage(updateKeyPageArg,liteAccount);
+        logger.info("update KeyPage Response  Response {} ",updateKeyPageResponse);
     }
 }

@@ -1,19 +1,22 @@
-package com.sdk.accumulate.test;
+package com.sdk.accumulate.service;
 
 import com.sdk.accumulate.model.AddCreditsArg;
 import com.sdk.accumulate.model.IssueTokensArg;
-import com.sdk.accumulate.service.LiteAccount;
-import com.sdk.accumulate.service.LocalDevNetClient;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@RunWith(MockitoJUnitRunner.class)
 public class IssueTokenTest {
 
     private static final Logger logger = LoggerFactory.getLogger(IssueTokenTest.class);
 
     private static final String baseUrl = "http://127.0.25.1:26660/v2";
 
-    public static void main(String[] args) throws Exception {
+    @Test
+    public void testIssueTokens() throws Exception {
         LocalDevNetClient client = new LocalDevNetClient(baseUrl);
         LiteAccount liteAccount = LiteAccount.generate();
         String response = client.getFaucet(liteAccount.url().string());

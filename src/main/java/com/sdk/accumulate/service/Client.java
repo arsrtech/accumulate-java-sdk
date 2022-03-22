@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 import com.sdk.accumulate.model.*;
@@ -190,6 +191,17 @@ public class Client {
 	 * @param addCreditsArg  Add Credits Payload Parameters
 	 * @param originSigner  Signer of the transaction (That maybe a lite account or an ADI or a Data account or a Token Account)
 	 * @return  Response Json which is sent by Acccumulate network
+	 * {
+	 *   "jsonrpc": "2.0",
+	 *   "result": {
+	 *     "transactionHash": "1e6c539958603c0281df4831d2e7633db4fe32d0678c6bf60246d3f0597dbcdb",
+	 *     "txid": "1e6c539958603c0281df4831d2e7633db4fe32d0678c6bf60246d3f0597dbcdb",
+	 *     "envelopeHash": "6b776939deaf76f0a6568565e89c71d063a8a608c5437ce733226f344a55848e",
+	 *     "simpleHash": "7adda8c51d3edc39e6bb4abe3392ac528203387ed63290e338001fbe3b8b4ba1",
+	 *     "hash": "7adda8c51d3edc39e6bb4abe3392ac528203387ed63290e338001fbe3b8b4ba1"
+	 *   },
+	 *   "id": 1647927131154
+	 * }
 	 * @throws Exception  Throws Exception in the case of RPC call failure or Parse failure
 	 */
 	public String addCredits(AddCreditsArg addCreditsArg, OriginSigner originSigner) throws Exception {
@@ -202,6 +214,17 @@ public class Client {
 	 * @param burnTokensArg Burn tokens Payload arguments
 	 * @param originSigner  Signer of the transaction (That maybe a lite account or an ADI or a Data account or a Token Account)
 	 * @return  Response Json which is sent by Acccumulate network
+	 * {
+	 *   "jsonrpc": "2.0",
+	 *   "result": {
+	 *     "transactionHash": "ecaa4ee1711818d556dac1d19f11210b9f485e82c32d448a9ced7fcdb5f3b853",
+	 *     "txid": "ecaa4ee1711818d556dac1d19f11210b9f485e82c32d448a9ced7fcdb5f3b853",
+	 *     "envelopeHash": "3d88e4cb2f4b67867b6d7bd539044622031c0619e309cd8fa7758bc11bef9556",
+	 *     "simpleHash": "4206f202d01ea0a71c515cad863bd28eaa6e38d7bc05337266de2c3407d58bf2",
+	 *     "hash": "4206f202d01ea0a71c515cad863bd28eaa6e38d7bc05337266de2c3407d58bf2"
+	 *   },
+	 *   "id": 1647927356568
+	 * }
 	 * @throws Exception  Throws Exception in the case of RPC call failure or Parse failure
 	 */
 	public String burnTokens(BurnTokensArg burnTokensArg, OriginSigner originSigner) throws Exception {
@@ -214,6 +237,17 @@ public class Client {
 	 * @param createDataAccountArg Create data account payload arguments
 	 * @param originSigner  Signer of the transaction (That maybe a lite account or an ADI or a Data account or a Token Account)
 	 * @return  Response Json which is sent by Acccumulate network
+	 * {
+	 *   "jsonrpc": "2.0",
+	 *   "result": {
+	 *     "transactionHash": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "txid": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "envelopeHash": "4c129f458aa27df0f0d990b077ba213f7ba6767466e50fb02e48ea135c050ebe",
+	 *     "simpleHash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401",
+	 *     "hash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401"
+	 *   },
+	 *   "id": 1647927432541
+	 * }
 	 * @throws Exception  Throws Exception in the case of RPC call failure or Parse failure
 	 */
 	public String createDataAccount(CreateDataAccountArg createDataAccountArg, OriginSigner originSigner) throws Exception {
@@ -225,6 +259,17 @@ public class Client {
 	 * @param createIdentityArg Create ADI Payload Arguments
 	 * @param originSigner  Signer of the transaction (That maybe a lite account or an ADI or a Data account or a Token Account)
 	 * @return  Response Json which is sent by Acccumulate network
+	 * {
+	 *   "jsonrpc": "2.0",
+	 *   "result": {
+	 *     "transactionHash": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "txid": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "envelopeHash": "4c129f458aa27df0f0d990b077ba213f7ba6767466e50fb02e48ea135c050ebe",
+	 *     "simpleHash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401",
+	 *     "hash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401"
+	 *   },
+	 *   "id": 1647927432541
+	 * }
 	 * @throws Exception  Throws Exception in the case of RPC call failure or Parse failure
 	 */
 	public String createIdentity(CreateIdentityArg createIdentityArg, OriginSigner originSigner) throws Exception {
@@ -236,6 +281,17 @@ public class Client {
 	 * @param createKeyBookArg Create key book payload arguments
 	 * @param originSigner Signer of the transaction (That maybe a lite account or an ADI or a Data account or a Token Account)
 	 * @return Response Json which is sent by Acccumulate network
+	 * {
+	 *   "jsonrpc": "2.0",
+	 *   "result": {
+	 *     "transactionHash": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "txid": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "envelopeHash": "4c129f458aa27df0f0d990b077ba213f7ba6767466e50fb02e48ea135c050ebe",
+	 *     "simpleHash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401",
+	 *     "hash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401"
+	 *   },
+	 *   "id": 1647927432541
+	 * }
 	 * @throws Exception Throws Exception in the case of RPC call failure or Parse failure
 	 */
 	public String createKeyBook(CreateKeyBookArg createKeyBookArg, OriginSigner originSigner) throws Exception {
@@ -247,6 +303,17 @@ public class Client {
 	 * @param createKeyPageArg Create Key Page payload arguments
 	 * @param originSigner Signer of the transaction (That maybe a lite account or an ADI or a Data account or a Token Account)
 	 * @return Response Json which is sent by Acccumulate network
+	 * {
+	 *   "jsonrpc": "2.0",
+	 *   "result": {
+	 *     "transactionHash": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "txid": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "envelopeHash": "4c129f458aa27df0f0d990b077ba213f7ba6767466e50fb02e48ea135c050ebe",
+	 *     "simpleHash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401",
+	 *     "hash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401"
+	 *   },
+	 *   "id": 1647927432541
+	 * }
 	 * @throws Exception Throws Exception in the case of RPC call failure or Parse failure
 	 */
 	public String createKeyPage(CreateKeyPageArg createKeyPageArg, OriginSigner originSigner) throws Exception {
@@ -258,6 +325,17 @@ public class Client {
 	 * @param createTokenAccountArg Create token account payload arguments
 	 * @param originSigner Signer of the transaction (That maybe a lite account or an ADI or a Data account or a Token Account)
 	 * @return Response Json which is sent by Acccumulate network
+	 * {
+	 *   "jsonrpc": "2.0",
+	 *   "result": {
+	 *     "transactionHash": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "txid": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "envelopeHash": "4c129f458aa27df0f0d990b077ba213f7ba6767466e50fb02e48ea135c050ebe",
+	 *     "simpleHash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401",
+	 *     "hash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401"
+	 *   },
+	 *   "id": 1647927432541
+	 * }
 	 * @throws Exception Throws Exception in the case of RPC call failure or Parse failure
 	 */
 	public String createTokenAccount(CreateTokenAccountArg createTokenAccountArg, OriginSigner originSigner) throws Exception {
@@ -270,6 +348,17 @@ public class Client {
 	 * @param createTokenArg Create token payload arguments
 	 * @param originSigner Signer of the transaction (That maybe a lite account or an ADI or a Data account or a Token Account)
 	 * @return Response Json which is sent by Acccumulate network
+	 * {
+	 *   "jsonrpc": "2.0",
+	 *   "result": {
+	 *     "transactionHash": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "txid": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "envelopeHash": "4c129f458aa27df0f0d990b077ba213f7ba6767466e50fb02e48ea135c050ebe",
+	 *     "simpleHash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401",
+	 *     "hash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401"
+	 *   },
+	 *   "id": 1647927432541
+	 * }
 	 * @throws Exception Throws Exception in the case of RPC call failure or Parse failure
 	 */
 	public String createToken(CreateTokenArg createTokenArg, OriginSigner originSigner) throws Exception {
@@ -282,6 +371,17 @@ public class Client {
 	 * @param issueTokensArg Issue tokens Payload arguments
 	 * @param originSigner Signer of the transaction (That maybe a lite account or an ADI or a Data account or a Token Account)
 	 * @return Response Json which is sent by Acccumulate network
+	 * {
+	 *   "jsonrpc": "2.0",
+	 *   "result": {
+	 *     "transactionHash": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "txid": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "envelopeHash": "4c129f458aa27df0f0d990b077ba213f7ba6767466e50fb02e48ea135c050ebe",
+	 *     "simpleHash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401",
+	 *     "hash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401"
+	 *   },
+	 *   "id": 1647927432541
+	 * }
 	 * @throws Exception Throws Exception in the case of RPC call failure or Parse failure
 	 */
 	public String issueTokens(IssueTokensArg issueTokensArg, OriginSigner originSigner) throws Exception {
@@ -294,6 +394,17 @@ public class Client {
 	 * @param sendTokensArg Send tokens Payload Arguments
 	 * @param originSigner Signer of the transaction (That maybe a lite account or an ADI or a Data account or a Token Account)
 	 * @return Response Json which is sent by Acccumulate network
+	 * {
+	 *   "jsonrpc": "2.0",
+	 *   "result": {
+	 *     "transactionHash": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "txid": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "envelopeHash": "4c129f458aa27df0f0d990b077ba213f7ba6767466e50fb02e48ea135c050ebe",
+	 *     "simpleHash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401",
+	 *     "hash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401"
+	 *   },
+	 *   "id": 1647927432541
+	 * }
 	 * @throws Exception Throws Exception in the case of RPC call failure or Parse failure
 	 */
 	public String sendToken(SendTokensArg sendTokensArg, OriginSigner originSigner) throws Exception {
@@ -307,6 +418,17 @@ public class Client {
 	 * @param updateKeyPageArg Update Key page payload arguments
 	 * @param originSigner Signer of the transaction (That maybe a lite account or an ADI or a Data account or a Token Account)
 	 * @return Response Json which is sent by Acccumulate network
+	 * {
+	 *   "jsonrpc": "2.0",
+	 *   "result": {
+	 *     "transactionHash": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "txid": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "envelopeHash": "4c129f458aa27df0f0d990b077ba213f7ba6767466e50fb02e48ea135c050ebe",
+	 *     "simpleHash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401",
+	 *     "hash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401"
+	 *   },
+	 *   "id": 1647927432541
+	 * }
 	 * @throws Exception Throws Exception in the case of RPC call failure or Parse failure
 	 */
 	public String updateKeyPage(UpdateKeyPageArg updateKeyPageArg, OriginSigner originSigner) throws Exception {
@@ -319,6 +441,17 @@ public class Client {
 	 * @param writeDataArg Write Data Payload arguments
 	 * @param originSigner Signer of the transaction (That maybe a lite account or an ADI or a Data account or a Token Account)
 	 * @return Response Json which is sent by Acccumulate network
+	 * {
+	 *   "jsonrpc": "2.0",
+	 *   "result": {
+	 *     "transactionHash": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "txid": "0348c88f3ea52021625ef872ff2be961d39b4b4d78fd9c76070f6a08da15fbbf",
+	 *     "envelopeHash": "4c129f458aa27df0f0d990b077ba213f7ba6767466e50fb02e48ea135c050ebe",
+	 *     "simpleHash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401",
+	 *     "hash": "0c7c5ff7c865afb7c488eba3e3fa389f79bd4a956c49b026257ea9b31bbe2401"
+	 *   },
+	 *   "id": 1647927432541
+	 * }
 	 * @throws Exception Throws Exception in the case of RPC call failure or Parse failure
 	 */
 	public String writeData(WriteDataArg writeDataArg, OriginSigner originSigner) throws Exception {
@@ -339,7 +472,7 @@ public class Client {
         conn.setDoOutput(true);
         
         OutputStream os = conn.getOutputStream();
-        os.write(obj.toString().getBytes("UTF-8"));
+        os.write(obj.toString().getBytes(StandardCharsets.UTF_8));
         os.close();
 
         try {

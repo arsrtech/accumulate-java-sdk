@@ -1,16 +1,18 @@
-package com.sdk.accumulate.test;
+package com.sdk.accumulate.service;
 
-import com.sdk.accumulate.service.Client;
-import com.sdk.accumulate.service.LiteAccount;
-import com.sdk.accumulate.service.TestNetClient;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CreateAccountTest {
 
     private static final Logger logger = LoggerFactory.getLogger(CreateAccountTest.class);
 
-    public static void main(String[] args) throws Exception {
+    @Test
+    public void testCreateAccount() throws Exception {
         TestNetClient testNetClient = new TestNetClient();
         LiteAccount liteAccount = LiteAccount.generate();
         String response = testNetClient.getFaucet(liteAccount.url().string());

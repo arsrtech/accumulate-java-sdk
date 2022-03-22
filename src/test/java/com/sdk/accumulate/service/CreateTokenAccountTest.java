@@ -1,22 +1,24 @@
-package com.sdk.accumulate.test;
+package com.sdk.accumulate.service;
 
 import com.iwebpp.crypto.TweetNaclFast;
 import com.sdk.accumulate.model.AddCreditsArg;
 import com.sdk.accumulate.model.CreateIdentityArg;
-import com.sdk.accumulate.model.CreateTokenArg;
-import com.sdk.accumulate.service.*;
+import com.sdk.accumulate.model.CreateTokenAccountArg;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigInteger;
+@RunWith(MockitoJUnitRunner.class)
+public class CreateTokenAccountTest {
 
-public class CreateTokenTest {
-
-    private static final Logger logger = LoggerFactory.getLogger(CreateTokenTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(CreateTokenAccountTest.class);
 
     private static final String baseUrl = "http://127.0.25.1:26660/v2";
 
-    public static void main(String[] args) throws Exception {
+    @Test
+    public void testCreateTokenAccount() throws Exception {
 
         LocalDevNetClient client = new LocalDevNetClient(baseUrl);
         LiteAccount liteAccount = LiteAccount.generate();
@@ -32,7 +34,7 @@ public class CreateTokenTest {
         logger.info("Add Credits Response {} ",addCreditsResponse);
         Thread.sleep(5000);
 
-        String identityUrl = "acc://my-own-identity-3";
+        String identityUrl = "acc://my-own-identity-2";
         CreateIdentityArg createIdentityArg = new CreateIdentityArg();
         createIdentityArg.setUrl(identityUrl);
         TweetNaclFast.Signature.KeyPair kp = TweetNaclFast.Signature.keyPair();
@@ -44,16 +46,12 @@ public class CreateTokenTest {
         Thread.sleep(5000);
         ADI adi = new ADI(AccURL.toAccURL(identityUrl),kp);
 
-        CreateTokenArg createTokenArg = new CreateTokenArg();
-        createTokenArg.setUrl(identityUrl);
-        createTokenArg.setKeyBookUrl("acc://my-own-identity-3/test-key-page");
-        createTokenArg.setSymbol("INR");
-        createTokenArg.setPrecision(10);
-        createTokenArg.setProperties("acc://my-own-identity-3/INR");
-        createTokenArg.setInitialSupply(BigInteger.valueOf(1000000000));
-        createTokenArg.setHasSupplyLimit(true);
-        createTokenArg.setManager("acc://my-own-identity-3/test-key-page");
-        String createTokenResponse = client.createToken(createTokenArg,adi);
-        logger.info("Create Token Response {} ",createTokenResponse);
+        CreateTokenAccountArg createTokenAccountArg = new CreateTokenAccountArg();
+        createTokenAccountArg.setUrl(identityUrl);
+        createTokenAccountArg.setTokenUrl("acc://TEST");
+        createTokenAccountArg.setKeyBookUrl("acc://my-own-identity-2/test-key-page");
+        createTokenAccountArg.setScratch(true);
+        String createTokenAccountResponse = client.createTokenAccount(createTokenAccountArg,adi);
+        logger.info("Create Token Account Response {} ",createTokenAccountResponse);
     }
 }

@@ -1,23 +1,26 @@
-package com.sdk.accumulate.test;
+package com.sdk.accumulate.service;
 
 import com.iwebpp.crypto.TweetNaclFast;
 import com.sdk.accumulate.model.AddCreditsArg;
 import com.sdk.accumulate.model.CreateIdentityArg;
-import com.sdk.accumulate.model.CreateKeyBookArg;
-import com.sdk.accumulate.service.*;
+import com.sdk.accumulate.model.CreateTokenArg;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigInteger;
 
-public class CreateKeyBookTest {
+@RunWith(MockitoJUnitRunner.class)
+public class CreateTokenTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(CreateKeyBookTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(CreateTokenTest.class);
 
     private static final String baseUrl = "http://127.0.25.1:26660/v2";
 
-    public static void main(String[] args) throws Exception{
+    @Test
+    public void testCreateToken() throws Exception {
 
         LocalDevNetClient client = new LocalDevNetClient(baseUrl);
         LiteAccount liteAccount = LiteAccount.generate();
@@ -33,7 +36,7 @@ public class CreateKeyBookTest {
         logger.info("Add Credits Response {} ",addCreditsResponse);
         Thread.sleep(5000);
 
-        String identityUrl = "acc://my-own-identity-1";
+        String identityUrl = "acc://my-own-identity-3";
         CreateIdentityArg createIdentityArg = new CreateIdentityArg();
         createIdentityArg.setUrl(identityUrl);
         TweetNaclFast.Signature.KeyPair kp = TweetNaclFast.Signature.keyPair();
@@ -45,12 +48,16 @@ public class CreateKeyBookTest {
         Thread.sleep(5000);
         ADI adi = new ADI(AccURL.toAccURL(identityUrl),kp);
 
-        CreateKeyBookArg createKeyBookArg = new CreateKeyBookArg();
-        createKeyBookArg.setUrl(identityUrl+"/book1");
-        List<String> pages = new ArrayList<>();
-        pages.add(identityUrl+"/test-key-page");
-        createKeyBookArg.setPages(pages);
-        String createKeyBook = client.createKeyBook(createKeyBookArg,adi);
-        logger.info("Create Key book Response {} ",createKeyBook);
+        CreateTokenArg createTokenArg = new CreateTokenArg();
+        createTokenArg.setUrl(identityUrl);
+        createTokenArg.setKeyBookUrl("acc://my-own-identity-3/test-key-page");
+        createTokenArg.setSymbol("INR");
+        createTokenArg.setPrecision(10);
+        createTokenArg.setProperties("acc://my-own-identity-3/INR");
+        createTokenArg.setInitialSupply(BigInteger.valueOf(1000000000));
+        createTokenArg.setHasSupplyLimit(true);
+        createTokenArg.setManager("acc://my-own-identity-3/test-key-page");
+        String createTokenResponse = client.createToken(createTokenArg,adi);
+        logger.info("Create Token Response {} ",createTokenResponse);
     }
 }

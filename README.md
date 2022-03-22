@@ -4,7 +4,7 @@
 Accumulate SDK helps developers to develop the application with Accumulate network. It provides ready to use codebase with all Accumulate features. So they can create a new application with SDK or refactor the existing application.
 
 ## Prerequisite
-- Java 15 or greater version
+- Java 11 or greater version
 
 ## How to use?
 - Download the codebase and crate a java file inside src directory.
@@ -32,6 +32,16 @@ String response = client.getFaucet(liteAccount.url().string());
 ```
 Note: In each client call you have to wait for few seconds to get the response from accumulate network
 
+## Test cases
+- To check the usage of all methods please check the test cases in the below directory
+```
+~/accumulate-java-sdk/src/test/java/com/sdk/accumulate/service/
+```
+- To run all the test cases at the same time, execute the below command 
+```
+mvn test
+```
+#### [Check the complete documentation here](https://arsrtech.github.io/accumulate-java-sdk/doc/com/sdk/accumulate/service/Client.html)
 ## Quick start tutorial
 Demo of some main APIs of Accumulate:
 ```
