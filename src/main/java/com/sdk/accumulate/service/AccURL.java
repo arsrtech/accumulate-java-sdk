@@ -1,13 +1,8 @@
 package com.sdk.accumulate.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.net.*;
 
 public class AccURL {
-
-    private static final Logger logger = LoggerFactory.getLogger(AccURL.class);
 
     static AccURL ACME_TOKEN_URL;
 

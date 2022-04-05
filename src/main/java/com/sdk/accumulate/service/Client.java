@@ -11,14 +11,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 import com.sdk.accumulate.model.*;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.sdk.accumulate.query.*;
 
 public class Client {
-
-	private static final Logger logger = LoggerFactory.getLogger(Client.class);
 
 	/**
 	 * Accumulate network Url (That may be a test net or Main net or local Devnet)
@@ -58,6 +53,17 @@ public class Client {
 		return RPCClient.client(this.baseUrl,txnRequest,"execute");
 	}
 
+
+	/**
+	 * @param params Query API params
+	 * @param method Query Method
+	 * @return Returns RPC Call Response
+	 * @throws Exception Throws Exception In case of RPC call failure or Parser failure
+	 */
+	private String execute_query(BaseQueryPrams params,String method) throws Exception {
+		return RPCClient.client(this.baseUrl,params,method);
+	}
+
 	/**
 	 * Method used to query about a lite account. It will return the details of a specific account
 	 * @param accUrl  Account URL
@@ -85,17 +91,11 @@ public class Client {
 	 *     },
 	 *     "id": 0
 	 * }
-	 * @throws ParseException Throws Parse exception
 	 * @throws IOException Throws IOException
 	 */
-	@SuppressWarnings("unchecked")
-	public String getQuery(String accUrl) throws ParseException, IOException {
-		JSONObject obj = new JSONObject();
-		obj.put("method", Constant.QUERY);
-		JSONObject param = new JSONObject();
-		param.put("url", accUrl);
-		obj.put("params", param);
-		return httpConnection(obj, this.baseUrl);
+	public String getQuery(String accUrl) throws Exception{
+		QueryLiteAccount queryLiteAccount = new QueryLiteAccount(accUrl);
+		return execute_query(queryLiteAccount, Constant.QUERY);
 		
 	}
 
@@ -170,18 +170,14 @@ public class Client {
 	 *     },
 	 *     "id": 0
 	 * }
-	 * @throws ParseException Throws Parse exception
 	 * @throws IOException Throws IOException
 	 */
-	@SuppressWarnings("unchecked")
-	public String getTransactionHistory(String accUrl, int count) throws ParseException, IOException {
-		JSONObject obj = new JSONObject();
-		obj.put("method", Constant.QUERY_TX_HISTORY);
-		JSONObject param = new JSONObject();
-		param.put("url", accUrl);
-		param.put("count", count);
-		obj.put("params", param);
-		return httpConnection(obj, this.baseUrl);
+
+	public String getTransactionHistory(String accUrl, int count) throws Exception {
+		QueryTransactionHistory queryTransactionHistory = new QueryTransactionHistory();
+		queryTransactionHistory.setCount(count);
+		queryTransactionHistory.setUrl(accUrl);
+		return execute_query(queryTransactionHistory, Constant.QUERY_TX_HISTORY);
 		
 	}
 
@@ -220,18 +216,13 @@ public class Client {
 	 *     },
 	 *     "id": 0
 	 * }
-	 * @throws ParseException Throws Parse exception
 	 * @throws IOException Throws IOException
 	 */
-	@SuppressWarnings("unchecked")
-	public String getTransaction(String txid) throws ParseException, IOException {
-		JSONObject obj = new JSONObject();
-		obj.put("method", Constant.QUERY_TRANSACTION);
-		JSONObject param = new JSONObject();
-		param.put("txid", txid);
-		obj.put("params", param);
-		return httpConnection(obj, this.baseUrl);
-		
+	public String getTransaction(String txid) throws Exception {
+		QueryTransaction queryTransaction = new QueryTransaction(txid);
+		return execute_query(queryTransaction, Constant.QUERY_TRANSACTION);
+
+
 	}
 
 	/**
@@ -263,18 +254,11 @@ public class Client {
 	 *     },
 	 *     "id": 0
 	 * }
-	 * @throws ParseException Throws Parse exception
 	 * @throws IOException Throws IOException
 	 */
-	@SuppressWarnings("unchecked")
-	public String getQueryChain(String chainId) throws ParseException, IOException {
-		JSONObject obj = new JSONObject();		
-		obj.put("method", Constant.QUERY_CHAIN);
-		JSONObject param = new JSONObject();
-		param.put("chainId", chainId);
-		obj.put("params", param);
-		return httpConnection(obj, this.baseUrl);
-		
+	public String getQueryChain(String chainId) throws Exception{
+		QueryChain queryChain = new QueryChain(chainId);
+		return execute_query(queryChain, Constant.QUERY_CHAIN);
 	}
 
 	/**
@@ -301,18 +285,11 @@ public class Client {
 	 *     },
 	 *     "id": 0
 	 * }
-	 * @throws ParseException Throws Parse exception
 	 * @throws IOException Throws IOException
 	 */
-	@SuppressWarnings("unchecked")
-	public String getQueryData(String accUrl) throws ParseException, IOException {
-		JSONObject obj = new JSONObject();
-		obj.put("method", Constant.QUERY_DATA);
-		JSONObject param = new JSONObject();
-		param.put("url", accUrl);
-		obj.put("params", param);
-		return httpConnection(obj, this.baseUrl);
-		
+	public String getQueryData(String accUrl) throws Exception {
+		QueryData queryData = new QueryData(accUrl);
+		return execute_query(queryData, Constant.QUERY_DATA);
 	}
 
 	/**
@@ -328,17 +305,12 @@ public class Client {
 	 *     },
 	 *     "id": 0
 	 * }
-	 * @throws ParseException Throws Parse exception
 	 * @throws IOException Throws IOException
 	 */
-	@SuppressWarnings("unchecked")
-	public String getFaucet(String accUrl) throws ParseException, IOException {
-		JSONObject obj = new JSONObject();
-		obj.put("method", Constant.FAUCET);
-		JSONObject param = new JSONObject();
-		param.put("url", accUrl);
-		obj.put("params", param);
-		return httpConnection(obj, this.baseUrl);
+
+	public String getFaucet(String accUrl) throws Exception {
+		GetFaucet getFaucet = new GetFaucet(accUrl);
+		return execute_query(getFaucet, Constant.FAUCET);
 		
 	}
 
@@ -358,18 +330,12 @@ public class Client {
 	 *     },
 	 *     "id": 0
 	 * }
-	 * @throws ParseException Throws Parse exception
 	 * @throws IOException Throws IOException
 	 */
-	@SuppressWarnings("unchecked")
-	public String getQueryKeyIndex(String accUrl) throws ParseException, IOException {
-		JSONObject obj = new JSONObject();
-		obj.put("method", Constant.QUERY_KEY_INDEX);
-		JSONObject param = new JSONObject();
-		param.put("url", accUrl);
-		obj.put("params", param);
-		return httpConnection(obj, this.baseUrl);
-		
+	public String getQueryKeyIndex(String accUrl) throws Exception {
+		QueryKeyIndex queryKeyIndex = new QueryKeyIndex(accUrl);
+		return execute_query(queryKeyIndex, Constant.QUERY_KEY_INDEX);
+
 	}
 
 	/**
@@ -642,42 +608,5 @@ public class Client {
 	 */
 	public String writeData(WriteDataArg writeDataArg, OriginSigner originSigner) throws Exception {
 		return this.execute(new WriteData(writeDataArg),originSigner);
-	}
-
-	@SuppressWarnings("unchecked")
-	public String httpConnection(JSONObject obj, String endPointUrl) throws ParseException, IOException {
-		obj.put("jsonrpc", "2.0");
-		obj.put("id", 0);
-		System.out.println(obj.toJSONString());
-		URL url = new URL(endPointUrl);
-		HttpURLConnection conn = (HttpURLConnection)url.openConnection(); 
-		conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestProperty("Accept", "application/json");
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
-        
-        OutputStream os = conn.getOutputStream();
-        os.write(obj.toString().getBytes(StandardCharsets.UTF_8));
-        os.close();
-
-        try {
-        	//Get Response	
-            InputStream is = conn.getInputStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            String line;
-            StringBuffer response = new StringBuffer(); 
-            while((line = rd.readLine()) != null) {
-              response.append(line);
-              response.append('\r');
-            }
-            rd.close();
-            return response.toString();
-        }catch (Exception e) {
-        	return "{\r\n" + 
-        			"    \"authentication\": false,\r\n" + 
-        			"}";
-        }
-		
 	}
 }

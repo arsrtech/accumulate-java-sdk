@@ -1,40 +1,34 @@
 package com.sdk.accumulate.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iwebpp.crypto.TweetNaclFast;
 import com.sdk.accumulate.model.AddCreditsArg;
 import com.sdk.accumulate.model.CreateIdentityArg;
 import com.sdk.accumulate.model.CreateTokenArg;
+import com.sdk.accumulate.model.RPCResponse;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CreateTokenTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(CreateTokenTest.class);
-
-    private static final String baseUrl = "http://127.0.25.1:26660/v2";
-
     @Test
     public void testCreateToken() throws Exception {
 
-        LocalDevNetClient client = new LocalDevNetClient(baseUrl);
+        TestNetClient client = new TestNetClient();
         LiteAccount liteAccount = LiteAccount.generate();
         String response = client.getFaucet(liteAccount.url().string());
-        logger.info("Lite Account Response: {}",response);
-        Thread.sleep(5000);
-
+        System.out.println("Lite Account Response: "+response);
 
         AddCreditsArg addCreditsArg = new AddCreditsArg();
         addCreditsArg.setAmount(500000);
         addCreditsArg.setRecipient(liteAccount.url().string());
         String addCreditsResponse = client.addCredits(addCreditsArg,liteAccount);
-        logger.info("Add Credits Response {} ",addCreditsResponse);
-        Thread.sleep(5000);
+        System.out.println("Add Credits Response: "+addCreditsResponse);
 
         String identityUrl = "acc://my-own-identity-3";
         CreateIdentityArg createIdentityArg = new CreateIdentityArg();
@@ -44,13 +38,13 @@ public class CreateTokenTest {
         createIdentityArg.setKeyBookName("test-key-book");
         createIdentityArg.setKeyPageName("test-key-page");
         String createAdiResponse = client.createIdentity(createIdentityArg,liteAccount);
-        logger.info("Create ADI Response {} ",createAdiResponse);
+        System.out.println("Create ADI Response: "+createAdiResponse);
         Thread.sleep(5000);
         ADI adi = new ADI(AccURL.toAccURL(identityUrl),kp);
 
         CreateTokenArg createTokenArg = new CreateTokenArg();
-        createTokenArg.setUrl(identityUrl);
-        createTokenArg.setKeyBookUrl("acc://my-own-identity-3/test-key-page");
+        createTokenArg.setUrl(identityUrl+"/tok");
+        createTokenArg.setKeyBookUrl(identityUrl+"/test-key-page");
         createTokenArg.setSymbol("INR");
         createTokenArg.setPrecision(10);
         createTokenArg.setProperties("acc://my-own-identity-3/INR");
@@ -58,6 +52,10 @@ public class CreateTokenTest {
         createTokenArg.setHasSupplyLimit(true);
         createTokenArg.setManager("acc://my-own-identity-3/test-key-page");
         String createTokenResponse = client.createToken(createTokenArg,adi);
-        logger.info("Create Token Response {} ",createTokenResponse);
+        System.out.println("Create Token Response: "+createTokenResponse);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        RPCResponse rpcResponse = objectMapper.readValue(createTokenResponse,RPCResponse.class);
+        Assert.assertNotNull("Create Token Request failed", rpcResponse.getResult().getTxid());
     }
 }

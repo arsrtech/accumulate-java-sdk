@@ -2,12 +2,8 @@ package com.sdk.accumulate.service;
 
 import com.sdk.accumulate.enums.Sequence;
 import com.sdk.accumulate.model.HeaderOptions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Header {
-
-    private static final Logger logger = LoggerFactory.getLogger(Header.class);
 
     private final AccURL origin;
 

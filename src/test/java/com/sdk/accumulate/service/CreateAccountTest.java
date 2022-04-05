@@ -1,21 +1,24 @@
 package com.sdk.accumulate.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sdk.accumulate.model.RPCResponse;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CreateAccountTest {
-
-    private static final Logger logger = LoggerFactory.getLogger(CreateAccountTest.class);
-
+    
     @Test
     public void testCreateAccount() throws Exception {
         TestNetClient testNetClient = new TestNetClient();
         LiteAccount liteAccount = LiteAccount.generate();
         String response = testNetClient.getFaucet(liteAccount.url().string());
-        logger.info("Lite Account Response: {}",response);
+        System.out.println("Lite Account Response: "+response);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        RPCResponse rpcResponse = objectMapper.readValue(response,RPCResponse.class);
+        Assert.assertNotNull("Account Creation failed", rpcResponse.getResult().getTxid());
     }
  }

@@ -4,16 +4,12 @@ import com.sdk.accumulate.enums.Sequence;
 import com.sdk.accumulate.enums.TxType;
 import com.sdk.accumulate.model.SendTokensArg;
 import com.sdk.accumulate.model.TokenRecipientArg;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SendTokens extends BasePayload {
-
-    private static final Logger logger = LoggerFactory.getLogger(SendTokens.class);
 
     private final List<TokenRecipient> to;
 

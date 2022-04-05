@@ -9,9 +9,9 @@ public class RPCRequest {
 
     private String method;
 
-    private TxnRequest params;
+    private Object params;
 
-    public RPCRequest(String jsonrpc, long id, String method, TxnRequest params) {
+    public RPCRequest(String jsonrpc, long id, String method, Object params) {
         this.jsonrpc = jsonrpc;
         this.id = id;
         this.method = method;
@@ -42,11 +42,11 @@ public class RPCRequest {
         this.method = method;
     }
 
-    public TxnRequest getParams() {
+    public Object getParams() {
         return params;
     }
 
-    public void setParams(TxnRequest params) {
+    public void setParams(Object params) {
         this.params = params;
     }
 }

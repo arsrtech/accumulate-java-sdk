@@ -1,14 +1,10 @@
 package com.sdk.accumulate.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 
 public class Marshaller {
-
-    private static final Logger logger = LoggerFactory.getLogger(Marshaller.class);
 
     public static byte[] uvarintMarshalBinary(BigInteger number) {
         byte[] bytesArray = new byte[0];

@@ -3,15 +3,11 @@ package com.sdk.accumulate.service;
 import com.sdk.accumulate.enums.Sequence;
 import com.sdk.accumulate.enums.TxType;
 import com.sdk.accumulate.model.AddCreditsArg;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
 
 
 public class AddCredits extends BasePayload{
-
-    private static final Logger logger = LoggerFactory.getLogger(AddCredits.class);
 
     private final AccURL recipient;
 

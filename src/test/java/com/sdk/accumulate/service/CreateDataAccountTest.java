@@ -1,42 +1,48 @@
 package com.sdk.accumulate.service;
 
-import com.sdk.accumulate.model.AddCreditsArg;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.iwebpp.crypto.TweetNaclFast;
 import com.sdk.accumulate.model.CreateDataAccountArg;
+import com.sdk.accumulate.model.CreateIdentityArg;
+import com.sdk.accumulate.model.RPCResponse;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CreateDataAccountTest {
-
-    private static final Logger logger = LoggerFactory.getLogger(CreateDataAccountTest.class);
-
-    private static final String baseUrl = "http://127.0.25.1:26660/v2";
-
+    
     @Test
     public void testCreateDataAccount() throws Exception {
-        LocalDevNetClient localDevNetClient = new LocalDevNetClient(baseUrl);
+        TestNetClient client = new TestNetClient();
         LiteAccount liteAccount = LiteAccount.generate();
-        String response = localDevNetClient.getFaucet(liteAccount.url().string());
-        logger.info("Lite Account Response: {}",response);
-        Thread.sleep(5000);
+        String response = client.getFaucet(liteAccount.url().string());
+        System.out.println("Lite Account Response: "+response);
+        
 
-
-        AddCreditsArg addCreditsArg = new AddCreditsArg();
-        addCreditsArg.setAmount(500000);
-        addCreditsArg.setRecipient(liteAccount.url().string());
-        String addCreditsResponse = localDevNetClient.addCredits(addCreditsArg,liteAccount);
-        logger.info("Add Credits Response {} ",addCreditsResponse);
-        Thread.sleep(5000);
+        String identityUrl = "acc://my-own-identity-1";
+        CreateIdentityArg createIdentityArg = new CreateIdentityArg();
+        createIdentityArg.setUrl(identityUrl);
+        TweetNaclFast.Signature.KeyPair kp = TweetNaclFast.Signature.keyPair();
+        createIdentityArg.setPublicKey(kp.getPublicKey());
+        createIdentityArg.setKeyBookName("test-key-book");
+        createIdentityArg.setKeyPageName("test-key-page");
+        String createAdiResponse = client.createIdentity(createIdentityArg,liteAccount);
+        System.out.println("Create ADI Response: "+createAdiResponse);
+        
+        ADI adi = new ADI(AccURL.toAccURL(identityUrl),kp);
 
         CreateDataAccountArg createDataAccountArg = new CreateDataAccountArg();
-        createDataAccountArg.setUrl(liteAccount.url().string()+"/data");
-        createDataAccountArg.setKeyBookUrl("acc://pun1/pun1book");
-        createDataAccountArg.setManagerKeyBookUrl("acc://pun1/pun1book");
+        createDataAccountArg.setUrl(identityUrl+"/data");
+        createDataAccountArg.setKeyBookUrl(identityUrl+"/test-key-book");
+        createDataAccountArg.setManagerKeyBookUrl(identityUrl+"/test-key-book");
         createDataAccountArg.setScratch(true);
-        String createDataAccountResponse = localDevNetClient.createDataAccount(createDataAccountArg,liteAccount);
-        logger.info("Create data account Response {} ",createDataAccountResponse);
+        String createDataAccountResponse = client.createDataAccount(createDataAccountArg,adi);
+        System.out.println("Create data account Response: "+createDataAccountResponse);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        RPCResponse rpcResponse = objectMapper.readValue(createDataAccountResponse,RPCResponse.class);
+        Assert.assertNotNull("Create Data Account Request failed", rpcResponse.getResult().getTxid());
     }
 }

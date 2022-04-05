@@ -3,14 +3,10 @@ package com.sdk.accumulate.service;
 import com.sdk.accumulate.enums.Sequence;
 import com.sdk.accumulate.enums.TxType;
 import com.sdk.accumulate.model.BurnTokensArg;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
 
 public class BurnTokens extends BasePayload{
-
-    private static final Logger logger = LoggerFactory.getLogger(BurnTokens.class);
 
     private final BigInteger amount;
 

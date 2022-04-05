@@ -1,8 +1,6 @@
 package com.sdk.accumulate.service;
 
 import com.iwebpp.crypto.TweetNaclFast;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
@@ -11,12 +9,7 @@ import static com.sdk.accumulate.service.Crypto.sha256;
 
 public class LiteAccount extends KeypairSigner {
 
-    private static final Logger logger = LoggerFactory.getLogger(LiteAccount.class);
-
     private AccURL tokenUrl;
-
-
-
 
     public LiteAccount(String acmeTokenUrl, TweetNaclFast.Signature.KeyPair keypair) throws Exception {
         super(computeUrl(keypair.getPublicKey(),AccURL.toAccURL(acmeTokenUrl)), keypair);
@@ -32,8 +25,6 @@ public class LiteAccount extends KeypairSigner {
      * Generate a new random LiteAccount for the ACME token
      */
     public static LiteAccount generate() throws Exception {
-//        KeyPairGenerator kpg = KeyPairGenerator.getInstance("Ed25519");
-//        KeyPair kp = kpg.generateKeyPair();
         TweetNaclFast.Signature.KeyPair kp = TweetNaclFast.Signature.keyPair();
         return new LiteAccount(AccURL.parse("acc://ACME"), kp);
     }
@@ -49,15 +40,11 @@ public class LiteAccount extends KeypairSigner {
      * Generate a new random LiteAccount for the given token URL
      */
     static LiteAccount generateWithTokenUrl(AccURL tokenUrl) throws Exception {
-//        KeyPairGenerator kpg = KeyPairGenerator.getInstance("Ed25519");
-//        KeyPair kp = kpg.generateKeyPair();
         TweetNaclFast.Signature.KeyPair kp = TweetNaclFast.Signature.keyPair();
         return new LiteAccount(tokenUrl, kp);
     }
 
     static LiteAccount generateWithTokenUrl(String  tokenUrl) throws Exception {
-//        KeyPairGenerator kpg = KeyPairGenerator.getInstance("Ed25519");
-//        KeyPair kp = kpg.generateKeyPair();
         TweetNaclFast.Signature.KeyPair kp = TweetNaclFast.Signature.keyPair();
         return new LiteAccount(AccURL.toAccURL(tokenUrl), kp);
     }

@@ -1,38 +1,27 @@
 package com.sdk.accumulate.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iwebpp.crypto.TweetNaclFast;
 import com.sdk.accumulate.enums.KeyPageOperation;
 import com.sdk.accumulate.model.AddCreditsArg;
 import com.sdk.accumulate.model.CreateIdentityArg;
+import com.sdk.accumulate.model.RPCResponse;
 import com.sdk.accumulate.model.UpdateKeyPageArg;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UpdateKeyPageTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(UpdateKeyPageTest.class);
-
-    private static final String baseUrl = "http://127.0.25.1:26660/v2";
-
     @Test
     public void testUpdateKeyPage() throws Exception {
-        LocalDevNetClient client = new LocalDevNetClient(baseUrl);
+        TestNetClient client = new TestNetClient();
+
         LiteAccount liteAccount = LiteAccount.generate();
         String response = client.getFaucet(liteAccount.url().string());
-        logger.info("Lite Account Response: {}",response);
-        Thread.sleep(5000);
-
-
-        AddCreditsArg addCreditsArg = new AddCreditsArg();
-        addCreditsArg.setAmount(500000);
-        addCreditsArg.setRecipient(liteAccount.url().string());
-        String addCreditsResponse = client.addCredits(addCreditsArg,liteAccount);
-        logger.info("Add Credits Response {} ",addCreditsResponse);
-        Thread.sleep(5000);
+        System.out.println("Lite Account Response: "+response);
 
         CreateIdentityArg createIdentityArg = new CreateIdentityArg();
         createIdentityArg.setUrl("acc://my-own-identity");
@@ -41,16 +30,20 @@ public class UpdateKeyPageTest {
         createIdentityArg.setKeyBookName("test-key-book");
         createIdentityArg.setKeyPageName("test-key-page");
         String createAdiResponse = client.createIdentity(createIdentityArg,liteAccount);
-        logger.info("Create ADI Response {} ",createAdiResponse);
-        Thread.sleep(5000);
+        System.out.println("Create ADI Response: "+createAdiResponse);
 
         UpdateKeyPageArg updateKeyPageArg = new UpdateKeyPageArg();
-        updateKeyPageArg.setOwner(liteAccount.url().string());
+        updateKeyPageArg.setOwner("acc://my-own-identity");
         TweetNaclFast.Signature.KeyPair kp1 = TweetNaclFast.Signature.keyPair();
         updateKeyPageArg.setNewKey(kp1.getPublicKey());
-        updateKeyPageArg.setOperation(KeyPageOperation.AddKey);
+        updateKeyPageArg.setKey(kp.getPublicKey());
+        updateKeyPageArg.setOperation(KeyPageOperation.UpdateKey);
 //		updateKeyPageArg.setThreshold(1);
         String updateKeyPageResponse = client.updateKeyPage(updateKeyPageArg,liteAccount);
-        logger.info("update KeyPage Response  Response {} ",updateKeyPageResponse);
+        System.out.println("update KeyPage Response  Response: "+updateKeyPageResponse);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        RPCResponse rpcResponse = objectMapper.readValue(updateKeyPageResponse,RPCResponse.class);
+        Assert.assertNotNull("Update Key Request failed", rpcResponse.getResult().getTxid());
     }
 }

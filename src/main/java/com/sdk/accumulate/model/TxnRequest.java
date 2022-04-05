@@ -2,8 +2,6 @@ package com.sdk.accumulate.model;
 
 public class TxnRequest {
 
-//    private String sponsor;
-
     private String origin;
 
     private Signer signer;
@@ -13,14 +11,6 @@ public class TxnRequest {
     private KeyPage keyPage;
 
     private Object  payload;
-
-//    public String getSponsor() {
-//        return sponsor;
-//    }
-//
-//    public void setSponsor(String sponsor) {
-//        this.sponsor = sponsor;
-//    }
 
     public String getOrigin() {
         return origin;
