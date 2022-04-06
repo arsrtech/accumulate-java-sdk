@@ -1,4 +1,4 @@
-````# Accumulate Java SDK
+# Accumulate Java SDK
 
 ## Summary
 Accumulate SDK helps developers to develop the application with Accumulate network. It provides ready to use codebase with all Accumulate features. So they can create a new application with SDK or refactor the existing application.
@@ -8,6 +8,7 @@ Accumulate SDK helps developers to develop the application with Accumulate netwo
 | Release | Notes                             | Summary                                                    |
 |---------|:----------------------------------|:-----------------------------------------------------------|
 | 1.1     | Initial release with limited APIs | <ul><li>All Query APIs</li><li>Major create APIs</li></ul> |
+
 ## Prerequisite
 - Java 11 or greater version
 
