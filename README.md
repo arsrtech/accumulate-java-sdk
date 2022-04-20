@@ -52,7 +52,7 @@ mvn test
 ```
 #### [Check the complete documentation here](https://arsrtech.github.io/accumulate-java-sdk/doc/com/sdk/accumulate/service/Client.html)
 ## Quickstart tutorial
-Demo of some main APIs of Accumulate:
+
 ```
 package com.sdk.accumulate.test;
 
@@ -97,4 +97,16 @@ public class CreateADITest {
 }
 ```
 
-````
+## Examples
+- [Add Credits](https://github.com/arsrtech/accumulate-java-sdk/blob/master/Examples.md#add-credits)
+- [Burn Tokens](https://github.com/arsrtech/accumulate-java-sdk/blob/master/Examples.md#burn-tokens)
+- [Create Data Account](https://github.com/arsrtech/accumulate-java-sdk/blob/master/Examples.md#create-data-account)
+- [Create ADI](https://github.com/arsrtech/accumulate-java-sdk/blob/master/Examples.md#create-adi)
+- [Create Key Book](https://github.com/arsrtech/accumulate-java-sdk/blob/master/Examples.md#create-key-book)
+- [Create Key Page](https://github.com/arsrtech/accumulate-java-sdk/blob/master/Examples.md#create-key-page)
+- [Create Token Account](https://github.com/arsrtech/accumulate-java-sdk/blob/master/Examples.md#create-token-account)
+- [Create Token](https://github.com/arsrtech/accumulate-java-sdk/blob/master/Examples.md#create-token)
+- [Issue Token](https://github.com/arsrtech/accumulate-java-sdk/blob/master/Examples.md#issue-token)
+- [Send Token](https://github.com/arsrtech/accumulate-java-sdk/blob/master/Examples.md#send-token)
+- [Update Key Page](https://github.com/arsrtech/accumulate-java-sdk/blob/master/Examples.md#update-key-page)
+- [Write Data](https://github.com/arsrtech/accumulate-java-sdk/blob/master/Examples.md#write-data)
