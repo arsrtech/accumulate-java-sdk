@@ -9,11 +9,14 @@ Accumulate SDK helps developers to develop the application with Accumulate netwo
 |---------|:----------------------------------|:-----------------------------------------------------------|
 | 1.1     | Initial release with limited APIs | <ul><li>All Query APIs</li><li>Major create APIs</li></ul> |
 
+## Update Method
+- Software Update Method - Manual
+
 ## Prerequisite
 - Java 11 or greater version
 
-## How to use?
-- Download the codebase and crate a java file inside src directory.
+## How to use it?
+- Download the codebase and create a java file inside the src directory.
 - Import and create a client.
 - Then use all the client methods implemented in Java SDK.
 ### How to create the client
@@ -29,7 +32,7 @@ LocalDevNetClient localDevNetClient = new LocalDevNetClient("http://127.0.25.1:2
 ```
 
 ### How to use the client
-- Client contains all Accumulate API features. You just need to call the method from client.
+- The Client contains all Accumulate API features. You just need to call the method from the client.
 - The below code can generate a lite account and call accumulate network for GET Faucet
 ```
 TestNetClient client = new TestNetClient();
@@ -48,7 +51,7 @@ Note: In each client call you have to wait for few seconds to get the response f
 mvn test
 ```
 #### [Check the complete documentation here](https://arsrtech.github.io/accumulate-java-sdk/doc/com/sdk/accumulate/service/Client.html)
-## Quick start tutorial
+## Quickstart tutorial
 Demo of some main APIs of Accumulate:
 ```
 package com.sdk.accumulate.test;

@@ -1,11 +1,12 @@
 # Accumulate Java SDK installation Guide
 
 ## Introduction:
-Accumulate Java SDK helps the developers to integrate their application with Accumulate network. 
-It has a ready-made methods to execute. So the developers can reuse the codebase and develop their application with easy manner.
+Accumulate Java SDK helps the developers to integrate their applications with Accumulate network. It has ready-made methods to execute. So the developers can reuse the codebase and develop their application efficiently.
+
+## Requirements
+- Java 11 or greater version
 
 ## Install Java
-- Required Java Version - Java 11 or grater version
 - To install Open Jdk please follow the below steps
     - `$ sudo apt update`
     - `$ sudo apt install default-jre`
@@ -18,15 +19,15 @@ It has a ready-made methods to execute. So the developers can reuse the codebase
     - `$ javac -version`
       - Output : \
       `javac 11.0.11`
-### [Here is the reference to install Java](https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-ubuntu-20-04)
+### [Here is the reference to installing Java](https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-ubuntu-20-04)
 
 ## How to Download the SDK
-- Download the SDK from GitHub repository
+- Download the SDK from the GitHub repository
 - `git clone git@github.com:arsrtech/accumulate-java-sdk.git`
 - `cd accumulate-java-sdk`
 
-## How to use?
-- Download the codebase and crate a java file inside src directory.
+## How to use it?
+- Download the codebase and create a java file inside the src directory.
 - Import and create a client.
 - Then use all the client methods implemented in Java SDK.
 ### How to create the client
@@ -43,7 +44,7 @@ LocalDevNetClient localDevNetClient = new LocalDevNetClient("http://127.0.25.1:2
 
 #### [Check the complete documentation here](https://arsrtech.github.io/accumulate-java-sdk/doc/com/sdk/accumulate/service/Client.html)
 
-## Quick start tutorial
+## Quickstart tutorial
 ```
 package com.sdk.accumulate.test;
 
