@@ -15,10 +15,6 @@ Accumulate SDK helps developers to develop the application with Accumulate netwo
 ## Prerequisite
 - Java 11 or greater version
 
-## How to use it?
-- Download the codebase and create a java file inside the src directory.
-- Import and create a client.
-- Then use all the client methods implemented in Java SDK.
 ### How to create the client
 - The below client can connect with Accumulate public test net directly
 

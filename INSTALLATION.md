@@ -5,8 +5,9 @@ Accumulate Java SDK helps the developers to integrate their applications with Ac
 
 ## Requirements
 - Java 11 or greater version
+- maven 3.6 or greater version
 
-## Install Java
+## Java installation
 - To install Open Jdk please follow the below steps
     - `$ sudo apt update`
     - `$ sudo apt install default-jre`
@@ -21,15 +22,28 @@ Accumulate Java SDK helps the developers to integrate their applications with Ac
       `javac 11.0.11`
 ### [Here is the reference to installing Java](https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-ubuntu-20-04)
 
-## How to Download the SDK
-- Download the SDK from the GitHub repository
-- `git clone git@github.com:arsrtech/accumulate-java-sdk.git`
-- `cd accumulate-java-sdk`
+## SDK Installation
+- Add the below dependency in your pom.xml file 
+```
+    <repositories>
+        <repository>
+            <id>com.sdk.accumulate</id>
+            <url>http://18.232.151.167:8082/artifactory/libs-release-local/</url>
+        </repository>
+    </repositories>
+    
+      <dependencies>
+    <dependency>
+        <groupId>com.sdk.accumulate</groupId>
+        <artifactId>AccumulateJavaSDK</artifactId>
+        <version>1.1</version>
+    </dependency>
+    </dependencies>
+```
+- Since we are using the snapshot version. The repository requires the Authentication. For that create a file named **settings.xml** inside **.m2** directory.
+- Then copy the contents of the [File](https://github.com/arsrtech/accumulate-java-sdk/blob/master/) . And paste here `~/.m2/settings.xml`
+- Now the SDK is available in the new/existing project.
 
-## How to use it?
-- Download the codebase and create a java file inside the src directory.
-- Import and create a client.
-- Then use all the client methods implemented in Java SDK.
 ### How to create the client
 - The below client can connect with Accumulate public test net directly
 
