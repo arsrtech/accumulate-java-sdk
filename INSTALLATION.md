@@ -23,7 +23,7 @@ Accumulate Java SDK helps the developers to integrate their applications with Ac
 ### [Here is the reference to installing Java](https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-ubuntu-20-04)
 
 ## SDK Installation
-- Add the below dependency in your pom.xml file 
+- Add the below dependency in the new/existing project's pom.xml file 
 ```
     <repositories>
         <repository>
@@ -41,9 +41,11 @@ Accumulate Java SDK helps the developers to integrate their applications with Ac
     </dependencies>
 ```
 - Since we are using the snapshot version. The repository requires the Authentication. For that create a file named **settings.xml** inside **.m2** directory.
-- Then copy the contents of the [File](https://github.com/arsrtech/accumulate-java-sdk/blob/master/) . And paste here `~/.m2/settings.xml`
+- Then copy the contents of the [File](https://github.com/arsrtech/accumulate-java-sdk/blob/master/settings.xml) . And paste here `~/.m2/settings.xml`
 - Now the SDK is available in the new/existing project.
+- Check the below screenshot for reference
 
+![](https://github.com/arsrtech/accumulate-java-sdk/blob/master/src/main/resources/sdk_install.png)
 ### How to create the client
 - The below client can connect with Accumulate public test net directly
 
