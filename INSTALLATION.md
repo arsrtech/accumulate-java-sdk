@@ -42,6 +42,7 @@ Accumulate Java SDK helps the developers to integrate their applications with Ac
 ```
 
 - Now the SDK is available in the new/existing project.
+- After that configure the private repository credentials. [Here is the configuration steps](https://github.com/arsrtech/accumulate-java-sdk/blob/master/INSTALLATION.md#configure-the--java-sdk-repo-settingsxml-configuration) 
 - Check the below screenshot for reference
 
 ![](https://github.com/arsrtech/accumulate-java-sdk/blob/master/src/main/resources/sdk_install.png)
