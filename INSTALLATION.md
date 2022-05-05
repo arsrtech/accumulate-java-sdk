@@ -40,8 +40,7 @@ Accumulate Java SDK helps the developers to integrate their applications with Ac
     </dependency>
     </dependencies>
 ```
-- Since we are using the snapshot version. The repository requires the Authentication. For that create a file named **settings.xml** inside **.m2** directory.
-- Then copy the contents of the [File](https://github.com/arsrtech/accumulate-java-sdk/blob/master/settings.xml) . And paste here `~/.m2/settings.xml`
+
 - Now the SDK is available in the new/existing project.
 - Check the below screenshot for reference
 
@@ -104,3 +103,37 @@ public class CreateADITest {
     }
 }
 ```
+
+## Configure the  Java SDK repo (settings.xml configuration)
+- Currently, the Java SDK hosted in a private repository. To access the repository we have to specify the username 
+and password of the repository.
+- To set the credentials, we have to create a settings file inside the .m2 directory.
+- Since we are using the maven, the system itself can create the .m2 directory while maven installation.
+- Else follow the below steps.
+  - `$ cd`  - It will goto the home directory. (for example `/home/user/`)
+  - `$ mkdir .m2` - It will create a .m2 directory (`/home/user/.m2/`)
+  - Now create a **settings.xml** file inside the .m2 directory (`/home/user/.m2/settings.xml`)
+  - Then paste the below xml content in the **settings.xml** file.
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 http://maven.apache.org/xsd/settings-1.2.0.xsd" xmlns="http://maven.apache.org/SETTINGS/1.2.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <servers>
+        <server>
+            <username>admin</username>
+            <password>Admin@123</password>
+            <id>central</id>
+        </server>
+    </servers>
+    <mirrors>
+        <mirror>
+            <id>insecure-repo</id>
+            <mirrorOf>external:http:*</mirrorOf>
+            <url>http://18.232.151.167:8082/artifactory/libs-release-local/</url>
+            <blocked>false</blocked>
+        </mirror>
+    </mirrors>
+</settings>
+```
+- And save the file
+- Now the system can access the Java SDK private repository.
