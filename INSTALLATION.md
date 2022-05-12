@@ -23,22 +23,55 @@ Accumulate Java SDK helps the developers to integrate their applications with Ac
 ### [Here is the reference to installing Java](https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-ubuntu-20-04)
 
 ## SDK Installation
-- Add the below dependency in the new/existing project's pom.xml file 
+- Sample pom.xml file
 ```
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>test-project</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <repositories>
         <repository>
             <id>com.sdk.accumulate</id>
             <url>http://18.232.151.167:8082/artifactory/libs-release-local/</url>
         </repository>
     </repositories>
-    
-      <dependencies>
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
+    <dependencies>
     <dependency>
         <groupId>com.sdk.accumulate</groupId>
         <artifactId>AccumulateJavaSDK</artifactId>
         <version>1.1</version>
     </dependency>
+    <dependency>
+        <groupId>org.purejava</groupId>
+        <artifactId>tweetnacl-java</artifactId>
+        <version>1.1.2</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.12.0</version>
+    </dependency>
+    <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.13.2.1</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.5.13</version>
+    </dependency>
     </dependencies>
+</project>
 ```
 
 - Now the SDK is available in the new/existing project.
@@ -123,7 +156,7 @@ and password of the repository.
         <server>
             <username>admin</username>
             <password>Admin@123</password>
-            <id>central</id>
+            <id>com.sdk.accumulate</id>
         </server>
     </servers>
     <mirrors>
