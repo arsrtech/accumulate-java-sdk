@@ -8,6 +8,12 @@ public class Signer {
 
     private long nonce;
 
+    private long timestamp;
+
+    private String url;
+
+    private String signatureType;
+
     public Signer() {
     }
 
@@ -38,5 +44,29 @@ public class Signer {
 
     public void setNonce(long nonce) {
         this.nonce = nonce;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getSignatureType() {
+        return signatureType;
+    }
+
+    public void setSignatureType(String signatureType) {
+        this.signatureType = signatureType;
     }
 }

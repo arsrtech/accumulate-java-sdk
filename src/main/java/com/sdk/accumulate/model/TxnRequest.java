@@ -4,11 +4,15 @@ public class TxnRequest {
 
     private String origin;
 
+    private String sponsor;
+
     private Signer signer;
 
     private String signature;
 
     private KeyPage keyPage;
+
+    private String txHash;
 
     private Object  payload;
 
@@ -50,6 +54,22 @@ public class TxnRequest {
 
     public void setPayload(Object payload) {
         this.payload = payload;
+    }
+
+    public String getSponsor() {
+        return sponsor;
+    }
+
+    public void setSponsor(String sponsor) {
+        this.sponsor = sponsor;
+    }
+
+    public String getTxHash() {
+        return txHash;
+    }
+
+    public void setTxHash(String txHash) {
+        this.txHash = txHash;
     }
 }
 

@@ -6,6 +6,8 @@ public class KeyPage {
 
 //    private long index;
 
+    private long version;
+
     public KeyPage() {
     }
 
@@ -22,7 +24,15 @@ public class KeyPage {
         this.height = height;
     }
 
-//    public long getIndex() {
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
+    }
+
+    //    public long getIndex() {
 //        return index;
 //    }
 //

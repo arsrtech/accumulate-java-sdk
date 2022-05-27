@@ -49,7 +49,8 @@ public class Client {
 		Header header = new Header(originSigner.getOrigin().string(), headerOptions);
     	Transaction tx = new Transaction(payload, header);
 		tx.sign(originSigner);
-		TxnRequest txnRequest = tx.toTxRequest(true);
+		byte[] hash = tx.hash();
+		TxnRequest txnRequest = tx.toTxRequest(hash);
 		return RPCClient.client(this.baseUrl,txnRequest,"execute");
 	}
 

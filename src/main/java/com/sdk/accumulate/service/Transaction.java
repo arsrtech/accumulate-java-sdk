@@ -5,6 +5,7 @@ import com.sdk.accumulate.model.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
+import java.util.Date;
 
 import static com.sdk.accumulate.service.Crypto.sha256;
 
@@ -87,23 +88,29 @@ public class Transaction {
     /**
      * Convert the Transaction into the param object for the `execute` API method
      */
-    public TxnRequest toTxRequest(boolean checkOnly) {
+    public TxnRequest toTxRequest(byte[] hash) {
         if (this.signature == null) {
             throw new Error("Unsigned transaction cannot be converted to TxRequest");
         }
 
         TxnRequest txnRequest = new TxnRequest();
         txnRequest.setOrigin(this.header.getOrigin().string());
+        txnRequest.setSponsor(this.header.getOrigin().string());
         Signer signer = new Signer();
         signer.setPublicKey(Crypto.toHexString(this.signature.getPublicKey()));
         signer.setNonce(this.header.getNonce());
+        signer.setTimestamp(new Date().getTime());
+        signer.setUrl(this.header.getOrigin().string());
+        signer.setSignatureType("ed25519");
         txnRequest.setSigner(signer);
         txnRequest.setSignature(Crypto.toHexString(this.signature.getSignature()));
         KeyPage keyPage = new KeyPage();
         keyPage.setHeight(this.header.getKeyPageHeight());
+        keyPage.setVersion(1);
 //        keyPage.setIndex(this.header.getKeyPageIndex());
         txnRequest.setKeyPage(keyPage);
         txnRequest.setPayload(Crypto.toHexString(this.payloadBinary));
+        txnRequest.setTxHash(Crypto.toHexString(hash));
         return txnRequest;
     }
 }
