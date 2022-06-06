@@ -1,14 +1,6 @@
 package com.sdk.accumulate.service;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
 
 import com.sdk.accumulate.model.*;
 import com.sdk.accumulate.query.*;
@@ -43,14 +35,22 @@ public class Client {
 	 */
 	private String execute(Payload payload, OriginSigner originSigner) throws Exception {
 		HeaderOptions headerOptions = new HeaderOptions();
-		headerOptions.setKeyPageHeight(1);
-//		headerOptions.setKeyPageIndex(0);
-		headerOptions.setNonce(new Date().getTime());
-		Header header = new Header(originSigner.getOrigin().string(), headerOptions);
+//		headerOptions.setKeyPageHeight(1);
+//		headerOptions.setNonce(new Date().getTime());
+		Header header = null;
     	Transaction tx = new Transaction(payload, header);
 		tx.sign(originSigner);
 		byte[] hash = tx.hash();
-		TxnRequest txnRequest = tx.toTxRequest(hash);
+		TxnRequest txnRequest = tx.toTxRequest(false);
+		return RPCClient.client(this.baseUrl,txnRequest,"execute");
+	}
+
+	private String _execute(Payload payload, OriginSigner originSigner) throws Exception {
+		Header header = new Header(originSigner.getUrl().string(), new HeaderOptions());
+		Transaction tx = new Transaction(payload, header);
+		tx.sign(originSigner);
+		byte[] hash = tx.hash();
+		TxnRequest txnRequest = tx.toTxRequest(false);
 		return RPCClient.client(this.baseUrl,txnRequest,"execute");
 	}
 
@@ -381,8 +381,7 @@ public class Client {
 	 * @throws Exception  Throws Exception in the case of RPC call failure or Parse failure
 	 */
 	public String burnTokens(BurnTokensArg burnTokensArg, OriginSigner originSigner) throws Exception {
-		return this.execute(new BurnTokens(burnTokensArg),originSigner);
-
+		return this._execute(new BurnTokens(burnTokensArg),originSigner);
 	}
 
 	/**

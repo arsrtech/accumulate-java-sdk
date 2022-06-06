@@ -11,11 +11,6 @@ public class LiteAccount extends KeypairSigner {
 
     private AccURL tokenUrl;
 
-    public LiteAccount(String acmeTokenUrl, TweetNaclFast.Signature.KeyPair keypair) throws Exception {
-        super(computeUrl(keypair.getPublicKey(),AccURL.toAccURL(acmeTokenUrl)), keypair);
-        this.tokenUrl = AccURL.toAccURL(tokenUrl.string());
-    }
-
     public LiteAccount(AccURL acmeTokenUrl, TweetNaclFast.Signature.KeyPair keypair) throws Exception {
         super(computeUrl(keypair.getPublicKey(),acmeTokenUrl), keypair);
         this.tokenUrl = AccURL.toAccURL(acmeTokenUrl.string());
@@ -50,7 +45,7 @@ public class LiteAccount extends KeypairSigner {
     }
 
     public AccURL url() {
-        return this.origin;
+        return this.url;
     }
 
     AccURL tokenUrl() {

@@ -20,8 +20,12 @@ public class BurnTokensTest {
         String response = client.getFaucet(liteAccount.url().string());
         System.out.println("Lite Account Response: "+response);
 
+        response = client.getQuery(liteAccount.url.string());
+        System.out.println(response);
+
+        Thread.sleep(10000);
         BurnTokensArg burnTokensArg = new BurnTokensArg();
-        burnTokensArg.setAmount(BigInteger.valueOf(56879));
+        burnTokensArg.setAmount(BigInteger.valueOf(1));
         String burnTokensResponse = client.burnTokens(burnTokensArg,liteAccount);
         System.out.println("Burn token Response: "+burnTokensResponse);
 

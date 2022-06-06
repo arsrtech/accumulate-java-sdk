@@ -3,46 +3,91 @@ package com.sdk.accumulate.service;
 import com.sdk.accumulate.enums.Sequence;
 import com.sdk.accumulate.model.HeaderOptions;
 
+import javax.crypto.SealedObject;
+import java.math.BigInteger;
+import java.util.Date;
+
 public class Header {
 
-    private final AccURL origin;
+    private AccURL principal;
 
-    private final long nonce;
+    private byte[] initiator;
 
-    private final long keyPageHeight;
+    private String memo;
 
-    private final long keyPageIndex;
+    private byte[] metadata;
 
-    public Header(String origin, HeaderOptions headerOptions) throws Exception {
-        super();
-        this.origin = AccURL.toAccURL(origin);
-        this.nonce = headerOptions.getNonce();
-        this.keyPageHeight = headerOptions.getKeyPageHeight();
-        this.keyPageIndex = headerOptions.getKeyPageIndex();
+    private long timestamp;
+
+    public AccURL getPrincipal() {
+        return principal;
     }
 
-    public AccURL getOrigin() {
-        return origin;
+    public void setPrincipal(AccURL principal) {
+        this.principal = principal;
     }
 
-    public long getNonce() {
-        return nonce;
+    public byte[] getInitiator() {
+        return initiator;
     }
 
-    public long getKeyPageHeight() {
-        return keyPageHeight;
+    public void setInitiator(byte[] initiator) {
+        this.initiator = initiator;
     }
 
-    public long getKeyPageIndex() {
-        return keyPageIndex;
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+    public byte[] getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(byte[] metadata) {
+        this.metadata = metadata;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Header(String principal, HeaderOptions options) throws Exception {
+        this.principal = AccURL.toAccURL(principal);
+        this.memo = options.getMemo()!=null?options.getMemo():null;
+        this.metadata = options.getMetadata()!=null?options.getMetadata():null;
+        this.timestamp = options.getTimestamp()==0?new Date().getTime():options.getTimestamp();
     }
 
     public byte[] marshalBinary() {
-        byte[] originBytes = Crypto.append(Sequence.ONE,Marshaller.stringMarshaller(this.origin.string()));
-        byte[] keyPageHeightBytes = Crypto.append(Sequence.TWO,Marshaller.longMarshaller(this.keyPageHeight));
-        byte[] keyPageIndexBytes = Crypto.append(Sequence.THREE,Marshaller.longMarshaller(this.keyPageIndex));
-        byte[] nonceBytes = Crypto.append(Sequence.FOUR,Marshaller.longMarshaller(this.nonce));
-        return Crypto.append(originBytes,keyPageHeightBytes,nonceBytes);
+        byte[] principalBytes = Crypto.append(Sequence.ONE,Marshaller.stringMarshaller(this.principal.string()));
+        byte[] initiatorBytes = Crypto.append(Sequence.TWO,initiator);
+        byte[] memoBytes = new byte[0];
+        if (this.memo != null) {
+             memoBytes = Crypto.append(Sequence.THREE,Marshaller.stringMarshaller(this.memo));
+        }
+        byte[] metadataBytes = new byte[0];
+        if (this.metadata != null) {
+             metadataBytes = Crypto.append(Sequence.FOUR,Marshaller.bytesMarshaller(this.metadata));
+        }
+        return Crypto.append(principalBytes,initiatorBytes,memoBytes,metadataBytes);
+    }
+
+    public byte[] computeInitiator(SignerInfo signerInfo) {
+        byte[] typeBinary = Crypto.append(Sequence.ONE,Marshaller.uvarintMarshalBinary(BigInteger.valueOf(signerInfo.getType())));
+        byte[] publicKeyBinary = Crypto.append(Sequence.TWO,Marshaller.bytesMarshaller(signerInfo.getPublicKey()));
+        byte[] urlBinary = Crypto.append(Sequence.FOUR,Marshaller.stringMarshaller(signerInfo.getUrl()));
+        byte[] versionBinary = Crypto.append(Sequence.FIVE,Marshaller.uvarintMarshalBinary(BigInteger.valueOf(signerInfo.getVersion())));
+        byte[] timeStampBinary = Crypto.append(Sequence.SIX,Marshaller.uvarintMarshalBinary(BigInteger.valueOf(this.timestamp)));
+        this.initiator = Crypto.append(typeBinary,publicKeyBinary,urlBinary,versionBinary,timeStampBinary);
+        return this.initiator;
     }
 }
 

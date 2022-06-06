@@ -2,7 +2,6 @@ package com.sdk.accumulate.service;
 
 import com.iwebpp.crypto.TweetNaclFast;
 import com.sdk.accumulate.model.AccSignature;
-import com.sdk.accumulate.model.KeyPageOptions;
 
 import java.security.*;
 import java.util.Arrays;
@@ -10,25 +9,16 @@ import java.util.Arrays;
 
 public class KeypairSigner implements OriginSigner {
 
-	protected AccURL origin;
-	protected TweetNaclFast.Signature.KeyPair keypair;
-	protected int keyPageHeight;
-	protected int keyPageIndex;
+	protected final AccURL url;
 
-	KeypairSigner(AccURL origin, TweetNaclFast.Signature.KeyPair keypair, KeyPageOptions keyPageOptions) {
-		this.origin = origin;
-		this.keypair = keypair;
-		if (keyPageOptions.getKeyPageHeight() == 0)
-			this.keyPageHeight = 1;
-		else
-			this.keyPageHeight = keyPageOptions.getKeyPageHeight();
+	protected final TweetNaclFast.Signature.KeyPair keypair;
 
-		this.keyPageIndex = keyPageOptions.getKeyPageIndex();
-	}
+	protected int version;
 
 	public KeypairSigner(AccURL acmeTokenUrl, TweetNaclFast.Signature.KeyPair keypair) {
-		this.origin = acmeTokenUrl;
+		this.url = acmeTokenUrl;
 		this.keypair = keypair;
+		this.version = 1;
 	}
 
 	TweetNaclFast.Signature.KeyPair keypair() {
@@ -40,26 +30,32 @@ public class KeypairSigner implements OriginSigner {
 	}
 
 	@Override
-	public AccURL getOrigin() {
-		return this.origin;
+	public AccURL getUrl() {
+		return this.url;
 	}
 
 	@Override
-	public int getKeyPageHeight() {
-		return this.keyPageHeight;
+	public TweetNaclFast.Signature.KeyPair getKeypair() {
+		return keypair;
 	}
 
 	@Override
-	public int getKeyPageIndex() {
-		return this.keyPageIndex;
+	public int getVersion() {
+		return version;
 	}
 
-	String string() {
-		return this.origin.string();
-	}
-
+	@Override
 	public AccSignature sign(Transaction tx) throws NoSuchAlgorithmException, SignatureException, InvalidKeyException {
-		return this.signRaw(tx.dataForSignature());
+		return this.signRaw(tx.dataForSignature(signerInfo()));
+	}
+
+	public SignerInfo signerInfo() {
+		SignerInfo signerInfo = new SignerInfo();
+		signerInfo.setUrl(this.url.string());
+		signerInfo.setVersion(this.version);
+		signerInfo.setPublicKey(this.keypair.getPublicKey());
+		signerInfo.setType(2);
+		return signerInfo;
 	}
 
 	/**

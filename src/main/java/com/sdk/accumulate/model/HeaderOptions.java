@@ -1,31 +1,33 @@
 package com.sdk.accumulate.model;
 
 public class HeaderOptions {
-    private long nonce;
-    private long keyPageHeight;
-    private long keyPageIndex;
 
-    public long getNonce() {
-        return nonce;
+    private long timestamp;
+    private String memo;
+
+    private byte[] metadata;
+
+    public long getTimestamp() {
+        return timestamp;
     }
 
-    public void setNonce(long nonce) {
-        this.nonce = nonce;
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
-    public long getKeyPageHeight() {
-        return keyPageHeight;
+    public String getMemo() {
+        return memo;
     }
 
-    public void setKeyPageHeight(long keyPageHeight) {
-        this.keyPageHeight = keyPageHeight;
+    public void setMemo(String memo) {
+        this.memo = memo;
     }
 
-    public long getKeyPageIndex() {
-        return keyPageIndex;
+    public byte[] getMetadata() {
+        return metadata;
     }
 
-    public void setKeyPageIndex(long keyPageIndex) {
-        this.keyPageIndex = keyPageIndex;
+    public void setMetadata(byte[] metadata) {
+        this.metadata = metadata;
     }
 }

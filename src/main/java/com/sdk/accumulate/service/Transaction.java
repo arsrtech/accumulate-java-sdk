@@ -5,7 +5,6 @@ import com.sdk.accumulate.model.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
-import java.util.Date;
 
 import static com.sdk.accumulate.service.Crypto.sha256;
 
@@ -16,15 +15,21 @@ public class Transaction {
     private AccSignature signature;
     private byte[] hash;
 
+    private final byte[] bodyHash;
+
+    private SignerInfo signerInfo;
+
     public Transaction(Payload payload, Header header, AccSignature signature) {
         this.payloadBinary = payload.marshalBinary();
         this.header = header;
         this.signature = signature;
+        this.bodyHash = payload.hash();
     }
 
     public Transaction(Payload payload, Header header) {
         this.payloadBinary = payload.marshalBinary();
         this.header = header;
+        this.bodyHash = payload.hash();
 
     }
 
@@ -36,16 +41,17 @@ public class Transaction {
             return this.hash;
         }
         byte[] sHash = sha256(this.header.marshalBinary());
-        byte[] tHash = sha256(this.payloadBinary);
-        this.hash = sha256(Crypto.append(sHash,tHash));
+        this.hash = sha256(Crypto.append(sHash,this.bodyHash));
         return this.hash;
     }
 
     /**
      * Data that needs to be signed in order to submit the transaction.
      */
-    public byte[] dataForSignature() throws NoSuchAlgorithmException {
-        return Crypto.append(Marshaller.longMarshaller(this.header.getNonce()),this.hash());
+    public byte[] dataForSignature(SignerInfo signerInfo) throws NoSuchAlgorithmException {
+        this.signerInfo = signerInfo;
+        byte[] sigHash = this.header.computeInitiator(signerInfo);
+        return Crypto.append(sigHash,this.hash());
     }
 
     public Header getHeader() {
@@ -88,29 +94,28 @@ public class Transaction {
     /**
      * Convert the Transaction into the param object for the `execute` API method
      */
-    public TxnRequest toTxRequest(byte[] hash) {
+    public TxnRequest toTxRequest(boolean checkOnly) {
         if (this.signature == null) {
             throw new Error("Unsigned transaction cannot be converted to TxRequest");
         }
 
         TxnRequest txnRequest = new TxnRequest();
-        txnRequest.setOrigin(this.header.getOrigin().string());
-        txnRequest.setSponsor(this.header.getOrigin().string());
-        Signer signer = new Signer();
-        signer.setPublicKey(Crypto.toHexString(this.signature.getPublicKey()));
-        signer.setNonce(this.header.getNonce());
-        signer.setTimestamp(new Date().getTime());
-        signer.setUrl(this.header.getOrigin().string());
-        signer.setSignatureType("ed25519");
-        txnRequest.setSigner(signer);
+        txnRequest.setCheckOnly(checkOnly);
+        txnRequest.setEnvelope(false);
+        txnRequest.setOrigin(this.header.getPrincipal().string());
         txnRequest.setSignature(Crypto.toHexString(this.signature.getSignature()));
-        KeyPage keyPage = new KeyPage();
-        keyPage.setHeight(this.header.getKeyPageHeight());
-        keyPage.setVersion(1);
-//        keyPage.setIndex(this.header.getKeyPageIndex());
-        txnRequest.setKeyPage(keyPage);
+        txnRequest.setTxHash(this.hash!=null?Crypto.toHexString(this.hash):null);
         txnRequest.setPayload(Crypto.toHexString(this.payloadBinary));
-        txnRequest.setTxHash(Crypto.toHexString(hash));
+        txnRequest.setMemo(this.header.getMemo());
+        txnRequest.setMetadata(this.header.getMetadata()!=null?Crypto.toHexString(this.header.getMetadata()):null);
+        Signer signer = new Signer();
+        signer.setUrl(this.signerInfo.getUrl());
+        signer.setPublicKey(Crypto.toHexString(this.signerInfo.getPublicKey()));
+        signer.setVersion(signerInfo.getVersion());
+        signer.setTimestamp(this.header.getTimestamp());
+        signer.setSignatureType("ed25519");
+        signer.setUseSimpleHash(true);
+        txnRequest.setSigner(signer);
         return txnRequest;
     }
 }

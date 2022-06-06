@@ -2,19 +2,39 @@ package com.sdk.accumulate.model;
 
 public class TxnRequest {
 
-    private String origin;
+    private boolean checkOnly;
 
-    private String sponsor;
+    private boolean isEnvelope;
+
+    private String origin;
 
     private Signer signer;
 
     private String signature;
 
-    private KeyPage keyPage;
-
     private String txHash;
 
     private Object  payload;
+
+    private String memo;
+
+    private String metadata;
+
+    public boolean isCheckOnly() {
+        return checkOnly;
+    }
+
+    public void setCheckOnly(boolean checkOnly) {
+        this.checkOnly = checkOnly;
+    }
+
+    public boolean isEnvelope() {
+        return isEnvelope;
+    }
+
+    public void setEnvelope(boolean envelope) {
+        isEnvelope = envelope;
+    }
 
     public String getOrigin() {
         return origin;
@@ -40,12 +60,12 @@ public class TxnRequest {
         this.signature = signature;
     }
 
-    public KeyPage getKeyPage() {
-        return keyPage;
+    public String getTxHash() {
+        return txHash;
     }
 
-    public void setKeyPage(KeyPage keyPage) {
-        this.keyPage = keyPage;
+    public void setTxHash(String txHash) {
+        this.txHash = txHash;
     }
 
     public Object getPayload() {
@@ -56,20 +76,20 @@ public class TxnRequest {
         this.payload = payload;
     }
 
-    public String getSponsor() {
-        return sponsor;
+    public String getMemo() {
+        return memo;
     }
 
-    public void setSponsor(String sponsor) {
-        this.sponsor = sponsor;
+    public void setMemo(String memo) {
+        this.memo = memo;
     }
 
-    public String getTxHash() {
-        return txHash;
+    public String getMetadata() {
+        return metadata;
     }
 
-    public void setTxHash(String txHash) {
-        this.txHash = txHash;
+    public void setMetadata(String metadata) {
+        this.metadata = metadata;
     }
 }
 
