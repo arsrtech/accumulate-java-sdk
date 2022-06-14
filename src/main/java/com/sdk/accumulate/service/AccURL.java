@@ -1,6 +1,8 @@
 package com.sdk.accumulate.service;
 
-import java.net.*;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class AccURL {
 
@@ -36,16 +38,20 @@ public class AccURL {
         this.url = url;
     }
 
-    public static AccURL toAccURL(String arg ) throws Exception {
-        return  AccURL.parse(arg);
+    public static AccURL toAccURL(String arg) {
+        return AccURL.parse(arg);
     }
 
     /**
      * Parse a string into an AccURL
      */
-    static AccURL parse(String str) throws Exception {
-        URI uri = new URI(str);
-        return new AccURL(uri);
+    static AccURL parse(String str) {
+        try {
+            URI uri = new URI(str);
+            return new AccURL(uri);
+        } catch (URISyntaxException | MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String authority() {

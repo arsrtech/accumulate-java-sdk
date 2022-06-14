@@ -6,9 +6,7 @@ import com.sdk.accumulate.model.CreateTokenAccountArg;
 
 import java.math.BigInteger;
 
-public class CreateTokenAccount extends BasePayload {
-
-    private final AccURL url;
+public class CreateTokenAccount extends AccountPayload {
 
     private final AccURL tokenUrl;
 
@@ -17,8 +15,7 @@ public class CreateTokenAccount extends BasePayload {
     private final boolean scratch;
 
     public CreateTokenAccount(CreateTokenAccountArg createTokenAccountArg) throws Exception {
-        super();
-        this.url = AccURL.toAccURL(createTokenAccountArg.getUrl());
+        super(AccURL.toAccURL(createTokenAccountArg.getUrl()));
         this.tokenUrl = AccURL.toAccURL(createTokenAccountArg.getTokenUrl());
         this.keyBookUrl = AccURL.toAccURL(createTokenAccountArg.getKeyBookUrl());
         this.scratch = createTokenAccountArg.isScratch();
@@ -27,7 +24,7 @@ public class CreateTokenAccount extends BasePayload {
     @Override
     public byte[] _marshalBinary() {
         byte[] typeBytes = Crypto.append(Sequence.ONE,Marshaller.uvarintMarshalBinary(BigInteger.valueOf(TxType.CreateTokenAccount.getValue())));
-        byte[] urlBytes = Crypto.append(Sequence.TWO,Marshaller.stringMarshaller(this.url.string()));
+        byte[] urlBytes = Crypto.append(Sequence.TWO,Marshaller.stringMarshaller(getUrl().string()));
         byte[] tokenUrlBytes = Crypto.append(Sequence.THREE,Marshaller.stringMarshaller(this.tokenUrl.string()));
         byte[] keyBookUrlBytes = Crypto.append(Sequence.FOUR,Marshaller.stringMarshaller(this.keyBookUrl.string()));
         byte[] scratchBytes = Crypto.append(Sequence.FIVE,Marshaller.booleanMarshaller(this.scratch));

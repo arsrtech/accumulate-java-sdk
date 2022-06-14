@@ -3,12 +3,10 @@ package com.sdk.accumulate.service;
 import com.sdk.accumulate.enums.Sequence;
 import com.sdk.accumulate.enums.TxType;
 import com.sdk.accumulate.model.CreateIdentityArg;
-
 import java.math.BigInteger;
 
-public class CreateIdentity extends BasePayload {
+public class CreateIdentity extends AccountPayload {
 
-    private final String url;
 
     private final byte[] publicKey;
 
@@ -17,8 +15,7 @@ public class CreateIdentity extends BasePayload {
     private final String keyPageName;
 
     public CreateIdentity(CreateIdentityArg createIdentityArg) {
-        super();
-        this.url = createIdentityArg.getUrl();
+        super(AccURL.toAccURL(createIdentityArg.getUrl()));
         this.publicKey = createIdentityArg.getPublicKey();
         this.keyBookName = createIdentityArg.getKeyBookName();
         this.keyPageName = createIdentityArg.getKeyPageName();
@@ -26,11 +23,11 @@ public class CreateIdentity extends BasePayload {
 
     @Override
     public byte[] _marshalBinary() {
-        byte[] typeBytes = Crypto.append(Sequence.ONE,Marshaller.uvarintMarshalBinary(BigInteger.valueOf(TxType.CreateIdentity.getValue())));
-        byte[] urlBytes = Crypto.append(Sequence.TWO,Marshaller.stringMarshaller(this.url));
-        byte[] keyBytes = Crypto.append(Sequence.THREE,Marshaller.bytesMarshaller(this.publicKey));
-        byte[] keyBookNameBytes = Crypto.append(Sequence.FOUR,Marshaller.stringMarshaller(this.keyBookName));
-        byte[] keyBookPageBytes = Crypto.append(Sequence.FIVE,Marshaller.stringMarshaller(this.keyPageName));
-        return Crypto.append(typeBytes,urlBytes,keyBytes,keyBookNameBytes,keyBookPageBytes);
+        byte[] typeBytes = Crypto.append(Sequence.ONE, Marshaller.uvarintMarshalBinary(BigInteger.valueOf(TxType.CreateIdentity.getValue())));
+        byte[] urlBytes = Crypto.append(Sequence.TWO, Marshaller.stringMarshaller(getUrl().string()));
+        byte[] keyBytes = Crypto.append(Sequence.THREE, Marshaller.bytesMarshaller(this.publicKey));
+        byte[] keyBookNameBytes = Crypto.append(Sequence.FOUR, Marshaller.stringMarshaller(this.keyBookName));
+        byte[] keyBookPageBytes = Crypto.append(Sequence.FIVE, Marshaller.stringMarshaller(this.keyPageName));
+        return Crypto.append(typeBytes, urlBytes, keyBytes, keyBookNameBytes, keyBookPageBytes);
     }
 }

@@ -5,6 +5,7 @@ import com.sdk.accumulate.model.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
+import org.apache.http.util.Asserts;
 
 import static com.sdk.accumulate.service.Crypto.sha256;
 
@@ -49,6 +50,8 @@ public class Transaction {
      * Data that needs to be signed in order to submit the transaction.
      */
     public byte[] dataForSignature(SignerInfo signerInfo) throws NoSuchAlgorithmException {
+        Asserts.notNull(header, "header");
+
         this.signerInfo = signerInfo;
         byte[] sigHash = this.header.computeInitiator(signerInfo);
         return Crypto.append(sigHash,this.hash());

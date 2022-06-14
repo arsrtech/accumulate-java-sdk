@@ -5,6 +5,7 @@ import com.iwebpp.crypto.TweetNaclFast;
 import com.sdk.accumulate.model.AddCreditsArg;
 import com.sdk.accumulate.model.CreateIdentityArg;
 import com.sdk.accumulate.model.CreateTokenAccountArg;
+import com.sdk.accumulate.model.RPCError;
 import com.sdk.accumulate.model.RPCResponse;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,8 +30,11 @@ public class CreateTokenAccountTest {
         createIdentityArg.setPublicKey(kp.getPublicKey());
         createIdentityArg.setKeyBookName("test-key-book");
         createIdentityArg.setKeyPageName("test-key-page");
+        ObjectMapper objectMapper = new ObjectMapper();
         String createAdiResponse = client.createIdentity(createIdentityArg,liteAccount);
+        RPCResponse rpcResponse = objectMapper.readValue(createAdiResponse,RPCResponse.class);
         System.out.println("Create ADI Response: "+createAdiResponse);
+        Assert.assertNull(formatMessage(rpcResponse.getError()), rpcResponse.getError());
         ADI adi = new ADI(AccURL.toAccURL(identityUrl),kp);
 
         CreateTokenAccountArg createTokenAccountArg = new CreateTokenAccountArg();
@@ -41,8 +45,15 @@ public class CreateTokenAccountTest {
         String createTokenAccountResponse = client.createTokenAccount(createTokenAccountArg,adi);
         System.out.println("Create Token Account Response: "+createTokenAccountResponse);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        RPCResponse rpcResponse = objectMapper.readValue(createTokenAccountResponse,RPCResponse.class);
+        rpcResponse = objectMapper.readValue(createTokenAccountResponse,RPCResponse.class);
+        Assert.assertNull(formatMessage(rpcResponse.getError()), rpcResponse.getError());
         Assert.assertNotNull("Create Token Account Request failed", rpcResponse.getResult().getTxid());
+    }
+
+    private String formatMessage(final RPCError error) {
+        if(error != null) {
+            return String.format("Create Token Account Request failed: %s, %s", error.getMessage(), error.getData());
+        }
+        return null;
     }
 }

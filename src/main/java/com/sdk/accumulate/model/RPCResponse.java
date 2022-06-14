@@ -6,6 +6,8 @@ public class RPCResponse {
 
     private ResponseResult result;
 
+    private RPCError error;
+
     private long id;
 
     public String getJsonrpc() {
@@ -30,6 +32,14 @@ public class RPCResponse {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public RPCError getError() {
+        return error;
+    }
+
+    public void setError(final RPCError error) {
+        this.error = error;
     }
 }
 
