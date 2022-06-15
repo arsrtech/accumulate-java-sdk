@@ -31,6 +31,6 @@ public class BurnTokensTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         RPCResponse rpcResponse = objectMapper.readValue(burnTokensResponse,RPCResponse.class);
-        Assert.assertNotNull("Burn Tokens API Failed", rpcResponse.getResult().getTxid());
+        Assert.assertNotNull("Burn Tokens API Failed", rpcResponse.getResponseResult().getTxid());
     }
 }

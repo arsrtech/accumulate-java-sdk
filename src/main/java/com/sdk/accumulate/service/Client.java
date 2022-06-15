@@ -73,7 +73,7 @@ public class Client {
     }
 
     private String _execute(Payload payload, OriginSigner originSigner) throws Exception {
-        Header header = new Header(originSigner.getUrl().string(), new HeaderOptions());
+        Header header = new Header(originSigner.getSignerUrl().string(), new HeaderOptions());
         Transaction tx = new Transaction(payload, header);
         tx.sign(originSigner);
         byte[] hash = tx.hash();

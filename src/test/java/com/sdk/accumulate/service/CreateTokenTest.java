@@ -56,6 +56,6 @@ public class CreateTokenTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         RPCResponse rpcResponse = objectMapper.readValue(createTokenResponse,RPCResponse.class);
-        Assert.assertNotNull("Create Token Request failed", rpcResponse.getResult().getTxid());
+        Assert.assertNotNull("Create Token Request failed", rpcResponse.getResponseResult().getTxid());
     }
 }

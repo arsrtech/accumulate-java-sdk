@@ -2,7 +2,6 @@ package com.sdk.accumulate.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iwebpp.crypto.TweetNaclFast;
-import com.sdk.accumulate.model.AddCreditsArg;
 import com.sdk.accumulate.model.CreateIdentityArg;
 import com.sdk.accumulate.model.CreateKeyBookArg;
 import com.sdk.accumulate.model.RPCResponse;
@@ -46,6 +45,6 @@ public class CreateKeyBookTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         RPCResponse rpcResponse = objectMapper.readValue(createKeyBook,RPCResponse.class);
-        Assert.assertNotNull("Create Key Book Request failed", rpcResponse.getResult().getTxid());
+        Assert.assertNotNull("Create Key Book Request failed", rpcResponse.getResponseResult().getTxid());
     }
 }

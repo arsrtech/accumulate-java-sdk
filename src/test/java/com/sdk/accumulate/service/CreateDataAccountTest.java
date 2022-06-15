@@ -43,6 +43,6 @@ public class CreateDataAccountTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         RPCResponse rpcResponse = objectMapper.readValue(createDataAccountResponse,RPCResponse.class);
-        Assert.assertNotNull("Create Data Account Request failed", rpcResponse.getResult().getTxid());
+        Assert.assertNotNull("Create Data Account Request failed", rpcResponse.getResponseResult().getTxid());
     }
 }

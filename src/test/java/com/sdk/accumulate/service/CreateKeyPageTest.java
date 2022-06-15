@@ -2,7 +2,6 @@ package com.sdk.accumulate.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iwebpp.crypto.TweetNaclFast;
-import com.sdk.accumulate.model.AddCreditsArg;
 import com.sdk.accumulate.model.CreateIdentityArg;
 import com.sdk.accumulate.model.CreateKeyPageArg;
 import com.sdk.accumulate.model.RPCResponse;
@@ -45,6 +44,6 @@ public class CreateKeyPageTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         RPCResponse rpcResponse = objectMapper.readValue(createKeyPageResponse,RPCResponse.class);
-        Assert.assertNotNull("Create Key Page Request failed", rpcResponse.getResult().getTxid());
+        Assert.assertNotNull("Create Key Page Request failed", rpcResponse.getResponseResult().getTxid());
     }
 }

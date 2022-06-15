@@ -7,7 +7,7 @@ import java.security.*;
 import java.util.Arrays;
 
 
-public class KeypairSigner implements OriginSigner {
+public abstract class KeypairSigner implements OriginSigner {
 
 	protected final AccURL url;
 
@@ -15,8 +15,8 @@ public class KeypairSigner implements OriginSigner {
 
 	protected int version;
 
-	public KeypairSigner(AccURL acmeTokenUrl, TweetNaclFast.Signature.KeyPair keypair) {
-		this.url = acmeTokenUrl;
+	public KeypairSigner(AccURL signerUrl, TweetNaclFast.Signature.KeyPair keypair) {
+		this.url = signerUrl;
 		this.keypair = keypair;
 		this.version = 1;
 	}
@@ -29,12 +29,12 @@ public class KeypairSigner implements OriginSigner {
 		return this.keypair.getPublicKey();
 	}
 
-	@Override
 	public AccURL getUrl() {
 		return this.url;
 	}
 
-	@Override
+
+    @Override
 	public TweetNaclFast.Signature.KeyPair getKeypair() {
 		return keypair;
 	}
@@ -51,7 +51,7 @@ public class KeypairSigner implements OriginSigner {
 
 	public SignerInfo signerInfo() {
 		SignerInfo signerInfo = new SignerInfo();
-		signerInfo.setUrl(this.url.string());
+		signerInfo.setUrl(this.getSignerUrl().string());
 		signerInfo.setVersion(this.version);
 		signerInfo.setPublicKey(this.keypair.getPublicKey());
 		signerInfo.setType(2);

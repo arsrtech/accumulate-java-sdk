@@ -3,7 +3,6 @@ package com.sdk.accumulate.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iwebpp.crypto.TweetNaclFast;
 import com.sdk.accumulate.enums.KeyPageOperation;
-import com.sdk.accumulate.model.AddCreditsArg;
 import com.sdk.accumulate.model.CreateIdentityArg;
 import com.sdk.accumulate.model.RPCResponse;
 import com.sdk.accumulate.model.UpdateKeyPageArg;
@@ -44,6 +43,6 @@ public class UpdateKeyPageTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         RPCResponse rpcResponse = objectMapper.readValue(updateKeyPageResponse,RPCResponse.class);
-        Assert.assertNotNull("Update Key Request failed", rpcResponse.getResult().getTxid());
+        Assert.assertNotNull("Update Key Request failed", rpcResponse.getResponseResult().getTxid());
     }
 }

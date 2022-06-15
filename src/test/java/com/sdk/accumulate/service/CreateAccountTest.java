@@ -19,6 +19,6 @@ public class CreateAccountTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         RPCResponse rpcResponse = objectMapper.readValue(response,RPCResponse.class);
-        Assert.assertNotNull("Account Creation failed", rpcResponse.getResult().getTxid());
+        Assert.assertNotNull("Account Creation failed", rpcResponse.getResponseResult().getTxid());
     }
  }

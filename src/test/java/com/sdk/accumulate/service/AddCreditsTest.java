@@ -27,7 +27,7 @@ public class AddCreditsTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         RPCResponse rpcResponse = objectMapper.readValue(addCreditsResponse,RPCResponse.class);
-        Assert.assertNotNull("Add Credits API failed", rpcResponse.getResult().getTxid());
+        Assert.assertNotNull("Add Credits API failed", rpcResponse.getResponseResult().getTxid());
 
     }
 }

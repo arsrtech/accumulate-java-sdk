@@ -73,4 +73,8 @@ public class AccURL {
     public String string() {
         return this.url.toString();
     }
+
+    public AccURL rootUrl() {
+        return parse(url.getScheme() + "://" + url.getHost());
+    }
 }

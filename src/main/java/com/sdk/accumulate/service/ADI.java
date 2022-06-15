@@ -14,6 +14,11 @@ public class ADI extends KeypairSigner {
      * @param keypair
      */
     public ADI(AccURL acmeTokenUrl, TweetNaclFast.Signature.KeyPair keypair) {
-        super(acmeTokenUrl, keypair);
+        super(acmeTokenUrl.rootUrl(), keypair);
+    }
+
+    @Override
+    public AccURL getSignerUrl() {
+        return getUrl();
     }
 }

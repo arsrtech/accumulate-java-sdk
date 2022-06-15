@@ -62,4 +62,8 @@ public class LiteAccount extends KeypairSigner {
         return AccURL.parse("acc://"+pkHash+checkSumStr+"/"+tokenUrl.authority());
     }
 
+    @Override
+    public AccURL getSignerUrl() {
+        return getUrl().rootUrl(); // For a LiteIdentity the signer is the root ADI
+    }
 }

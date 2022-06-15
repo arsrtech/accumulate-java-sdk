@@ -1,7 +1,6 @@
 package com.sdk.accumulate.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sdk.accumulate.model.AddCreditsArg;
 import com.sdk.accumulate.model.RPCResponse;
 import com.sdk.accumulate.model.SendTokensArg;
 import com.sdk.accumulate.model.TokenRecipientArg;
@@ -40,6 +39,6 @@ public class SendTokenTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         RPCResponse rpcResponse = objectMapper.readValue(sendTokensResponse,RPCResponse.class);
-        Assert.assertNotNull("Send Token Request failed", rpcResponse.getResult().getTxid());
+        Assert.assertNotNull("Send Token Request failed", rpcResponse.getResponseResult().getTxid());
     }
 }

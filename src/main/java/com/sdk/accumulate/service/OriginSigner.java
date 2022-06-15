@@ -10,7 +10,7 @@ import java.security.SignatureException;
 
 public interface OriginSigner {
 
-	AccURL getUrl();
+	AccURL getSignerUrl();
 
 	TweetNaclFast.Signature.KeyPair getKeypair();
 

@@ -46,6 +46,6 @@ public class WriteDataTest {
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		RPCResponse rpcResponse = objectMapper.readValue(writeDataResponse,RPCResponse.class);
-		Assert.assertNotNull("Write Data Request failed", rpcResponse.getResult().getTxid());
+		Assert.assertNotNull("Write Data Request failed", rpcResponse.getResponseResult().getTxid());
 	}
 }

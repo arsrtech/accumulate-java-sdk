@@ -1,7 +1,6 @@
 package com.sdk.accumulate.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sdk.accumulate.model.AddCreditsArg;
 import com.sdk.accumulate.model.IssueTokensArg;
 import com.sdk.accumulate.model.RPCResponse;
 import org.junit.Assert;
@@ -32,6 +31,6 @@ public class IssueTokenTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         RPCResponse rpcResponse = objectMapper.readValue(issueTokensResponse,RPCResponse.class);
-        Assert.assertNotNull("Issue Token Request failed", rpcResponse.getResult().getTxid());
+        Assert.assertNotNull("Issue Token Request failed", rpcResponse.getResponseResult().getTxid());
     }
 }
